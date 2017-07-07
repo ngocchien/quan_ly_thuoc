@@ -1,0 +1,60 @@
+<div data-view="administrator/post/index">
+    <div class="col-item">
+        <form method="get">
+            <div class="rows" style="border-bottom: none; border-top: 1px solid #ddd">
+                <div class="search-product">
+                    <div class="col-lg-2 pull-left" style="margin-top: 25px">
+                        <div id="editable-sample_length" class="dataTables_length no-padding">
+                            <a class="btn btn-success" href="<?php echo $this->Url('administratorPost', ['action'=>'create'])?>"><i class="icon-plus-sign-alt"></i> Thêm</a>
+                            <a class="btn btn-danger remove-all" href="javascript:;"><i class="icon-trash "></i> Xóa</a>
+                        </div>
+                    </div>
+                    <div class="search-title">
+                        <div class="search-title-block">
+                            <input class="search-product-title" type="text" name="search" placeholder="Tìm kiếm theo tên" value="<?php echo !empty($this->params['search']) ? $this->params['search'] : ''?>" placeholder="Tìm kiếm theo tên">
+                            <button class="search-products" type="submit">
+                                <i class="icon-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <table style="margin-bottom: 0" class="table table-striped table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th class="center"> # </th>
+                    <th class="center"><span class="icon icon-list"></span> ID</th>
+                    <th class="center"><span class="icon icon-list-alt"></span> Bài viết</th>
+<!--                    <th class="center">Danh mục</th>-->
+                    <th class="center"><span class="icon icon-calendar"></span> Ngày tạo</th>
+                    <th class="center"><span class="icon icon-user"></span> Người viết</th>
+                    <th class="center"><span class="icon icon-random"></span> Trạng thái</th>
+                    <th class="center"><span class="icon icon-gears"></span> Tùy chỉnh</th>
+                </tr>
+                </thead>
+                <tbody>
+                <?php if(!empty($this->posts)):
+                    foreach ($this->posts['rows'] as $row):
+                        ?>
+                        <tr>
+                            <td class="center"><input type="checkbox" name="data-id" class="input" value="<?php echo $row['post_id']?>"></td>
+                            <td class="center"><b><?php echo $row['post_id'];?></b></td>
+                            <td><a href="<?php echo $this->Url('news', ['name'=>$row['post_slug']])?>" target="_blank"><b><?php echo $row['post_name'];?></b></a></td>
+                            <td class="center"><?php echo date('Y-m-d',$row['created_date']);?></td>
+                            <td class="center"><?php echo $this->users[$row['user_created']]['full_name'];?></td>
+                            <td class="center"><?php echo $this->renderStatus[$row['status']];?></td>
+                            <td class="center">
+                                <a data-toggle="tooltip" title="Xem sản phẩm" class="btn btn-small btn-primary" target="_blank" href="<?php echo $this->Url('news', ['name'=>$row['post_slug']])?>">
+                                    <i class="icon icon-eye-open"></i>
+                                </a>
+                                <a data-toggle="tooltip" title="Cập nhật" class="btn btn-small btn-primary" href="<?php echo $this->Url('administratorPost', ['action'=>'edit', 'id' => $row['post_id']])?>">
+                                    <i class="icon icon-edit"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    <?php endforeach; endif;?>
+                </tbody>
+            </table>
+        </form>
+    </div>
+</div>

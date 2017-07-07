@@ -1,0 +1,24 @@
+<div class="data-view" data-view="administrator/properties/create">
+    <div class="cat-content">
+        <form name="form" class="form-group" method="post">
+            <div class="col-cate-left" style="margin-bottom: 40px">
+                <?php if(!empty($this->params['error'])):?>
+                    <h4 class="header red lighter bigger" style="margin-top: -15px; margin-bottom: 30px">
+                        <center>--------<b>ERROR</b>----------</br></center>
+                        <center><?php echo $this->params['error']?></center>
+                    </h4>
+                <?php endif;?>
+
+                <span class="block input-icon input-icon-right">
+                    <label>Tên thuộc tính <span class="red">(*)</span></label>
+                    <input name="properties_name" type="text" class="span12" placeholder="Nhập tên thuộc tính" required
+                    value="<?php echo empty($this->params['properties_name']) ? '' : $this->params['properties_name']?>"
+                    >
+                </span>
+                <span class="block input-icon input-icon-right" style="margin-top: 10px">
+                    <button class="button-item"><i class="icon icon-save"></i> Lưu</button>
+                </span>
+            </div>
+        </form>
+    </div>
+</div>

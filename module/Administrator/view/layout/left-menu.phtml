@@ -1,0 +1,247 @@
+<?php
+$module = MODULE;
+$controller = CONTROLLER;
+$action = ACTION;
+$permission = json_decode(PERMISSION, true);
+$per_controller = $per_controller_action = [];
+if (!empty($permission)) {
+    foreach ($permission as $item) {
+        if (!in_array($item['controller'], $per_controller)) {
+            $per_controller[] = $item['controller'];
+        }
+
+        $per_controller_action[$item['controller']][] = $item['action'];
+    }
+}
+
+?>
+<a class="menu-toggler" id="menu-toggler" href="#">
+    <span class="menu-text"></span>
+</a>
+<div class="sidebar" id="sidebar">
+<!--    <div class="sidebar-shortcuts" id="sidebar-shortcuts">-->
+<!--        <div class="sidebar-shortcuts-large" id="sidebar-shortcuts-large">-->
+<!--            <button class="btn btn-small btn-success">-->
+<!--                <i class="icon-signal"></i>-->
+<!--            </button>-->
+<!---->
+<!--            <button class="btn btn-small btn-info">-->
+<!--                <i class="icon-pencil"></i>-->
+<!--            </button>-->
+<!---->
+<!--            <button class="btn btn-small btn-warning">-->
+<!--                <i class="icon-group"></i>-->
+<!--            </button>-->
+<!---->
+<!--            <button class="btn btn-small btn-danger">-->
+<!--                <i class="icon-cogs"></i>-->
+<!--            </button>-->
+<!--        </div>-->
+<!---->
+<!--        <div class="sidebar-shortcuts-mini" id="sidebar-shortcuts-mini">-->
+<!--            <span class="btn btn-success"></span>-->
+<!---->
+<!--            <span class="btn btn-info"></span>-->
+<!---->
+<!--            <span class="btn btn-warning"></span>-->
+<!---->
+<!--            <span class="btn btn-danger"></span>-->
+<!--        </div>-->
+<!--    </div>-->
+    <!--#sidebar-shortcuts-->
+
+    <ul class="nav nav-list">
+        <?php if (IS_ADMIN || in_array('category', $per_controller)) : ?>
+            <li class="<?php if ($controller == 'category') : ?> active <?php endif; ?>">
+                <a href="#" class="dropdown-toggle">
+                    <i class="icon-list"></i>
+                    <span class="menu-text"> Danh mục </span>
+                    <b class="arrow icon-angle-down"></b>
+                </a>
+                <ul class="submenu">
+                    <?php if (IS_ADMIN || in_array('create', $per_controller_action['category'])): ?>
+                        <li <?php echo $controller == 'category' && $action == 'create' ? 'class="active"' : ''; ?> >
+                            <a href="<?php echo SITE_URL; ?>admin/category/create">
+                                <i class="icon-double-angle-right"></i>
+                                Tạo mới
+                            </a>
+                        </li>
+                    <?php endif; ?>
+                    <?php if (IS_ADMIN || in_array('index', $per_controller_action['category'])): ?>
+                        <li <?php echo $controller == 'category' && $action == 'index' ? 'class="active"' : ''; ?> >
+                            <a href="<?php echo SITE_URL; ?>admin/category">
+                                <i class="icon-double-angle-right"></i>
+                                Danh sách
+                            </a>
+                        </li>
+                    <?php endif; ?>
+                </ul>
+            </li>
+        <?php endif; ?>
+        <?php if (IS_ADMIN || in_array('brand', $per_controller)) : ?>
+            <li class="<?php if ($controller == 'brand') : ?> active <?php endif; ?>">
+                <a href="#" class="dropdown-toggle">
+                    <i class="icon-list"></i>
+                    <span class="menu-text"> Nhãn hiệu </span>
+                    <b class="arrow icon-angle-down"></b>
+                </a>
+                <ul class="submenu">
+                    <?php if (IS_ADMIN || in_array('create', $per_controller_action['brand'])): ?>
+                        <li <?php echo $controller == 'brand' && $action == 'create' ? 'class="active"' : ''; ?> >
+                            <a href="<?php echo SITE_URL; ?>admin/brand/create">
+                                <i class="icon-double-angle-right"></i>
+                                Tạo mới
+                            </a>
+                        </li>
+                    <?php endif; ?>
+                    <?php if (IS_ADMIN || in_array('index', $per_controller_action['brand'])): ?>
+                        <li <?php echo $controller == 'brand' && $action == 'index' ? 'class="active"' : ''; ?> >
+                            <a href="<?php echo SITE_URL; ?>admin/brand">
+                                <i class="icon-double-angle-right"></i>
+                                Danh sách
+                            </a>
+                        </li>
+                    <?php endif; ?>
+                </ul>
+            </li>
+        <?php endif; ?>
+        <?php if (IS_ADMIN || in_array('properties', $per_controller)) : ?>
+            <li class="<?php if ($controller == 'properties') : ?> active <?php endif; ?>">
+                <a href="#" class="dropdown-toggle">
+                    <i class="icon-list"></i>
+                    <span class="menu-text"><?php echo $this->translator('properties')?></span>
+                    <b class="arrow icon-angle-down"></b>
+                </a>
+                <ul class="submenu">
+                    <?php if (IS_ADMIN || in_array('create', $per_controller_action['properties'])): ?>
+                        <li <?php echo $controller == 'properties' && $action == 'create' ? 'class="active"' : ''; ?> >
+                            <a href="<?php echo SITE_URL; ?>admin/properties/create">
+                                <i class="icon-double-angle-right"></i>
+                                Tạo mới
+                            </a>
+                        </li>
+                    <?php endif; ?>
+                    <?php if (IS_ADMIN || in_array('index', $per_controller_action['properties'])): ?>
+                        <li <?php echo $controller == 'properties' && $action == 'index' ? 'class="active"' : ''; ?> >
+                            <a href="<?php echo SITE_URL; ?>admin/properties">
+                                <i class="icon-double-angle-right"></i>
+                                Danh sách
+                            </a>
+                        </li>
+                    <?php endif; ?>
+                </ul>
+            </li>
+        <?php endif; ?>
+        <?php if (IS_ADMIN || in_array('product', $per_controller)) : ?>
+            <li class="<?php if ($controller == 'product') : ?> active <?php endif; ?>">
+                <a href="#" class="dropdown-toggle">
+                    <i class="icon-leaf"></i>
+                    <span class="menu-text"> Sản phẩm </span>
+                    <b class="arrow icon-angle-down"></b>
+                </a>
+                <ul class="submenu">
+                    <?php if (IS_ADMIN || in_array('create', $per_controller_action['product'])): ?>
+                        <li <?php echo $controller == 'product' && $action == 'create' ? 'class="active"' : ''; ?> >
+                            <a href="<?php echo SITE_URL; ?>admin/product/create">
+                                <i class="icon-double-angle-right"></i>
+                                Sản phẩm mới
+                            </a>
+                        </li>
+                    <?php endif; ?>
+                    <?php if (IS_ADMIN || in_array('index', $per_controller_action['product'])): ?>
+                        <li <?php echo $controller == 'product' && $action == 'index' ? 'class="active"' : ''; ?> >
+                            <a href="<?php echo SITE_URL; ?>admin/product">
+                                <i class="icon-double-angle-right"></i>
+                                Danh sách
+                            </a>
+                        </li>
+                    <?php endif; ?>
+                </ul>
+            </li>
+        <?php endif; ?>
+        <?php if (IS_ADMIN || in_array('user', $per_controller)) : ?>
+            <li class="<?php if ($controller == 'user') : ?> active <?php endif; ?>">
+                <a href="#" class="dropdown-toggle">
+                    <i class="icon-user"></i>
+                    <span class="menu-text"> Người dùng </span>
+                    <b class="arrow icon-angle-down"></b>
+                </a>
+                <ul class="submenu">
+                    <?php if (IS_ADMIN || in_array('create', $per_controller_action['user'])): ?>
+                        <li <?php echo $controller == 'user' && $action == 'create' ? 'class="active"' : ''; ?> >
+                            <a href="<?php echo SITE_URL; ?>admin/user/create">
+                                <i class="icon-double-angle-right"></i>
+                                Người dùng mới
+                            </a>
+                        </li>
+                    <?php endif; ?>
+                    <?php if (IS_ADMIN || in_array('index', $per_controller_action['user'])): ?>
+                        <li <?php echo $controller == 'user' && $action == 'index' ? 'class="active"' : ''; ?> >
+                            <a href="<?php echo SITE_URL; ?>admin/user">
+                                <i class="icon-double-angle-right"></i>
+                                Danh sách
+                            </a>
+                        </li>
+                    <?php endif; ?>
+                </ul>
+            </li>
+        <?php endif; ?>
+        <?php if (IS_ADMIN || in_array('group', $per_controller)) : ?>
+            <li class="<?php if ($controller == 'group') : ?> active <?php endif; ?>">
+                <a href="#" class="dropdown-toggle">
+                    <i class="icon-group"></i>
+                    <span class="menu-text"> Nhóm </span>
+                    <b class="arrow icon-angle-down"></b>
+                </a>
+                <ul class="submenu">
+                    <?php if (IS_ADMIN || in_array('create', $per_controller_action['group'])): ?>
+                        <li <?php echo $controller == 'group' && $action == 'create' ? 'class="active"' : ''; ?> >
+                            <a href="<?php echo SITE_URL; ?>admin/group/create">
+                                <i class="icon-double-angle-right"></i>
+                                Thêm nhóm
+                            </a>
+                        </li>
+                    <?php endif; ?>
+                    <?php if (IS_ADMIN || in_array('index', $per_controller_action['group'])): ?>
+                        <li <?php echo $controller == 'group' && $action == 'index' ? 'class="active"' : ''; ?> >
+                            <a href="<?php echo SITE_URL; ?>admin/group">
+                                <i class="icon-double-angle-right"></i>
+                                Danh sách
+                            </a>
+                        </li>
+                    <?php endif; ?>
+                </ul>
+            </li>
+        <?php endif; ?>
+        <?php if (IS_ADMIN || in_array('permission', $per_controller)) : ?>
+            <li class="<?php if ($controller == 'permission') : ?> active <?php endif; ?>">
+                <a href="#" class="dropdown-toggle">
+                    <i class="icon-lock"></i>
+                    <span class="menu-text"> Phân quyền </span>
+                    <b class="arrow icon-angle-down"></b>
+                </a>
+                <ul class="submenu">
+                    <!--                <li -->
+                    <?php //echo $controller == 'group' && $action == 'create' ? 'class="active"' : ''; ?><!-- >-->
+                    <!--                    <a href="-->
+                    <?php //echo SITE_URL; ?><!--administrator/permission/create">-->
+                    <!--                        <i class="icon-double-angle-right"></i>-->
+                    <!--                        Quyền-->
+                    <!--                    </a>-->
+                    <!--                </li>-->
+                    <?php if (IS_ADMIN || in_array('index', $per_controller_action['permission'])): ?>
+                        <li <?php echo $controller == 'permission' && $action == 'index' ? 'class="active"' : ''; ?> >
+                            <a href="<?php echo SITE_URL; ?>admin/permission">
+                                <i class="icon-double-angle-right"></i>
+                                Danh sách quyền
+                            </a>
+                        </li>
+                    <?php endif; ?>
+                </ul>
+            </li>
+        <?php endif; ?>
+    </ul>
+    <div class="sidebar-collapse" id="sidebar-collapse">
+        <i class="icon-double-angle-left"></i>
+    </div>
+</div>

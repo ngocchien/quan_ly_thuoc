@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <title>Dashboard - Admin</title>
+    <meta name="description" content="overview &amp; stats"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+    <!--basic styles-->
+    <link href="<?php echo STATIC_URL; ?>assets/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="<?php echo STATIC_URL; ?>assets/css/bootstrap-responsive.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="<?php echo STATIC_URL; ?>assets/css/font-awesome.min.css"/>
+
+    <!--fonts-->
+    <link href="<?php echo STATIC_URL; ?>css/css.css" rel="stylesheet"/>
+    <!--ace styles-->
+    <link rel="stylesheet" href="<?php echo STATIC_URL; ?>assets/css/ace.min.css"/>
+    <link rel="stylesheet" href="<?php echo STATIC_URL; ?>assets/css/ace-responsive.min.css"/>
+    <link rel="stylesheet" href="<?php echo STATIC_URL; ?>assets/css/ace-skins.min.css"/>
+    <script src="<?php echo STATIC_URL; ?>js/libs/jquery/jquery-2.2.4.min.js"></script>
+    <link rel="stylesheet" href="<?php echo STATIC_URL; ?>css/admin-custom-theme.css"/>
+    <link rel="stylesheet" href="<?php echo STATIC_URL; ?>css/admin.css"/>
+    <!--inline styles related to this page-->
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+</head>
+<body class="login-layout">
+<?php echo $this->content; ?>
+
+<script type="application/javascript">
+    MVC.setup({
+        css_url: '<?php echo STATIC_URL; ?>/css',
+        module_url: '<?php echo STATIC_URL; ?>/js/modules',
+        library_url: '<?php echo STATIC_URL; ?>/js/libs',
+        model_url: '<?php echo STATIC_URL; ?>/js/models',
+        debug: 'true',
+        cache: false
+    });
+    Registry.set('SITE_URL', '<?php echo SITE_URL; ?>');
+</script>
+</body>
+</html>

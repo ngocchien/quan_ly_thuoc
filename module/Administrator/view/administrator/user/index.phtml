@@ -1,0 +1,79 @@
+<div data-view="administrator/user/index">
+    <div class="col-item">
+        <form method="get">
+            <div class="rows" style="border-bottom: none; border-top: 1px solid #ddd">
+                <div class="col-lg-2 pull-left" style="margin-top: 25px">
+                    <div id="editable-sample_length" class="dataTables_length no-padding">
+                        <a class="btn btn-success" href="<?php echo $this->Url('administratorUser', ['action'=>'create'])?>"><i class="icon-plus-sign-alt"></i> Thêm</a>
+                    </div>
+                </div>
+                <div class="search-product">
+                    <div class="search-title">
+                        <div class="search-title-block">
+                            <input name="search" class="search-product-title" type="text" value="<?php echo !empty($this->params['search']) ? $this->params['search'] : ''?>" placeholder="Tìm kiếm theo tên">
+                            <button class="search-products" type="submit">
+                                <i class="icon-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <table style="margin-bottom: 0" class="table table-striped table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th class="center"><span class="icon icon-list"> ID</th>
+                    <th class="center"><span class="icon icon-list-alt"></span> User name</th>
+                    <th class="center"><span class="icon icon-github"></span> Họ và tên</th>
+                    <th class="center"><span class="icon icon-envelope-alt"></span> Email</th>
+                    <th class="center"><span class="icon icon-calendar"></span> Ngày đăng ký</th>
+                    <th class="center"><span class="icon icon-random"></span> Trạng thái</th>
+                    <th class="center"><span class="icon icon-group"></span> Thuộc nhóm</th>
+                    <th class="center"><span class="icon icon-gears"></span> Tùy chỉnh</th>
+                </tr>
+                </thead>
+                <tbody>
+                <?php if(!empty($this->users['rows'])):
+                    foreach ($this->users['rows'] as $user):
+                        ?>
+                        <tr>
+                            <td class="center">
+                                <b>
+                                    <a href="javascript:;">
+                                        <?php echo $user['user_id']?>
+                                    </a>
+                                </b>
+                            </td>
+                            <td>
+                                <b>
+                                    <a href="javascript:;">
+                                        <?php echo $user['user_name']?>
+                                    </a>
+                                </b>
+                            </td>
+                            <td class="center"><?php echo $user['full_name']?></td>
+                            <td class="center"><?php echo $user['email']?></td>
+                            <td class="center"><?php echo date('Y-m-d', $user['created_date']);?></td>
+                            <td class="center">
+                                <?php if($user['status'] == APP\Model\User::USER_STATUS_ACTIVE):?>
+                                    <a class="btn-circle" href="javascript:;" data-toggle="tooltip" title="Hoạt động"><i class="ico icon-check"></i></a>
+                                <?php else:?>
+                                    <a class="btn-circle" href="javascript:;" data-toggle="tooltip" title="Bị khóa"><i class="ico icon-remove"></i></a>
+                                <?php endif;?>
+                            </td>
+
+                            <td class="center">
+                                <a href="javascript:;"><b><?php echo empty($this->groups[$user['group_id']]['group_name']) ? '' : $this->groups[$user['group_id']]['group_name'];?></b></a>
+                            </td>
+
+                            <td class="table-settings">
+                                <a class="btn-circle" data-toggle="tooltip" title="Cập nhật" href="<?php echo $this->Url('administratorUser', ['action'=>'edit', 'id' => $user['user_id']])?>"><i class="icon icon-edit"></i></a>
+                                <a class="btn-circle delete" data-toggle="tooltip" rel="<?php echo $user['user_id']?>" title="Xóa người dùng"><i class="icon icon-trash"></i></a>
+                                <a class="btn-circle permission" data-toggle="tooltip" href="<?php echo $this->Url('administratorPermission', ['action'=>'grant', 'uid' => $user['user_id']])?>" title="Phân quyền"><i class="icon icon-lock"></i></a>
+                            </td>
+                        </tr>
+                    <?php endforeach; endif;?>
+                </tbody>
+            </table>
+        </form>
+    </div>
+</div>

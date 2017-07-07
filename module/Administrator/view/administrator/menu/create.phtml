@@ -1,0 +1,59 @@
+<div class="data-view" data-view="administrator/menu/create">
+    <div class="cat-content">
+        <form name="form" class="form-group" method="post">
+            <div class="col-cate-left" style="margin-bottom: 40px">
+                <?php if(!empty($this->params['error'])):?>
+                    <h4 class="header red lighter bigger" style="margin-top: -15px; margin-bottom: 30px">
+                        <center>--------<b>ERROR</b>----------</br></center>
+                        <center><?php echo $this->params['error']?></center>
+                    </h4>
+                <?php endif;?>
+                <span class="block input-icon input-icon-right">
+                    <label>Tên menu <span class="red">(*)</span></label>
+                    <input name="menu_name" type="text" class="span12" placeholder="Nhập tên Menu" required>
+                </span>
+                <span class="block input-icon input-icon-right">
+                    <label>Menu cha</label>
+                    <select class="form-group input-lg" name="parent_id">
+                        <option value="0">
+                            Chọn menu cha
+                        </option>
+                        <?php if (!empty($this->parent['rows'])):
+                            foreach ($this->parent['rows'] as $row):
+                                ?>
+                                <option value="<?php echo $row['menu_id'];?>">
+                                    <a href="javascript:;"><b><?php echo $row['menu_name'];?></b></a>
+                                </option>
+                            <?php endforeach;
+                        endif;
+                        ?>
+                    </select>
+                </span>
+
+                <span class="block input-icon input-icon-right">
+                    <label>URL <span class="red">(*)</span></label>
+                    <input name="url" type="text" class="span12" placeholder="Nhập URL" required>
+                </span>
+
+                <span class="block input-icon input-icon-right">
+                    <label>Độ ưu tiên</label>
+                    <input name="sort" type="text" class="span12" placeholder="" required>
+                </span>
+
+                <span class="block input-icon input-icon-right">
+                    <label>Trạng thái</label>
+                    <select class="form-group input-lg" name="status">
+                        <?php foreach ($this->arr_status as $key => $name):?>
+                        <option value="<?php echo $key; ?>" <?php if(!empty($this->params['status']) && $this->params['status'] == $key): ?> selected<?php endif;?>>
+                            <?php echo $name; ?>
+                        </option>
+                        <?php endforeach;?>
+                    </select>
+                </span>
+                <span class="block input-icon input-icon-right" style="margin-top: 10px">
+                    <button class="button-item"><i class="icon icon-save"></i> Lưu</button>
+                </span>
+            </div>
+        </form>
+    </div>
+</div>

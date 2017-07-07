@@ -1,0 +1,58 @@
+<div class="main-container container-fluid">
+    <div class="main-content">
+        <div class="row-fluid">
+            <div class="span12">
+                <div class="login-container">
+                    <div class="row-fluid">
+                        <div class="position-relative">
+                            <div id="login-box" class="login-box visible widget-box no-border">
+                                <div class="widget-body">
+                                    <div class="widget-main">
+                                        <h4 class="header blue lighter bigger">
+                                            <i class="icon-coffee green"></i>
+                                            Please Enter Your Information
+                                        </h4>
+                                        <div class="space-6"></div>
+                                        <?php if(!empty($this->params['error'])):?>
+                                        <h4 class="header red lighter bigger">
+                                            <i class="icon-warning-sign red"></i>
+                                            <?php echo $this->params['error']?>
+                                        </h4>
+                                        <?php endif;?>
+                                        <form method="post">
+                                            <fieldset>
+                                                <label>
+                                                    <span class="block input-icon input-icon-right">
+                                                        <input name="username" type="text" class="span12"
+                                                               placeholder="Username"/>
+                                                        <i class="icon-user"></i>
+                                                    </span>
+                                                </label>
+                                                <label>
+                                                    <span class="block input-icon input-icon-right">
+                                                        <input name="password" type="password" class="span12"
+                                                               placeholder="Password"/>
+                                                        <i class="icon-lock"></i>
+                                                    </span>
+                                                </label>
+
+                                                <div class="space"></div>
+
+                                                <div class="clearfix">
+                                                    <button type="submit" class="width-35 pull-right button-item">
+                                                        <i class="icon-key"></i> Login
+                                                    </button>
+                                                </div>
+                                                <div class="space-4"></div>
+                                            </fieldset>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

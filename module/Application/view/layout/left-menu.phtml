@@ -1,0 +1,64 @@
+<?php
+$cate_main = json_decode(CATE_MAIN, true);
+$cate_child = json_decode(CATE_CHILD, true);
+?>
+<div class="left">
+    <div class="widget">
+        <div class="widget-inner">
+            <h3>Danh mục sản phẩm</h3>
+            <div class="widget-border-top"></div>
+            <div class="widget-content">
+                <ul>
+                    <?php foreach ($cate_main as $main):
+                        ?>
+                        <li>
+                            <a href="<?php echo $this->Url('category', ['name' => $main['cate_slug']]) ?>"><?php echo $main['cate_name'] ?></a>
+                            <?php if (!empty($cate_child[$main['cate_id']])):
+                                $html = APP\Business\Category::buildHtmlCate($main['cate_id'],$cate_child, '', false,$this->Url('category'));
+                                ?>
+                                <?php echo $html; ?>
+                            <?php endif; ?>
+                        </li>
+                    <?php endforeach; ?>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="widget">
+        <div class="widget-inner widget-info">
+            <h3>Chuyên mục tư vấn</h3>
+            <div class="widget-border-top"></div>
+            <div class="widget-content">
+                <ul>
+                    <li>
+                        <a>Các câu hỏi thường gặp</a>
+                    </li>
+                    <li>
+                        <a>Chính sách đổi trả</a>
+                    </li>
+                    <li>
+                        <a>Phương thức vận chuyển</a>
+                    </li>
+                    <li>
+                        <a>Các câu hỏi thường gặp</a>
+                    </li>
+                    <li>
+                        <a>Chính sách đổi trả</a>
+                    </li>
+                    <li>
+                        <a>Phương thức vận chuyển</a>
+                    </li>
+                    <li>
+                        <a>Các câu hỏi thường gặp</a>
+                    </li>
+                    <li>
+                        <a>Chính sách đổi trả</a>
+                    </li>
+                    <li>
+                        <a>Phương thức vận chuyển</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

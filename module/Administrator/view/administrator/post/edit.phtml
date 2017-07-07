@@ -1,0 +1,121 @@
+<?php
+    $post_name = !empty($this->params['post_name']) ? $this->params['post_name']: $this->post['post_name'];
+    $status = !empty($this->params['status']) ? $this->params['status']: $this->post['status'];
+    $meta_title = !empty($this->params['meta_title']) ? $this->params['meta_title']: $this->post['meta_title'];
+    $meta_keyword = !empty($this->params['meta_keyword']) ? $this->params['meta_keyword']: $this->post['meta_keyword'];
+    $meta_description = !empty($this->params['meta_description']) ? $this->params['meta_description']: $this->post['meta_description'];
+    $images = isset($this->params['fid']) ? $this->params['fid']: (empty($this->post['images']) ? '' : $this->post['images']);
+    $cate_id = isset($this->params['cate_id']) ? $this->params['cate_id']: $this->post['cate_id'];
+    $post_content = isset($this->params['post_content']) ? $this->params['post_content']: $this->post['post_content'];
+?>
+<div class="data-view" data-view="administrator/post/edit">
+    <div style="padding-left: 20px">
+        <form method="post" class="form" id="create_form" name="submit">
+            <div class="new-product-left">
+                <?php if(!empty($this->params['error'])):?>
+                    <h4 class="header red lighter bigger" style="margin-top: -15px; margin-bottom: 30px">
+                        <center>--------<b>ERROR</b>----------</br></center>
+                        <center><?php echo $this->params['error']?></center>
+                    </h4>
+                <?php endif;?>
+                <div class="form-block">
+                    <label>Tiêu đề bài viết: <span class="red">(*)</span</label>
+                    <input name="post_name" class="movie-name new-product-title" type="text"
+                           value="<?php echo $post_name?>">
+                </div>
+
+                <div class="form-block">
+                    <label>SEO Meta Description: <span class="red">(*)</span</label>
+                    <input name="meta_description" class="movie-name new-product-title" type="text"
+                           value="<?php echo $meta_description?>">
+                </div>
+
+                <div class="form-block">
+                    <label>SEO Meta Title: <span class="red">(*)</span</label>
+                    <input name="meta_title" class="movie-name new-product-title" type="text"
+                           value="<?php echo $meta_title;?>">
+                </div>
+
+                <div class="form-block">
+                    <label>SEO Meta Keyword: <span class="red">(*)</span</label>
+                    <input name="meta_keyword" class="movie-name new-product-title" type="text"
+                           value="<?php echo $meta_keyword?>">
+                </div>
+
+                <div class="editors">
+                    <textarea name="post_content" class="ckeditor" cols="100" name="editor" rows="10"><?php
+                        echo $post_content; ?></textarea>
+                </div>
+            </div>
+            <div class="new-product-right">
+                <div class="new-product-info">
+                    <div class="new-product-info-title">
+                        <label>Thông tin bài viết</label>
+                    </div>
+                    <div class="block-content">
+                        <div class="new-product-info-item">
+                            <?php if(!empty($this->categories['rows'])):?>
+                                <div class="block-item">
+                                    <label>Danh mục sản phẩm:</label>
+                                    <select name="cate_id">
+                                        <?php foreach($this->categories['rows'] as $category):?>
+                                            <option value="<?php echo $category['cate_id']?>" <?php echo !empty($this->params['cate_id']) && $this->params['cate_id'] == $category['cate_id'] ? 'selected' : ''?>>
+                                                <?php
+                                                if ($category['parent_id'] == 0) {
+                                                    echo '<a href="javascript:;"><b>' . $category['cate_name'] . '</b></a>';
+                                                } else {
+                                                    $temp = substr_count($category['full_sort'], ':');
+                                                    echo str_repeat('&nbsp;&nbsp;&nbsp;', $temp);
+                                                    echo '&#x21b3;&nbsp;&nbsp;';
+                                                    echo '<a href="javascript:;"><b>' . $category['cate_name'] . '</b></a>';
+                                                }
+                                                ?>
+                                            </option>
+                                        <?php endforeach;?>
+                                    </select>
+                                </div>
+                            <?php endif;?>
+                            <div class="block-item">
+                                <label>Trạng thái:</label>
+                                <select name="status">
+                                    <?php foreach($this->render_status as $id => $name):?>
+                                        <option value="<?php echo $id; ?>" <?php $status == $id ? 'selected' : ''?>>
+                                            <?php echo $name;?>
+                                        </option>
+                                    <?php endforeach;?>
+                                </select>
+                            </div>
+                            <div class="block-item">
+                                <label>Từ khóa: <span class="red">(*)</span</label>
+                                <div class="tags-js tags-keywords"></div>
+                            </div>
+                        </div>
+                        <div class="new-product-info-item">
+                            <div class="block-item">
+                                <label class="upload-image">
+                                    Ảnh đại diện: <i class="icon-upload-alt"></i> <span class="red">(*)</span
+                                </label>
+                                <div class="col-product-tab">
+                                    <?php if(!empty($images)):
+                                        ?>
+                                        <input type="hidden" class="fid" name="fid" value="<?php echo $images;?>">
+                                        <img src="<?php echo (empty($this->images[$images])) ? STATIC_URL.'images/no_image.gif': STATIC_URL.$this->images[$images]['src']?>">
+                                    <?php else:;?>
+                                        <input type="hidden" class="fid" name="fid" value="<?php echo $images;?>">
+                                        <img src="<?php echo STATIC_URL; ?>images/no_image.gif">
+                                    <?php endif;?>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="new-product-info-item">
+                        <div class="">
+                            <label id="publish-notification"></label>
+                            <button type="submit" class="movie-submit button-item">Cập nhật</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

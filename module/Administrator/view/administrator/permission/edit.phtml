@@ -1,0 +1,66 @@
+<?php
+$user_name = $this->user['user_name'];
+$password = !empty($this->params['password']) ? $this->params['password'] : $this->user['password'];
+$full_name = !empty($this->params['full_name']) ? $this->params['full_name'] : $this->user['full_name'];
+$email = !empty($this->params['email']) ? $this->params['email'] : $this->user['email'];
+$status = !empty($this->params['status']) ? $this->params['status'] : $this->user['status'];
+$group_id = !empty($this->params['group_id']) ? $this->params['group_id'] : $this->user['group_id'];
+?>
+<div class="data-view" data-view="administrator/user/edit">
+    <div class="cat-content">
+        <form name="form" class="form" method="post">
+            <div class="col-cate-left" style="margin-bottom: 40px">
+                <div class="col-sm-6" style="width: 97%">
+                    <h3 class="header blue lighter smaller" style="padding-bottom: 10px">
+                        <i class="ace-icon icon-edit smaller-90"></i>
+                        CẬP NHẬT THÔNG TIN USER
+                    </h3>
+                </div>
+
+                <span class="block input-icon input-icon-right">
+                    <labeL>User name</label>
+                    <input readonly type="text" class="span12" placeholder="" value="<?php echo $user_name;?>">
+                </span>
+
+                <span class="block input-icon input-icon-right">
+                    <labeL>Họ và tên</label>
+                    <input name="full_name" required type="text" class="span12" placeholder="" value="<?php echo $full_name?>">
+                    <span class="error" style="display: none">Error</span>
+                </span>
+
+                <span class="block input-icon input-icon-right">
+                    <labeL>Email</label>
+                    <input name="email" type="text" class="span12" required placeholder="" value="<?php echo $email?>">
+                    <span class="error" style="display: none">Error</span>
+                </span>
+
+                <span class="block input-icon input-icon-right">
+                    <label>Thuộc nhóm</label>
+                    <select class="span12" name="group_id">
+                        <?php foreach($this->groups['rows'] as $group):?>
+                            <option value="<?php echo $group['group_id']?>" <?php echo $group_id == $group['group_id'] ? 'selected' : ''?>>
+                            <?php echo $group['group_name']?>
+                        </option>
+                        <?php endforeach;?>
+                    </select>
+                </span>
+
+                <span class="block input-icon input-icon-right">
+                    <label>Trạng thái</label>
+                    <select class="span12" name="status">
+                        <option value="1" <?php echo $status == 1 ? 'selected' : '';?>>
+                            Hoạt động
+                        </option>
+                        <option value="2" <?php echo $status == 2 ? 'selected' : '';?>>
+                            Ẩn
+                        </option>
+                    </select>
+                </span>
+
+                <span class="block input-icon input-icon-right" style="margin-top: 10px">
+                    <button class="button-item">Cập nhật</button>
+                </span>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,79 @@
+<div data-view="administrator/banner/index">
+    <div class="col-item">
+        <form method="get">
+            <div class="rows" style="border-bottom: none; border-top: 1px solid #ddd">
+                <div class="col-lg-2 pull-left" style="margin-top: 25px">
+                    <div id="editable-sample_length" class="dataTables_length no-padding">
+                        <a class="btn btn-success" href="<?php echo $this->Url('administratorBanner', ['action'=>'create'])?>"><i class="icon-plus-sign-alt"></i> Thêm</a>
+                    </div>
+                </div>
+
+                <div class="search-product">
+                    <div class="search-title">
+                        <div class="search-title-block">
+                            <input name="search" class="search-product-title" type="text" value="<?php echo !empty($this->params['search']) ? $this->params['search'] : ''?>" placeholder="Tìm kiếm theo tên">
+                            <button class="search-products" type="submit">
+                                <i class="icon-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <table style="margin-bottom: 0" class="table table-striped table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th class="center"><span class="icon icon-list"> ID</th>
+                    <th class="center"><span class="icon icon-list-alt"> Name</th>
+                    <th class="center"><span class="icon icon-calendar"> Ngày tạo</th>
+                    <th class="center"><span class="icon icon-user"></span> Người tạo</th>
+                    <th class="center"><span class="icon icon-random"></span> Trạng thái</th>
+                    <th class="center"><span class="icon icon-gears"></span> Tùy chỉnh</th>
+                </tr>
+                </thead>
+                <tbody>
+                <?php if(!empty($this->banners['rows'])):
+                    foreach ($this->banners['rows'] as $banner):
+                        ?>
+                        <tr>
+                            <td class="center">
+                                <b>
+                                    <a href="javascript:;">
+                                        <?php echo $banner['banner_id']?>
+                                    </a>
+                                </b>
+                            </td>
+                            <td>
+                                <b>
+                                    <a href="javascript:;">
+                                        <?php echo $banner['banner_name']?>
+                                    </a>
+                                </b>
+                            </td>
+                            <td class="center"><?php echo date('Y-m-d', $banner['created_date']);?></td>
+                            <td class="center"><?php echo empty($this->users[$banner['user_created']]) ? '' : $this->users[$banner['user_created']]['full_name']; ?></td>
+                            <td class="center">
+                                <?php if($banner['status'] == APP\Model\Banner::BANNER_STATUS_ACTIVE):?>
+                                    <a href="javascript:;" data-toggle="tooltip" title="Hoạt động"><i class="ico icon-check"></i></a>
+                                <?php else:?>
+                                    <a href="javascript:;" data-toggle="tooltip" title="Đang ẩn"><i class="ico icon-remove"></i></a>
+                                <?php endif;?>
+                            </td>
+                            <td class="center">
+
+                                <a href="<?php echo empty($this->files[$banner['fid']]) ? '' : STATIC_URL.$this->files[$banner['fid']]['src']?>" data-toggle="tooltip" class="btn btn-small btn-primary" title="<?php echo $banner['banner_name'];?>" rel="<?php echo $banner['banner_id']?>" data-lightbox="<?php echo $banner['banner_name'];?>">
+                                    <i class="icon icon-eye-open"></i> Xem
+                                </a>
+                                <a class="btn btn-small btn-primary" data-toggle="tooltip" title="Cập nhật" href="<?php echo $this->Url('administratorBanner', ['action'=>'edit', 'id' => $banner['banner_id']])?>">
+                                    <i class="icon icon-edit"></i> Sửa
+                                </a>
+                                <a class="delete" data-toggle="tooltip" rel="<?php echo $banner['banner_id']?>" title="Xóa">
+                                    <i class="icon icon-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    <?php endforeach; endif;?>
+                </tbody>
+            </table>
+        </form>
+    </div>
+</div>

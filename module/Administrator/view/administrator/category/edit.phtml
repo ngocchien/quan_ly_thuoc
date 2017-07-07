@@ -1,0 +1,57 @@
+<div class="data-view" data-view="administrator/category/edit">
+    <div class="cat-content">
+        <form name="form" class="form" method="post">
+            <div class="col-cate-left" style="margin-bottom: 40px">
+                <?php if(!empty($this->params['error'])):?>
+                    <h4 class="header red lighter bigger" style="margin-top: -15px; margin-bottom: 30px">
+                        <center>--------<b>ERROR</b>----------</br></center>
+                        <center><?php echo $this->params['error']?></center>
+                    </h4>
+                <?php endif;?>
+                <span class="block input-icon input-icon-right">
+                    <label>Tên danh mục <span class="red">(*)</span></label>
+                    <input name="cate_name" type="text" class="span12" placeholder="Nhập tên danh mục" required
+                           value="<?php echo empty($this->params['cate_name']) ? $this->category['cate_name'] : $this->params['cate_name'];?>"
+                    >
+                </span>
+                <span class="block input-icon input-icon-right">
+                    <label>Danh mục cha</label>
+                    <select class="span12" name="parent_id">
+                        <option value="0">
+                            Chọn danh mục
+                        </option>
+                        <?php if (!empty($this->parent['rows'])):
+                            foreach ($this->parent['rows'] as $row):
+                                ?>
+                                <option value="<?php echo $row['cate_id'];?>" <?php echo empty($this->params['parent_id']) ? ($this->category['parent_id'] == $row['cate_id'] ? 'selected' : '') : ($this->params['parent_id'] == $row['cate_id'] ? 'selected' : '')?>>
+                                    <?php
+                                    if ($row['parent_id'] == 0) {
+                                        echo '<a href="javascript:;"><b>' . $row['cate_name'] . '</b></a>';
+                                    } else {
+                                        $temp = substr_count($row['full_sort'], ':');
+                                        echo str_repeat('&nbsp;&nbsp;&nbsp;', $temp);
+                                        echo '&#x21b3;&nbsp;&nbsp;';
+                                        echo '<a href="javascript:;"><b>' . $row['cate_name'] . '</b></a>';
+                                    }
+                                    ?>
+<!--                                    --><?php //echo $row['cate_name'] ?>
+                                </option>
+                            <?php endforeach;
+                        endif;
+                        ?>
+                    </select>
+                </span>
+
+                <span class="block input-icon input-icon-right">
+                    <label>Độ ưu tiên</label>
+                    <input name="sort" type="text" class="span12" placeholder="" required
+                        value="<?php echo !isset($this->params['sort']) ? (empty($this->category['sort']) ? '' : $this->category['sort']) : $this->params['sort'];?>"
+                    >
+                </span>
+                <span class="block input-icon input-icon-right" style="margin-top: 10px">
+                    <button class="btn btn-success" name="save"><i class="icon icon-save"></i> Lưu</button>
+                </span>
+            </div>
+        </form>
+    </div>
+</div>

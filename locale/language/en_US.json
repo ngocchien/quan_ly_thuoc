@@ -1,0 +1,10 @@
+{
+  "index:index" : "Home Admin",
+  "category" : "Category",
+  "category:index" : "List Categories",
+  "category:add" : "Add Category",
+  "product" : "Product",
+  "product:index" : "List Product",
+  "product:add" : "Add Product"
+
+}

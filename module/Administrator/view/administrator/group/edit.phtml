@@ -1,0 +1,38 @@
+<?php
+$group_name = !empty($this->params['group_name']) ? $this->params['group_name']: $this->group['group_name'];
+$status = !empty($this->params['status']) ? $this->params['status'] : $this->user['status'];
+?>
+<div class="data-view" data-view="administrator/user/edit">
+    <div class="cat-content">
+        <form name="form" class="form" method="post">
+            <div class="col-cate-left" style="margin-bottom: 40px">
+                <?php if(!empty($this->params['error'])):?>
+                    <h4 class="header red lighter bigger" style="margin-top: -15px; margin-bottom: 30px">
+                        <center>--------<b>ERROR</b>----------</br></center>
+                        <center><?php echo $this->params['error']?></center>
+                    </h4>
+                <?php endif;?>
+                <span class="block input-icon input-icon-right">
+                    <labeL>Group name</label>
+                    <input name="group_name" type="text" class="span12" placeholder="" value="<?php echo $group_name;?>">
+                </span>
+
+                <span class="block input-icon input-icon-right">
+                    <label>Trạng thái</label>
+                    <select class="span12" name="status">
+                        <option value="1" <?php echo $status == 1 ? 'selected' : '';?>>
+                            Hoạt động
+                        </option>
+                        <option value="2" <?php echo $status == 2 ? 'selected' : '';?>>
+                            Ẩn
+                        </option>
+                    </select>
+                </span>
+
+                <span class="block input-icon input-icon-right" style="margin-top: 10px">
+                    <button class="button-item">Cập nhật</button>
+                </span>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,34 @@
+<div class="data-view" data-view="administrator/group/create">
+    <div class="cat-content">
+        <form name="form" class="form" method="post">
+            <div class="col-cate-left" style="margin-bottom: 40px">
+                <?php if(!empty($this->params['error'])):?>
+                    <h4 class="header red lighter bigger" style="margin-top: -15px; margin-bottom: 30px">
+                        <center>--------<b>ERROR</b>----------</br></center>
+                        <center><?php echo $this->params['error']?></center>
+                    </h4>
+                <?php endif;?>
+                
+                <span class="block input-icon input-icon-right">
+                    <label>Tên Nhóm</label>
+                    <input name="group_name" type="text" class="span12" placeholder="" required>
+                </span>
+
+                <span class="block input-icon input-icon-right">
+                    <label>Trạng thái</label>
+                    <select class="span12" name="status">
+                        <option value="1">
+                            Hoạt động
+                        </option>
+                        <option value="2">
+                            Ẩn
+                        </option>
+                    </select>
+                </span>
+                <span class="block input-icon input-icon-right" style="margin-top: 10px">
+                    <button class="button-item">Tạo nhóm</button>
+                </span>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,159 @@
+<?php
+    $product_name = !empty($this->params['product_name']) ? $this->params['product_name']: $this->product['product_name'];
+    $status = !empty($this->params['status']) ? $this->params['status']: $this->product['status'];
+    $meta_title = !empty($this->params['meta_title']) ? $this->params['meta_title']: $this->product['meta_title'];
+    $meta_keyword = !empty($this->params['meta_keyword']) ? $this->params['meta_keyword']: $this->product['meta_keyword'];
+    $meta_description = !empty($this->params['meta_description']) ? $this->params['meta_description']: $this->product['meta_description'];
+    $product_code = !empty($this->params['product_code']) ? $this->params['product_code']: $this->product['product_code'];
+    $price = !empty($this->params['price']) ? $this->params['price']: $this->product['price'];
+    $price_cost = isset($this->params['price_cost']) ? $this->params['price_cost']: $this->product['price_cost'];
+    $images = isset($this->params['fid']) ? $this->params['fid']: (empty($this->product['images']) ? [] : explode(',',$this->product['images']));
+    $cate_id = isset($this->params['cate_id']) ? $this->params['cate_id']: $this->product['cate_id'];
+    $description = isset($this->params['description']) ? $this->params['description']: $this->product['description'];
+?>
+<div class="data-view" data-view="administrator/product/edit">
+    <div style="padding-left: 20px">
+        <form method="post" class="form" id="create_form" name="submit">
+            <div class="new-product-left">
+                <?php if(!empty($this->params['error'])):?>
+                    <h4 class="header red lighter bigger" style="margin-top: -15px; margin-bottom: 30px">
+                        <center>--------<b>ERROR</b>----------</br></center>
+                        <center><?php echo $this->params['error']?></center>
+                    </h4>
+                <?php endif;?>
+
+                <div class="form-block">
+                    <label>Tên sản phẩm: <span class="red">(*)</span</label>
+                    <input name="product_name" class="movie-name new-product-title" type="text"
+                        value="<?php echo $product_name;?>">
+                </div>
+
+                <div class="form-block">
+                    <label>SEO Meta Description: <span class="red">(*)</span</label>
+                    <input name="meta_description" class="movie-name new-product-title" type="text"
+                           value="<?php echo $meta_description;?>">
+                </div>
+
+                <div class="form-block">
+                    <label>SEO Meta Title: <span class="red">(*)</span</label>
+                    <input name="meta_title" class="movie-name new-product-title" type="text"
+                           value="<?php echo $meta_title;?>">
+                </div>
+
+                <div class="form-block">
+                    <label>SEO Meta Keyword: <span class="red">(*)</span</label>
+                    <input name="meta_keyword" class="movie-name new-product-title" type="text"
+                           value="<?php echo $meta_keyword;?>">
+                </div>
+
+<!--                <div class="editor-photo">-->
+<!--                    <button type="button" class="photojs button-item">Hình ảnh</button>-->
+<!--                </div>-->
+
+                <div class="editors">
+                    <textarea name="description" class="ckeditor" cols="100" name="editor" rows="10"><?php
+                        echo $description; ?></textarea>
+                </div>
+            </div>
+            <div class="new-product-right">
+                <div class="new-product-info">
+                    <div class="new-product-info-title">
+                        <label>Thông tin sản phẩm</label>
+                    </div>
+                    <div class="block-content">
+                        <div class="new-product-info-item">
+	                        <?php if(!empty($this->categories['rows'])):?>
+                            <div class="block-item">
+                                <label>Danh mục sản phẩm:</label>
+                                <select name="cate_id">
+		                            <?php foreach($this->categories['rows'] as $category):?>
+                                        <option value="<?php echo $category['cate_id']?>" <?php echo $cate_id == $category['cate_id'] ? 'selected' : ''?>>
+				                            <?php
+				                            if ($category['parent_id'] == 0) {
+					                            echo '<a href="javascript:;"><b>' . $category['cate_name'] . '</b></a>';
+				                            } else {
+					                            $temp = substr_count($category['full_sort'], ':');
+					                            echo str_repeat('&nbsp;&nbsp;&nbsp;', $temp);
+					                            echo '&#x21b3;&nbsp;&nbsp;';
+					                            echo '<a href="javascript:;"><b>' . $category['cate_name'] . '</b></a>';
+				                            }
+				                            ?>
+                                        </option>
+		                            <?php endforeach;?>
+                                </select>
+                            </div>
+	                        <?php endif;?>
+                            <div class="block-item">
+                                <label>Trạng thái:</label>
+                                <select name="status">
+                                    <?php foreach($this->render_status as $id => $name):?>
+                                        <option value="<?php echo $id; ?>" <?php echo $status == $id ? 'selected' : ''?>>
+                                            <?php echo $name;?>
+                                        </option>
+                                    <?php endforeach;?>
+                                </select>
+                            </div>
+                            <div class="block-item">
+                                <label>Mã sản phẩm: <span class="red">(*)</span</label>
+                                <input style="margin-bottom: 5px" class="number" type="text" name="product_code" value="<?php echo $product_code;?>">
+                            </div>
+                            <div class="block-item">
+                                <label>Giá bán:</label>
+                                <input style="margin-bottom: 5px" class="number price-mask" type="text" name="price" value="<?php echo $price;?>">
+                            </div>
+                            <div class="block-item">
+                                <label>Giá gốc:</label>
+                                <input style="margin-bottom: 5px" class="number price-mask" type="text" name="price_cost" value="<?php echo $price_cost;?>">
+                            </div>
+                            <div class="block-item">
+                                <label>Từ khóa: <span class="red">(*)</span</label>
+                                <div class="tags-js tags-keywords"></div>
+                            </div>
+                        </div>
+                        <div class="new-product-info-item">
+                            <div class="col-product-table block-item">
+                                <label class="upload-image">
+                                    Hình ảnh: <i class="icon-upload-alt"></i> <span class="red">(*)</span
+                                </label>
+                                <div class="col-product-tab">
+                                    <table>
+                                        <tbody>
+                                        <?php if(!empty($images)):
+                                            foreach ($images as $fid):
+                                                ?>
+                                                <tr>
+                                                    <td>
+                                                        <img src="<?php echo empty($this->images[$fid]) ? '' : STATIC_URL.$this->images[$fid]['src']?>">
+                                                        <input type="hidden" name="fid[]" value="<?php echo $fid;?>">
+                                                        <input type="hidden" name="file-name[]" value="<?php echo empty($this->images[$fid]) ? '' : $this->images[$fid]['file_name']?>">
+                                                    </td>
+                                                    <td>
+                                                        <a href="<?php echo empty($this->images[$fid]) ? '' : STATIC_URL.$this->images[$fid]['src']?>"
+                                                           data-toggle="tooltip" title="<?php echo empty($this->images[$fid]) ? '' : $this->images[$fid]['file_name']?>"
+                                                           data-lightbox="<?php echo empty($this->images[$fid]) ? '' : $this->images[$fid]['file_name']?>"
+                                                        >
+                                                            <?php echo empty($this->images[$fid]) ? '' : $this->images[$fid]['file_name']?>
+                                                        </a>
+                                                    </td>
+                                                    <td class="remove" data-fid="<?php echo $fid;?>">
+                                                        <i class="product-galaxy-remove icon-trash"></i>
+                                                    </td>
+                                                </tr>
+                                            <?php endforeach; endif;?>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="new-product-info-item">
+                        <div class="">
+                            <label id="publish-notification"></label>
+                            <button type="submit" class="movie-submit button-item">Cập nhật</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,87 @@
+<?php
+$menu_parent = json_decode(MENU_PARENT, true);
+$menu_child = json_decode(MENU_CHILD, true);
+?>
+<div data-view="application/index/top">
+    <div class="top">
+        <div class="top-content">
+            <div class="site-hotline">
+                <i class="icon24-phone"></i>
+                08 3602 7944 (8h - 21h)
+            </div>
+            <div class="site-menu">
+                <ul>
+                    <?php foreach ($menu_parent as $parent): ?>
+                        <li class="menu-item">
+                            <a href="<?php echo $parent['url']; ?>"><?php echo $parent['menu_name'] ?></a>
+                            <?php if (!empty($menu_child[$parent['menu_id']])): ?>
+                                <ul class="sub-menu">
+                                    <?php foreach ($menu_child[$parent['menu_id']] as $child): ?>
+                                        <li>
+                                            <a href="<?php echo $child['url']; ?>"><?php echo $child['menu_name'] ?></a>
+                                        </li>
+                                    <?php endforeach; ?>
+                                </ul>
+                            <?php endif; ?>
+                        </li>
+                    <?php endforeach; ?>
+<!--                    <li class="menu-item">-->
+<!--                        <a>Bàn ăn</a>-->
+<!--                    </li>-->
+<!--                    <li class="menu-item">-->
+<!--                        <a>Phòng ngủ đẹp hiện đại</a>-->
+<!--                    </li>-->
+<!--                    <li class="menu-item">-->
+<!--                        <a>Phòng ngủ đẹp tân cổ tiến</a>-->
+<!--                    </li>-->
+<!--                    <li class="menu-item"><a>Nhập khẩu</a></li>-->
+<!--                    <li class="menu-item">-->
+<!--                        <a>Giường ngủ</a>-->
+<!--                    </li>-->
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="content">
+        <div class="logo f-left">
+            <a title="Trang chủ" href="<?php echo SITE_URL; ?>">
+                <img src="<?php echo STATIC_URL; ?>images/logo.png">
+            </a>
+        </div>
+        <div class="search f-left">
+            <div class="input">
+                <input type="search" class="s-topbar f-left" name="s" value="" placeholder="Nhập từ khóa cần tìm"
+                       autocomplete="off">
+                <button class="btn-search-topbar" type="button">Tìm kiếm</button>
+            </div>
+        </div>
+        <div class="commit">
+            <div class="item">
+                <a>
+                    <span class="icon icon-like"></span>
+                    <span class="text"> Cam kết hàng chính hãng</span>
+                </a>
+            </div>
+            <div class="item">
+                <a>
+                    <span class="icon icon-payment"></span>
+                    <span class="text">  Thanh toán khi nhận hàng</span>
+                </a>
+            </div>
+            <div class="item">
+                <a>
+                    <span class="icon icon-payback"></span>
+                    <span class="text">  Đổi trả hàng trong 14 ngày</span>
+                </a>
+            </div>
+        </div>
+        <div class="menu-resp">
+            <div class="menu-header">
+                <i class="fa fa-bars" aria-hidden="true"></i>
+            </div>
+            <div class="menu-content">
+
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,104 @@
+<div class="data-view" data-view="administrator/product/create">
+    <div style="padding-left: 20px">
+        <form method="post" class="form" id="create_form" name="submit">
+            <div class="new-product-left">
+                <?php if(!empty($this->params['error'])):?>
+                    <h4 class="header red lighter bigger" style="margin-top: -15px; margin-bottom: 30px">
+                        <center>--------<b>ERROR</b>----------</br></center>
+                        <center><?php echo $this->params['error']?></center>
+                    </h4>
+                <?php endif;?>
+
+                <div class="form-block">
+                    <label>Tên sản phẩm: <span class="red">(*)</span</label>
+                    <input name="product_name" class="movie-name new-product-title" type="text"
+                        value="<?php echo !empty($this->params['product_name']) ? $this->params['product_name'] : ''?>">
+                </div>
+
+                <div class="editors">
+                    <label>Mô tả về sản phẩm: <span class="red">(*)</span</label>
+                    <textarea name="description" class="ckeditor" cols="100" name="editor" rows="10"><?php
+                        echo !empty($this->params['description']) ? $this->params['description'] : '' ?></textarea>
+                </div>
+            </div>
+            <div class="new-product-right">
+                <div class="new-product-info">
+                    <div class="new-product-info-title">
+                        <label>Thông tin sản phẩm</label>
+                    </div>
+                    <div class="block-content">
+                        <div class="new-product-info-item">
+	                        <?php if(!empty($this->categories['rows'])):?>
+                            <div class="block-item">
+                                <label>Danh mục sản phẩm:</label>
+                                <select name="cate_id">
+		                            <?php foreach($this->categories['rows'] as $category):?>
+                                        <option value="<?php echo $category['cate_id']?>" <?php echo !empty($this->params['cate_id']) && $this->params['cate_id'] == $category['cate_id'] ? 'selected' : ''?>>
+				                            <?php
+				                            if ($category['parent_id'] == 0) {
+					                            echo '<a href="javascript:;"><b>' . $category['cate_name'] . '</b></a>';
+				                            } else {
+					                            $temp = substr_count($category['full_sort'], ':');
+					                            echo str_repeat('&nbsp;&nbsp;&nbsp;', $temp);
+					                            echo '&#x21b3;&nbsp;&nbsp;';
+					                            echo '<a href="javascript:;"><b>' . $category['cate_name'] . '</b></a>';
+				                            }
+				                            ?>
+                                        </option>
+		                            <?php endforeach;?>
+                                </select>
+                            </div>
+	                        <?php endif;?>
+                            <div class="block-item">
+                                <label>Mã sản phẩm: <span class="red">(*)</span</label>
+                                <input style="margin-bottom: 5px" class="number" type="text" name="product_code" value="<?php echo !empty($this->params['product_code']) ? $this->params['product_code'] : ''?>">
+                            </div>
+                            <div class="block-item">
+                                <label>Giá bán:</label>
+                                <input style="margin-bottom: 5px" class="number price-mask" type="text" name="price" value="<?php echo !empty($this->params['price']) ? $this->params['price'] : ''?>">
+                            </div>
+                            <div class="block-item">
+                                <label>Giá gốc:</label>
+                                <input style="margin-bottom: 5px" class="number price-mask" type="text" name="price_cost" value="<?php echo !empty($this->params['price_cost']) ? $this->params['price_cost'] : ''?>">
+                            </div>
+                        </div>
+                        <div class="new-product-info-item">
+                            <div class="col-product-table block-item">
+                                <label class="upload-image">
+                                    Hình ảnh: <i class="icon-upload-alt"></i> <span class="red">(*)</span
+                                </label>
+                                <div class="col-product-tab">
+                                    <table>
+                                        <tbody>
+                                            <?php if(!empty($this->params['fid'])):
+                                                foreach ($this->params['fid'] as $fid):
+                                                ?>
+                                                    <tr>
+                                                        <td>
+                                                            <img src="<?php echo empty($this->images[$fid]) ? '' : STATIC_URL.$this->images[$fid]['src']?>">
+                                                            <input type="hidden" name="fid[]" value="<?php echo $fid;?>">
+                                                            <input type="hidden" name="file-name[]" value="<?php echo empty($this->images[$fid]) ? '' : $this->images[$fid]['file_name']?>">
+                                                        </td>
+                                                        <td><?php echo empty($this->images[$fid]) ? '' : $this->images[$fid]['file_name']?></td>
+                                                        <td class="remove" data-fid="<?php echo $fid;?>">
+                                                            <i class="product-galaxy-remove icon-trash"></i>
+                                                        </td>
+                                                    </tr>
+                                            <?php endforeach; endif;?>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="new-product-info-item">
+                        <div class="">
+                            <label id="publish-notification"></label>
+                            <button type="submit" class="movie-submit button-item">Xuất bản</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

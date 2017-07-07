@@ -1,0 +1,61 @@
+<div class="data-view" data-view="administrator/user/profile">
+    <div class="cat-content">
+        <form name="form" class="form" method="post">
+            <div class="col-cate-left" style="margin-bottom: 40px">
+                <div class="col-sm-6" style="width: 97%">
+                    <h3 class="header blue lighter smaller" style="padding-bottom: 10px">
+                        <i class="ace-icon icon-plus smaller-90"></i>
+                        TẠO MỚI
+                    </h3>
+                </div>
+
+                <span class="block input-icon input-icon-right">
+                    <label>Tên User</label>
+                    <input name="user_name" type="text" class="span12" placeholder="" required>
+                </span>
+
+                <span class="block input-icon input-icon-right">
+                    <label>Email</label>
+                    <input name="email" type="email" class="span12" placeholder="" required>
+                </span>
+
+                <span class="block input-icon input-icon-right">
+                    <label>Mật khẩu</label>
+                    <input name="password" type="password" class="span12" placeholder="" required>
+                </span>
+
+                <span class="block input-icon input-icon-right">
+                    <label>Họ và tên</label>
+                    <input name="full_name" type="text" class="span12" placeholder="" required>
+                </span>
+
+                <span class="block input-icon input-icon-right">
+                    <label>Thuộc nhóm</label>
+                    <select class="span12" name="group_id">
+                        <?php foreach($this->groups['rows'] as $group):?>
+                        <option value="<?php echo $group['group_id']?>" <?php echo !empty($this->params['group_id'] && $this->params['group_id'] == $group['group_id']) ? 'selected' : ''?>>
+                            <?php echo $group['group_name']?>
+                        </option>
+                        <?php endforeach;?>
+                    </select>
+                </span>
+
+                <span class="block input-icon input-icon-right">
+                    <label>Trạng thái</label>
+                    <select class="span12" name="status">
+                        <option value="1">
+                            Hoạt động
+                        </option>
+                        <option value="2">
+                            Ẩn
+                        </option>
+                    </select>
+                </span>
+
+                <span class="block input-icon input-icon-right" style="margin-top: 10px">
+                    <button class="button-item">Tạo người dùng</button>
+                </span>
+            </div>
+        </form>
+    </div>
+</div>

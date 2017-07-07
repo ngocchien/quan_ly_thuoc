@@ -1,0 +1,35 @@
+<div class="navbar">
+    <div class="navbar-inner">
+        <div class="container-fluid">
+           <div class="admin-logo">
+             <a href="<?php echo $this->Url('administrator');?>"><img src="<?php echo STATIC_URL; ?>images/logo.png"></a>
+           </div>
+            <ul class="nav ace-nav pull-right">
+                <li class="light-blue">
+                    <a data-toggle="dropdown" href="#" class="dropdown-toggle">
+                        <?php echo '<img class="nav-user-photo" src="'. STATIC_URL .'assets/avatars/user.jpg" alt=""/>'; ?>
+                            <span class="user-info">
+                                <small>Xin chào</small>
+                            </span>
+                        <i class="icon-caret-down"></i>
+                    </a>
+                    <ul class="user-menu pull-right dropdown-menu dropdown-yellow dropdown-caret dropdown-closer">
+                        <li>
+                            <a href="<?php echo $this->Url('administrator');?>">
+                                <i class="icon-user"></i>
+                                Trang chủ
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="<?php echo SITE_URL; ?>administrator/auth/logout">
+                                <i class="icon-off"></i>
+                                Thoát
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

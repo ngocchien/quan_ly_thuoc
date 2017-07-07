@@ -1,0 +1,73 @@
+<?php
+$banner_name = !empty($this->params['banner_name']) ? $this->params['banner_name']: $this->banner['banner_name'];
+$redirect_url = !empty($this->params['redirect_url']) ? $this->params['redirect_url']: $this->banner['redirect_url'];
+$status = !empty($this->params['status']) ? $this->params['status'] : $this->banner['status'];
+$sort = !empty($this->params['sort']) ? $this->params['sort'] : $this->banner['sort'];
+?>
+<div class="data-view" data-view="administrator/banner/edit">
+    <div style="padding-left: 20px">
+        <form method="post" class="form" id="create_form" name="submit">
+            <div class="new-product-left">
+                <?php if(!empty($this->params['error'])):?>
+                    <h4 class="header red lighter bigger" style="margin-top: -15px; margin-bottom: 30px">
+                        <center>--------<b>ERROR</b>----------</br></center>
+                        <center><?php echo $this->params['error']?></center>
+                    </h4>
+                <?php endif;?>
+                <div class="form-block">
+                    <label>Tên banner: <span class="red">(*)</span></label>
+                    <input name="banner_name" class="movie-name new-product-title" type="text"
+                        value="<?php echo $banner_name;?>">
+                </div>
+                <div class="form-block">
+                    <label>Redirect URL: <span class="red">(*)</span></label>
+                    <input name="redirect_url" class="movie-name new-product-title" type="text"
+                           value="<?php echo $redirect_url;?>">
+                </div>
+                <div class="form-block">
+                    <label>Độ ưu tiên: <span class="red">(*)</span></label>
+                    <input name="sort" class="movie-name new-product-title" type="text"
+                           value="<?php echo $sort;?>">
+                </div>
+            </div>
+            <div class="new-product-right">
+                <div class="new-product-info">
+                    <div class="new-product-info-title">
+                        <label>Thông tin</label>
+                    </div>
+                    <div class="block-content">
+                        <div class="new-product-info-item">
+                            <div class="block-item">
+                                <label>Trạng thái:</label>
+                                <select name="status">
+                                    <?php foreach($this->render_status as $id => $name):?>
+                                        <option value="<?php echo $id; ?>" <?php echo $status == $id ? 'selected' : ''?>>
+                                            <?php echo $name;?>
+                                        </option>
+                                    <?php endforeach;?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="new-product-info-item">
+                            <div class="block-item">
+                                <label class="upload-image">
+                                    Hình ảnh: <i class="icon-upload-alt"></i>
+                                </label>
+                                <div class="col-product-tab">
+                                    <input type="hidden" class="fid" name="fid" value="<?php echo $this->banner['fid'];?>">
+                                    <img src="<?php echo STATIC_URL.$this->image['src'] ?>">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="new-product-info-item">
+                        <div class="">
+                            <label id="publish-notification"></label>
+                            <button type="submit" class="movie-submit button-item">Cập nhật</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

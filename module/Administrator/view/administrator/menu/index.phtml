@@ -1,0 +1,116 @@
+<div data-view="administrator/menu/index">
+    <div class="col-item">
+        <form method="get">
+            <div class="rows" style="border-bottom: none; border-top: 1px solid #ddd">
+                <div class="col-lg-2 pull-left" style="margin-top: 25px">
+                    <div id="editable-sample_length" class="dataTables_length no-padding">
+                        <a class="btn btn-success" href="<?php echo $this->Url('administratorMenu', ['action'=>'create'])?>"><i class="icon-plus-sign-alt"></i> Thêm</a>
+                    </div>
+                </div>
+                <div class="search-product">
+                    <div class="search-title">
+                        <div class="search-title-block">
+                            <input name="search" class="search-product-title" type="text"
+                                   value="<?php echo !empty($this->params['search']) ? $this->params['search'] : '' ?>"
+                                   placeholder="Tìm kiếm theo tên hoặc ID">
+                            <button class="search-products" type="submit">
+                                <i class="icon-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <table style="margin-bottom: 0" class="table table-striped table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th class="center"><span class="icon icon-list"> ID</th>
+                    <th class="center"><span class="icon icon-list-alt"></span> Tên Menu</th>
+                    <th class="center"><span class="icon icon-share-alt"></span> Redirect URL</th>
+                    <th class="center"><span class="icon icon-calendar"></span> Ngày tạo</th>
+                    <th class="center"><span class="icon icon-user"></span> Người tạo</th>
+                    <th class="center"><span class="icon icon-random"></span> Trạng thái</th>
+                    <th class="center"><span class="icon icon-gears"></span> Tùy chỉnh</th>
+                </tr>
+                </thead>
+                <tbody>
+                <?php if (!empty($this->category_parent)):
+                    foreach ($this->category_parent as $parent):
+                        ?>
+                        <tr>
+                            <td class="center">
+                                <b>
+                                    <a href="javascript:;">
+                                        <?php echo $parent['menu_id'] ?>
+                                    </a>
+                                </b>
+                            </td>
+                            <td>
+                                <a href="<?php echo $parent['url']?>" target="_blank""><b><?php echo $parent['menu_name']; ?></b></a>
+                            </td>
+                            <td>
+                                <a href="<?php echo $parent['url']?>" target="_blank""><b><?php echo $parent['url']; ?></b></a>
+                            </td>
+                            <td class="center"><?php echo date('Y-m-d', $parent['created_date']); ?></td>
+                            <td class="center"><?php echo empty($this->users[$parent['user_created']]) ? '' : $this->users[$parent['user_created']]['full_name']; ?></td>
+                            <td class="center">
+                                <?php if ($parent['status'] == APP\Model\Menu::MENU_STATUS_ACTIVE): ?>
+                                    <a class="btn-circle" href="javascript:;" data-toggle="tooltip" title="Hiển thị"><i
+                                                class="ico icon-check"></i></a>
+                                <?php else: ?>
+                                    <a class="btn-circle" href="javascript:;" data-toggle="tooltip" title="Ẩn"><i
+                                                class="ico icon-remove"></i></a>
+                                <?php endif; ?>
+                            </td>
+                            <td class="center">
+                                <a class="btn-circle" data-toggle="tooltip" title="Cập nhật"
+                                   href="<?php echo $this->Url('administratorMenu', ['action' => 'edit', 'id' => $parent['menu_id']]) ?>"><i
+                                            class="icon icon-pencil"></i></a>
+                                <a class="btn-circle delete" data-toggle="tooltip"
+                                   rel="<?php echo $parent['menu_id'] ?>" title="Xóa menu"><i
+                                            class="icon icon-trash"></i></a>
+                            </td>
+                        </tr>
+                        <?php if (!empty($this->category_child[$parent['menu_id']])):
+                        foreach ($this->category_child[$parent['menu_id']] as $child):
+                            ?>
+                            <tr>
+                                <td class="center">
+                                    <b>
+                                        <a href="javascript:;">
+                                            <?php echo $child['menu_id'] ?>
+                                        </a>
+                                    </b>
+                                </td>
+                                <td>
+                                    <a href="<?php echo $child['url']?>" target="_blank"><b>&nbsp;&nbsp;&nbsp;&#x21b3;&nbsp;&nbsp;<?php echo $child['menu_name']; ?></b></a>
+                                </td>
+                                <td>
+                                    <a href="<?php echo $child['url']?>" target="_blank"><b><?php echo $child['url']; ?></b></a>
+                                </td>
+                                <td class="center"><?php echo date('Y-m-d', $child['created_date']); ?></td>
+                                <td class="center"><?php echo empty($this->users[$child['user_created']]) ? '' : $this->users[$child['user_created']]['full_name']; ?></td>
+                                <td class="center">
+                                    <?php if ($child['status'] == APP\Model\Menu::MENU_STATUS_ACTIVE): ?>
+                                        <a class="btn-circle" href="javascript:;" data-toggle="tooltip" title="Hiển thị"><i
+                                                    class="ico icon-check"></i></a>
+                                    <?php else: ?>
+                                        <a class="btn-circle" href="javascript:;" data-toggle="tooltip" title="Ẩn"><i
+                                                    class="ico icon-remove"></i></a>
+                                    <?php endif; ?>
+                                </td>
+                                <td class="center">
+                                    <a class="btn-circle" data-toggle="tooltip" title="Cập nhật"
+                                       href="<?php echo $this->Url('administratorMenu', ['action' => 'edit', 'id' => $child['menu_id']]) ?>"><i
+                                                class="icon icon-pencil"></i></a>
+                                    <a class="btn-circle delete" data-toggle="tooltip"
+                                       rel="<?php echo $child['menu_id'] ?>" title="Xóa menu"><i
+                                                class="icon icon-trash"></i></a>
+                                </td>
+                            </tr>
+                        <?php endforeach; endif; ?>
+                    <?php endforeach; endif; ?>
+                </tbody>
+            </table>
+        </form>
+    </div>
+</div>

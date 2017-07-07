@@ -1,0 +1,70 @@
+<div class="data-view" data-view="administrator/banner/create">
+    <div style="padding-left: 20px">
+        <form method="post" class="form" id="create_form" name="submit">
+            <div class="new-product-left">
+                <?php if(!empty($this->params['error'])):?>
+                    <h4 class="header red lighter bigger" style="margin-top: -15px; margin-bottom: 30px">
+                        <center>--------<b>ERROR</b>----------</br></center>
+                        <center><?php echo $this->params['error']?></center>
+                    </h4>
+                <?php endif;?>
+                <div class="form-block">
+                    <label>Tên banner: <span class="red">(*)</span></label>
+                    <input name="banner_name" class="movie-name new-product-title" type="text"
+                        value="<?php echo !empty($this->params['banner_name']) ? $this->params['banner_name'] : ''?>">
+                </div>
+                <div class="form-block">
+                    <label>Redirect URL: <span class="red">(*)</span></label>
+                    <input name="redirect_url" class="movie-name new-product-title" type="text"
+                           value="<?php echo !empty($this->params['redirect_url']) ? $this->params['redirect_url'] : ''?>">
+                </div>
+                <div class="form-block">
+                    <label>Độ ưu tiên: <span class="red">(*)</span></label>
+                    <input name="sort" class="movie-name new-product-title" type="text"
+                           value="<?php echo !empty($this->params['sort']) ? $this->params['sort'] : ''?>">
+                </div>
+            </div>
+            <div class="new-product-right">
+                <div class="new-product-info">
+                    <div class="new-product-info-title">
+                        <label>Thông tin</label>
+                    </div>
+                    <div class="block-content">
+                        <div class="new-product-info-item">
+                            <div class="block-item">
+                                <label>Trạng thái:</label>
+                                <div class="block-raido">
+                                    <div class="block-raido-item">
+                                        <input id="status_showing" name="status" type="radio" value="1">
+                                        <label for="status_showing">Hiện thị</label>
+                                    </div>
+                                    <div class="block-raido-item">
+                                        <input id="status_not_showing" checked name="status" type="radio" value="0">
+                                        <label for="status_not_showing">Không hiện thị</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="new-product-info-item">
+                            <div class="block-item">
+                                <label class="upload-image">
+                                    Hình ảnh: <i class="icon-upload-alt"></i>
+                                </label>
+                                <div class="col-product-tab">
+                                    <input type="hidden" class="fid" name="fid">
+                                    <img src="<?php echo STATIC_URL; ?>images/no_image.gif">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="new-product-info-item">
+                        <div class="">
+                            <label id="publish-notification"></label>
+                            <button type="submit" class="movie-submit button-item">Xuất bản</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
