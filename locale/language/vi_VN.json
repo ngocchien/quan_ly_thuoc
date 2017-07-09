@@ -54,8 +54,8 @@
   "administrator:properties:edit" : "Cập nhật thuộc tính",
   "administrator:properties:delete" : "Xóa thuộc tính",
   "administrator:warehouse" : "Quản lý nhập thuốc",
-  "warehouse" : "Quản lý nhập xuất",
-  "administrator:warehouse:index" : "Danh sách nhập thuốc",
+  "warehouse" : "Quản lý kho",
+  "administrator:warehouse:index" : "Danh sách thuốc nhập",
   "administrator:warehouse:create" : "Nhập thuốc",
   "administrator:warehouse:edit" : "Chỉnh sửa",
   "administrator:warehouse:delete" : "Xóa nhập thuốc"

@@ -48,7 +48,7 @@ if (!empty($permission)) {
 <!--            <span class="btn btn-danger"></span>-->
 <!--        </div>-->
 <!--    </div>-->
-    <!--#sidebar-shortcuts-->
+<!--    #sidebar-shortcuts-->
 
     <ul class="nav nav-list">
         <?php if (IS_ADMIN || in_array('category', $per_controller)) : ?>
@@ -81,7 +81,7 @@ if (!empty($permission)) {
         <?php if (IS_ADMIN || in_array('brand', $per_controller)) : ?>
             <li class="<?php if ($controller == 'brand') : ?> active <?php endif; ?>">
                 <a href="#" class="dropdown-toggle">
-                    <i class="icon-list"></i>
+                    <i class="icon-fire"></i>
                     <span class="menu-text"> Nhãn hiệu </span>
                     <b class="arrow icon-angle-down"></b>
                 </a>
@@ -108,7 +108,7 @@ if (!empty($permission)) {
         <?php if (IS_ADMIN || in_array('properties', $per_controller)) : ?>
             <li class="<?php if ($controller == 'properties') : ?> active <?php endif; ?>">
                 <a href="#" class="dropdown-toggle">
-                    <i class="icon-list"></i>
+                    <i class="icon-adjust"></i>
                     <span class="menu-text"><?php echo $this->translator('properties')?></span>
                     <b class="arrow icon-angle-down"></b>
                 </a>
@@ -163,8 +163,8 @@ if (!empty($permission)) {
         <?php if (IS_ADMIN || in_array('warehouse', $per_controller)) : ?>
             <li class="<?php if ($controller == 'warehouse') : ?> active <?php endif; ?>">
                 <a href="#" class="dropdown-toggle">
-                    <i class="icon-leaf"></i>
-                    <span class="menu-text"> Quản lý nhập thuốc </span>
+                    <i class="icon-home"></i>
+                    <span class="menu-text"> Quản lý kho </span>
                     <b class="arrow icon-angle-down"></b>
                 </a>
                 <ul class="submenu">
