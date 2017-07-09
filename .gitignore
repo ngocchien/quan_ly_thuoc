@@ -3,7 +3,6 @@
 /composer.phar
 .idea/
 /static/uploads/
-composer.json
 composer.lock
 LOG_FOLDER/
 /data/
