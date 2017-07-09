@@ -2,18 +2,17 @@
 /**
  * Created by PhpStorm.
  * User: chiennn
- * Date: 27/06/2017
- * Time: 22:35
+ * Date: 17/06/2017
+ * Time: 15:55
  */
 
 namespace APP\DAO;
-
 use Zend\Db\Sql\Sql;
 
-class Properties extends AbstractDAO
+class Warehouse extends AbstractDAO
 {
-    const TABLE_NAME  = 'tbl_properties';
-    const PRIMARY_KEY = 'id';
+    const TABLE_NAME  = 'tbl_warehouse';
+    const PRIMARY_KEY = 'warehouse_id';
 
     public static function create($params){
         try {
@@ -47,7 +46,7 @@ class Properties extends AbstractDAO
             $params = array_merge([
                 'limit' => 10,
                 'offset' => 0,
-                'order' => 'id DESC'
+                'order' => 'warehouse_id DESC'
             ], $params);
 
             $adapter = self::getInstance();
@@ -60,7 +59,39 @@ class Properties extends AbstractDAO
                 ->limit($params['limit'])
                 ->offset($params['offset'])
                 ->where($strWhere);
+            $statement = $sql->prepareStatementForSqlObject($select);
+            $result = $statement->execute();
 
+            return self::_transform($result);
+        } catch (\Exception $e) {
+            if(APPLICATION_ENV != 'production'){
+                echo '<pre>';
+                print_r($e->getMessage(), $e->getCode());
+                echo '</pre>';
+                die();
+            }
+            throw new \Exception($e->getMessage(), $e->getCode());
+        }
+    }
+
+    public static function getExpire($params){
+        try {
+            $params = array_merge([
+                'limit' => 10,
+                'offset' => 0,
+                'order' => 'warehouse_id DESC'
+            ], $params);
+
+            $adapter = self::getInstance();
+            $sql = new Sql($adapter);
+            $strWhere = self::buildWhere($params);
+
+            $select = $sql->select()
+                ->from(self::TABLE_NAME)
+                ->order($params['order'])
+                ->limit($params['limit'])
+                ->offset($params['offset'])
+                ->where($strWhere);
             $statement = $sql->prepareStatementForSqlObject($select);
             $result = $statement->execute();
 
@@ -97,12 +128,10 @@ class Properties extends AbstractDAO
             }
             return true;
         } catch (\Exception $e) {
-            if(APPLICATION_ENV != 'production'){
-                echo '<pre>';
-                print_r($e->getMessage(), $e->getCode());
-                echo '</pre>';
-                die();
-            }
+            echo '<pre>';
+            print_r($e->getMessage(), $e->getCode());
+            echo '</pre>';
+            die();
             throw new \Exception($e->getMessage(), $e->getCode());
         }
     }
@@ -110,20 +139,12 @@ class Properties extends AbstractDAO
     public static function buildWhere($params){
         $strWhere = '1=1';
 
-        if(!empty($params['id'])){
-            $strWhere .= ' AND id = '. $params['id'];
+        if(!empty($params['warehouse_id'])){
+            $strWhere .= ' AND warehouse_id = '. $params['warehouse_id'];
         }
 
-        if(!empty($params['in_id'])){
-            $strWhere .= ' AND id IN ('. implode(',',$params['in_id']).')';
-        }
-
-        if(!empty($params['not_id'])){
-            $strWhere .= ' AND id != '. $params['not_id'];
-        }
-
-        if(!empty($params['properties_name'])){
-            $strWhere .= ' AND properties_name = "'.$params['properties_name'] . '"';
+        if(!empty($params['not_warehouse_id'])){
+            $strWhere .= ' AND warehouse_id != '. $params['not_warehouse_id'];
         }
 
         if(isset($params['status'])){
@@ -134,20 +155,26 @@ class Properties extends AbstractDAO
             $strWhere .= ' AND status != '.$params['not_status'];
         }
 
-        if(isset($params['not_id'])){
-            $strWhere .= ' AND id != '.$params['not_id'];
-        }
-
         if(!empty($params['search'])){
             $params['search'] = trim(strip_tags($params['search']));
             if(is_numeric($params['search'])){
-                $strWhere .= ' AND id = '.$params['search'];
+                $strWhere .= ' AND warehouse_id = '.$params['search'];
             }else{
-                $strWhere .= ' AND (properties_name like "%'.$params['search'].'%")';
+                $strWhere .= ' AND (banner_name like "%'.$params['search'].'%")';
             }
+        }
 
+        if(isset($params['expire'])){
+            $time_one_date = 60*60*24;
+            $current_time = time();
+            $strWhere .= ' AND (hsd-'.$current_time.' <= flag_notify*'.$time_one_date.')';
+        }
+
+        if(isset($params['is_notify'])){
+            $strWhere .= ' AND is_notify = '.$params['is_notify'];
         }
 
         return $strWhere;
     }
+
 }

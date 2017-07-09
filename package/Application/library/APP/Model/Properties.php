@@ -16,8 +16,9 @@ class Properties
     const PROPERTIES_STATUS_INACTIVE = 2;
     const PROPERTIES_STATUS_REMOVE = 0;
 
-    const PROPERTIES_STATUS_ACTIVE_NAME = 'Hiển thị';
-    const PROPERTIES_STATUS_INACTIVE_NAME = 'Ẩn';
+    const PROPERTIES_STATUS_ACTIVE_NAME = 'Active';
+    const PROPERTIES_STATUS_INACTIVE_NAME = 'Hidden';
+    const PROPERTIES_STATUS_REMOVE_NAME = 'Remove';
 
     public static function create($params)
     {

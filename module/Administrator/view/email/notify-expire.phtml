@@ -1,0 +1,60 @@
+<?php
+    $warehouse = empty($this->params['warehouse']) ? [] : $this->params['warehouse'];
+    $products = empty($this->params['products']) ? [] : $this->params['products'];
+    $users = empty($this->params['users']) ? [] : $this->params['users'];
+    $properties = empty($this->params['properties']) ? [] : $this->params['properties'];
+?>
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8"/>
+        <title>QUANLYTHUOC.CHIENNN.ME</title>
+        <meta name="description" content="overview &amp; stats"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <link rel="icon" sizes="192x192" href="/favicon.png">
+        <style>
+            .center {
+                text-align: center
+            }
+            .red {
+                color: red;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="main-container container-fluid">
+            <h3>Danh sách thuốc sắp hết hạn</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th class="center"> Tên thuốc</th>
+                        <th class="center"> Đơn vị tính </th>
+                        <th class="center"> Số lượng</th>
+                        <th class="center"> Ngày nhập</th>
+                        <th class="center"> Người nhập</th>
+                        <th class="center"> NSX</th>
+                        <th class="center"> HSD</th>
+                        <th class="center"> Thông báo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                <?php if(!empty($warehouse)):
+                    foreach ($warehouse as $row):
+                        ?>
+                        <tr>
+                            <td><a><b><?php echo !empty($products[$row['product_id']]) ? $products[$row['product_id']]['product_name'] : ''?></b></a></td>
+                            <td class="center"><b><?php echo !empty($properties[$row['properties_id']]) ? $properties[$row['properties_id']]['properties_name'] : ''?></b></td>
+                            <td class="center"><?php echo $row['quantity'];?></td>
+                            <td class="center"><?php echo date('d-m-Y',$row['created_date']);?></td>
+                            <td class="center"><?php echo !empty($users[$row['user_created']]) ? $users[$row['user_created']]['full_name'] : ''?></td>
+                            <td class="center"><?php echo date('d-m-Y',$row['nsx']);?></td>
+                            <td class="center"><b class="red"><?php echo date('d-m-Y',$row['hsd']);?></b></td>
+                            <td class="center"><?php echo $row['flag_notify'];?></td>
+                        </tr>
+                    <?php endforeach; endif;?>
+                </tbody>
+            </table>
+        </div>
+    </body>
+</html>

@@ -23,8 +23,8 @@
                 <thead>
                 <tr>
                     <th class="center"> # </th>
-                    <th class="center"><span class="icon icon-list-alt"></span> Tên sản phẩm</th>
-                    <th class="center"><span class="icon icon-barcode"></span> Mã sản phẩm</th>
+                    <th class="center"><span class="icon icon-list-alt"></span> Tên thuốc</th>
+                    <th class="center"><span class="icon icon-barcode"></span> Mã</th>
                     <th class="center">Danh mục</th>
                     <th class="center"><span class="icon icon-dollar"></span> Giá bán (VNĐ)</th>
                     <th class="center">Giá gốc (VNĐ)</th>
@@ -49,9 +49,9 @@
                         <td class="center"><?php echo $this->users[$row['user_created']]['full_name'];?></td>
                         <td class="center"><?php echo $this->renderStatus[$row['status']];?></td>
                         <td class="center">
-                            <a data-toggle="tooltip" title="Xem sản phẩm" class="btn btn-small btn-primary" target="_blank" href="<?php echo $this->Url('products', ['name'=>$row['product_slug']])?>">
-                                <i class="icon icon-eye-open"></i>
-                            </a>
+<!--                            <a data-toggle="tooltip" title="Xem sản phẩm" class="btn btn-small btn-primary" target="_blank" href="--><?php //echo $this->Url('products', ['name'=>$row['product_slug']])?><!--">-->
+<!--                                <i class="icon icon-eye-open"></i>-->
+<!--                            </a>-->
                             <a data-toggle="tooltip" title="Cập nhật" class="btn btn-small btn-primary" href="<?php echo $this->Url('administratorProduct', ['action'=>'edit', 'id' => $row['product_id']])?>">
                                 <i class="icon icon-edit"></i>
                             </a>

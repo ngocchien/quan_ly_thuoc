@@ -30,7 +30,7 @@ class Product
         $product_code = $params['product_code'];
         $price = $params['price'];
         $price_cost = $params['price_cost'];
-        $status = (int)$params['status'];
+        $status = 1;
         $images = empty($params['fid']) ? '': implode(',',$params['fid']);
         $meta_title = empty($params['meta_title']) ? : $params['meta_title'];
         $meta_description = empty($params['meta_description']) ? : $params['meta_description'];

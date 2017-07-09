@@ -23,32 +23,10 @@
                 <?php endif;?>
 
                 <div class="form-block">
-                    <label>Tên sản phẩm: <span class="red">(*)</span</label>
+                    <label>Tên thuốc: <span class="red">(*)</span</label>
                     <input name="product_name" class="movie-name new-product-title" type="text"
                         value="<?php echo $product_name;?>">
                 </div>
-
-                <div class="form-block">
-                    <label>SEO Meta Description: <span class="red">(*)</span</label>
-                    <input name="meta_description" class="movie-name new-product-title" type="text"
-                           value="<?php echo $meta_description;?>">
-                </div>
-
-                <div class="form-block">
-                    <label>SEO Meta Title: <span class="red">(*)</span</label>
-                    <input name="meta_title" class="movie-name new-product-title" type="text"
-                           value="<?php echo $meta_title;?>">
-                </div>
-
-                <div class="form-block">
-                    <label>SEO Meta Keyword: <span class="red">(*)</span</label>
-                    <input name="meta_keyword" class="movie-name new-product-title" type="text"
-                           value="<?php echo $meta_keyword;?>">
-                </div>
-
-<!--                <div class="editor-photo">-->
-<!--                    <button type="button" class="photojs button-item">Hình ảnh</button>-->
-<!--                </div>-->
 
                 <div class="editors">
                     <textarea name="description" class="ckeditor" cols="100" name="editor" rows="10"><?php
@@ -58,13 +36,13 @@
             <div class="new-product-right">
                 <div class="new-product-info">
                     <div class="new-product-info-title">
-                        <label>Thông tin sản phẩm</label>
+                        <label>Thông tin thuốc</label>
                     </div>
                     <div class="block-content">
                         <div class="new-product-info-item">
 	                        <?php if(!empty($this->categories['rows'])):?>
                             <div class="block-item">
-                                <label>Danh mục sản phẩm:</label>
+                                <label>Danh mục thuốc:</label>
                                 <select name="cate_id">
 		                            <?php foreach($this->categories['rows'] as $category):?>
                                         <option value="<?php echo $category['cate_id']?>" <?php echo $cate_id == $category['cate_id'] ? 'selected' : ''?>>
@@ -84,17 +62,7 @@
                             </div>
 	                        <?php endif;?>
                             <div class="block-item">
-                                <label>Trạng thái:</label>
-                                <select name="status">
-                                    <?php foreach($this->render_status as $id => $name):?>
-                                        <option value="<?php echo $id; ?>" <?php echo $status == $id ? 'selected' : ''?>>
-                                            <?php echo $name;?>
-                                        </option>
-                                    <?php endforeach;?>
-                                </select>
-                            </div>
-                            <div class="block-item">
-                                <label>Mã sản phẩm: <span class="red">(*)</span</label>
+                                <label>Mã:</label>
                                 <input style="margin-bottom: 5px" class="number" type="text" name="product_code" value="<?php echo $product_code;?>">
                             </div>
                             <div class="block-item">
@@ -105,15 +73,11 @@
                                 <label>Giá gốc:</label>
                                 <input style="margin-bottom: 5px" class="number price-mask" type="text" name="price_cost" value="<?php echo $price_cost;?>">
                             </div>
-                            <div class="block-item">
-                                <label>Từ khóa: <span class="red">(*)</span</label>
-                                <div class="tags-js tags-keywords"></div>
-                            </div>
                         </div>
                         <div class="new-product-info-item">
                             <div class="col-product-table block-item">
                                 <label class="upload-image">
-                                    Hình ảnh: <i class="icon-upload-alt"></i> <span class="red">(*)</span
+                                    Hình ảnh: <i class="icon-upload-alt"></i>
                                 </label>
                                 <div class="col-product-tab">
                                     <table>

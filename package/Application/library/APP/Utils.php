@@ -188,6 +188,40 @@ class Utils
         return $page;
     }
 
+    public static function runJob($instance = 'info', $class = '', $function = '', $priority = 'doTask', $workload = '', $param = array())
+    {
+        //add param job
+        $param['job'] = array(
+            'class' => $class,
+            'function' => $function,
+            'workload' => $workload
+        );
+        //job Param
+        $jobParams = array();
+        $jobParams['class'] = $class;
+        $jobParams['function'] = $function;
+        $jobParams['args'] = array_merge(array(
+            'site_url_global' => (defined('SITE_URL') ? SITE_URL : ''),
+            'static_url_global' => (defined('STATIC_URL') ? STATIC_URL : ''),
+            'upload_url_global' => (defined('UPLOAD_URL') ? UPLOAD_URL : '')
+        ), $param);
+
+
+        //Create job client
+        $jobClient = Job\Client::getInstance($instance);
+
+
+        //Register job
+        try {
+            $result = call_user_func_array(array($jobClient, $priority), array(Job\Client::getFunction($workload, $instance), $jobParams));
+        } catch (\Exception $e) {
+            return array('parameter' => json_encode($jobParams), 'message' => $e->getMessage(), 'error' => 0);
+        }
+
+
+        return array('parameter' => json_encode($jobParams), 'message' => 'success', 'error' => 1, 'result' => $result);
+    }
+
     public static function getSlug($string, $maxLength = 255, $separator = '-') {
         $arrCharFrom = array("ạ", "á", "à", "ả", "ã", "Ạ", "Á", "À", "Ả", "Ã", "â", "ậ", "ấ", "ầ", "ẩ", "ẫ", "Â", "Ậ", "Ấ", "Ầ", "Ẩ", "Ẫ", "ă", "ặ", "ắ", "ằ", "ẳ", "ẵ", "ẫ", "Ă", "Ắ", "Ằ", "Ẳ", "Ẵ", "Ặ", "Ẵ", "ê", "ẹ", "é", "è", "ẻ", "ẽ", "Ê", "Ẹ", "É", "È", "Ẻ", "Ẽ", "ế", "ề", "ể", "ễ", "ệ", "Ế", "Ề", "Ể", "Ễ", "Ệ", "ọ", "ộ", "ổ", "ỗ", "ố", "ồ", "Ọ", "Ộ", "Ổ", "Ỗ", "Ố", "Ồ", "Ô", "ô", "ó", "ò", "ỏ", "õ", "Ó", "Ò", "Ỏ", "Õ", "ơ", "ợ", "ớ", "ờ", "ở", "ỡ", "Ơ", "Ợ", "Ớ", "Ờ", "Ở", "Ỡ", "ụ", "ư", "ứ", "ừ", "ử", "ữ", "ự", "Ụ", "Ư", "Ứ", "Ừ", "Ử", "Ữ", "Ự", "ú", "ù", "ủ", "ũ", "Ú", "Ù", "Ủ", "Ũ", "ị", "í", "ì", "ỉ", "ĩ", "Ị", "Í", "Ì", "Ỉ", "Ĩ", "ỵ", "ý", "ỳ", "ỷ", "ỹ", "Ỵ", "Ý", "Ỳ", "Ỷ", "Ỹ", "đ", "Đ");
         $arrCharEnd = array("a", "a", "a", "a", "a", "A", "A", "A", "A", "A", "a", "a", "a", "a", "a", "a", "A", "A", "A", "A", "A", "A", "a", "a", "a", "a", "a", "a", "a", "A", "A", "A", "A", "A", "A", "A", "e", "e", "e", "e", "e", "e", "E", "E", "E", "E", "E", "E", "e", "e", "e", "e", "e", "E", "E", "E", "E", "E", "o", "o", "o", "o", "o", "o", "O", "O", "O", "O", "O", "O", "O", "o", "o", "o", "o", "o", "O", "O", "O", "O", "o", "o", "o", "o", "o", "o", "O", "O", "O'", "O", "O", "O", "u", "u", "u", "u", "u", "u", "u", "U", "U", "U", "U", "U", "U", "U", "u", "u", "u", "u", "U", "U", "U", "U", "i", "i", "i", "i", "i", "I", "I", "I", "I", "I", "y", "y", "y", "y", "y", "Y", "Y", "Y", "Y", "Y", "d", "D");
@@ -201,81 +235,107 @@ class Utils
         return $url;
     }
 
-    /**
-     * Upload images
-     *
-     * @param array $arr_file array images to upload
-     * @param string $controller_name is controller name
-     * @return array
-     */
-    public static function ImageUpload($arr_file = array(), $controller_name = 'product')
+    public static function writeLog($fileName = '', $arrParam = array())
     {
-        $arr_result = array();
-        if (empty($arr_file)) {
-            return $arr_result;
-        }
+        try {
+            date_default_timezone_set('Asia/Saigon');
 
-        $tmp = 1;
-        $arrResult = array();
-        $strTime = date('Y') . '/' . date('m') . '/' . date('d') . '/';
-        $strFolderType = UPLOAD_PATH . $controller_name;
+            $log = new Log();
 
-        if (!is_dir($strFolderType)) {
-            mkdir($strFolderType, 0777, true);
-        }
+            if (!file_exists(LOG_FOLDER . '/' . date('Y') . '/' . date('m') . '/' . date('d'))) {
+                mkdir(LOG_FOLDER . '/' . date('Y') . '/' . date('m') . '/' . date('d'), 0775, true);
+                chmod(LOG_FOLDER . '/' . date('Y') . '/' . date('m') . '/' . date('d'), 0775);
 
-        if (!is_writable($strFolderType) || !is_readable($strFolderType)) {
-            chmod($strFolderType, 0777);
-        }
-        $strFolderByDate = $strFolderType . '/' . $strTime;
-        $strFolderThumb = $strFolderByDate . 'thumbs/';
-        if (!is_dir($strFolderByDate)) {
-            mkdir($strFolderByDate, 0777, true);
-            chmod($strFolderByDate, 0777);
-            mkdir($strFolderThumb, 0777, true);
-            chmod($strFolderThumb, 0777);
-        }
+                $process_user = posix_getpwuid(posix_geteuid());
 
-        $arrFile = $arrFile[0] ? $arrFile : array($arrFile);
-        $adapter = new \Zend\File\Transfer\Adapter\Http();
-        $is_image = new \Zend\Validator\File\IsImage();
-        $size = new \Zend\Validator\File\Size(array('max' => 2097152)); //2MB
-        $total = new \Zend\Validator\File\Count(array('min' => 0, 'max' => 6));
-        foreach ($arrFile as $k => $file) {
-            $adapter->setValidators(array($size, $is_image, $total), $file['name']);
-            $strExtension = pathinfo($strFolderByDate . $file['name'], PATHINFO_EXTENSION);
-            if ($adapter->isValid($file['name'])) {
-                $adapter->setDestination($strFolderByDate);
-                $newFileName = microtime(true) . '.' . $strExtension;
-                $adapter->addFilter('File\Rename', array(
-                    'target' => $strFolderByDate . $newFileName,
-                    'overwrite' => true,
-                ));
-                if ($adapter->receive($file['name'])) {
-                    $arrSourceImage = UPLOAD_URL . $strControllerName . '/' . $strTime . $newFileName;
+                if (isset($process_user['name']) && $process_user['name'] == 'root') {
+                    chown(LOG_FOLDER . '/' . date('Y') . '/' . date('m') . '/' . date('d'), 'ad-user');
                 }
-
-                $arrThumb = self::getThumbSize($strControllerName);
-                $serviceImage = new \Intervention\Image\ImageManager();
-
-                foreach ($arrThumb as $thumbSize) {
-                    list($width, $height) = explode('x', $thumbSize);
-                    $thumbFileDir = $strFolderThumb . $thumbSize . '/';
-
-                    if (!is_dir($thumbFileDir)) {
-                        mkdir($thumbFileDir, 0777, true);
-                        chmod($thumbFileDir, 0777);
-                    }
-                    $image = $serviceImage->make($strFolderByDate . $newFileName)->fit($width, $height);
-                    $resultThumb = $image->save($thumbFileDir . $newFileName);
-
-                    if ($resultThumb) {
-                        $arrThumbImage[$thumbSize] = UPLOAD_URL . $strControllerName . '/' . $strTime . 'thumbs/' . $thumbSize . '/' . $newFileName;
-                    }
-                }
-                array_push($arrResult, array('sourceImage' => $arrSourceImage, 'thumbImage' => $arrThumbImage));
             }
+
+            $log->lfile(LOG_FOLDER . '/' . date('Y') . '/' . date('m') . '/' . date('d') . '/QLT_' . $fileName);
+
+            $arrParam['Time'] = date('H:i:s');
+
+            $log->lwrite(json_encode($arrParam), 'Data', true);
+
+            $log->lclose();
+        } catch (\Exception $e) {
+            throw new Exception($e->getMessage(), $e->getCode());
         }
-        return $arrResult;
+
+    }
+
+    /**
+     * Send Email to users
+     * @param string|array $email email list
+     * @param String $strTitle email title
+     * @param String $strMessage email message
+     * @param String $config email config
+     * @return Boolean
+     */
+    public static function sendMail($email, $strTitle, $strMessage, $config = 'smtp')
+    {
+        try {
+            $filename = ROOT_PATH . '/data/json_log.txt';
+            if (empty($email) || empty($strTitle) || empty($strMessage) || empty($config)) {
+                $strError = " Ko co email, hoac ko co title, hoac ko co body \n";
+                file_put_contents($filename, $strError, FILE_APPEND);
+                return false;
+            }
+
+            $arrConfig = \APP\Config::get('mail');
+
+            if(empty($arrConfig['mail']['adapters'][$config])){
+                $strError = " Load config error \n";
+                file_put_contents($filename, $strError, FILE_APPEND);
+                return false;
+            }
+
+            $config = $arrConfig['mail']['adapters'][$config];
+
+            //parse to array
+            $arrEmail = (array)$email;
+
+            $html = new \Zend\Mime\Part($strMessage);
+            $html->type = \Zend\Mime\Mime::TYPE_HTML;
+            $html->charset = 'utf-8';
+
+            $body = new \Zend\Mime\Message();
+            $body->setParts(array($html));
+
+            $mail = new \Zend\Mail\Message();
+            $mail->setSubject($strTitle)
+                ->addFrom($config['email'], $config['auth'])
+                ->addReplyTo($config['replay'])
+                ->setBody($body);
+            $mail->addTo($arrEmail);
+
+            if ($mail->isValid()) {
+                $smtpOptions = new \Zend\Mail\Transport\SmtpOptions();
+                $smtpOptions->setHost($config['host'])
+                    ->setPort($config['port'])
+                    ->setConnectionClass('login')
+                    ->setConnectionConfig(
+                        array(
+                            'username' => $config['email'],
+                            'password' => $config['password'],
+                            'ssl' => 'ssl'
+                        )
+                    );
+                $transport = new \Zend\Mail\Transport\Smtp($smtpOptions);
+                $status = $transport->send($mail);
+                echo '<pre>';
+                print_r($status);
+                echo '</pre>';
+                die();
+                return true;
+            }
+        } catch (\Exception $exc) {
+            echo '<pre>';
+            print_r($exc->getMessage());
+            echo '</pre>';
+            die();
+        }
     }
 }

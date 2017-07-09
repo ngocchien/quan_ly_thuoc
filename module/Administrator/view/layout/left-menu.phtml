@@ -136,7 +136,7 @@ if (!empty($permission)) {
             <li class="<?php if ($controller == 'product') : ?> active <?php endif; ?>">
                 <a href="#" class="dropdown-toggle">
                     <i class="icon-leaf"></i>
-                    <span class="menu-text"> Sản phẩm </span>
+                    <span class="menu-text"> Thuốc </span>
                     <b class="arrow icon-angle-down"></b>
                 </a>
                 <ul class="submenu">
@@ -144,7 +144,7 @@ if (!empty($permission)) {
                         <li <?php echo $controller == 'product' && $action == 'create' ? 'class="active"' : ''; ?> >
                             <a href="<?php echo SITE_URL; ?>admin/product/create">
                                 <i class="icon-double-angle-right"></i>
-                                Sản phẩm mới
+                                Thêm thuốc mới
                             </a>
                         </li>
                     <?php endif; ?>
@@ -159,6 +159,35 @@ if (!empty($permission)) {
                 </ul>
             </li>
         <?php endif; ?>
+
+        <?php if (IS_ADMIN || in_array('warehouse', $per_controller)) : ?>
+            <li class="<?php if ($controller == 'warehouse') : ?> active <?php endif; ?>">
+                <a href="#" class="dropdown-toggle">
+                    <i class="icon-leaf"></i>
+                    <span class="menu-text"> Quản lý nhập thuốc </span>
+                    <b class="arrow icon-angle-down"></b>
+                </a>
+                <ul class="submenu">
+                    <?php if (IS_ADMIN || in_array('create', $per_controller_action['warehouse'])): ?>
+                        <li <?php echo $controller == 'warehouse' && $action == 'create' ? 'class="active"' : ''; ?> >
+                            <a href="<?php echo SITE_URL; ?>admin/warehouse/create">
+                                <i class="icon-double-angle-right"></i>
+                                Nhập thuốc mới
+                            </a>
+                        </li>
+                    <?php endif; ?>
+                    <?php if (IS_ADMIN || in_array('index', $per_controller_action['warehouse'])): ?>
+                        <li <?php echo $controller == 'product' && $action == 'index' ? 'class="active"' : ''; ?> >
+                            <a href="<?php echo SITE_URL; ?>admin/warehouse">
+                                <i class="icon-double-angle-right"></i>
+                                Danh sách nhập
+                            </a>
+                        </li>
+                    <?php endif; ?>
+                </ul>
+            </li>
+        <?php endif; ?>
+
         <?php if (IS_ADMIN || in_array('user', $per_controller)) : ?>
             <li class="<?php if ($controller == 'user') : ?> active <?php endif; ?>">
                 <a href="#" class="dropdown-toggle">

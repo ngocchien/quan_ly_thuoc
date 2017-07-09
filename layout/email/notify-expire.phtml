@@ -1,0 +1,98 @@
+<?php
+    $warehouse = empty($this->params['warehouse']) ? [] : $this->params['warehouse'];
+    $products = empty($this->params['products']) ? [] : $this->params['products'];
+    $users = empty($this->params['users']) ? [] : $this->params['users'];
+    $properties = empty($this->params['properties']) ? [] : $this->params['properties'];
+?>
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8"/>
+        <title>QUANLYTHUOC.CHIENNN.ME</title>
+        <meta name="description" content="overview &amp; stats"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <link rel="icon" sizes="192x192" href="/favicon.png">
+        <style>
+            * {
+                margin: 0 auto;
+                padding: 0;
+            }
+            .center {
+                text-align: center
+            }
+            .red {
+                color: red;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="main-container container-fluid">
+            <h3 style="margin-bottom: 15px; margin-left: 240px;" class="red">Danh sách thuốc sắp hết hạn</h3>
+            <table style="border: 1px solid #454545; border-collapse: collapse; font-size: 12px; text-align: center;">
+                <tbody>
+                <tr style="background-color: ">
+                    <td width="112"
+                        style="border: 1px solid #454545; padding: 5px;">
+                        <p>
+                            <strong> Tên thuốc</strong>
+                        </p>
+                    </td>
+                    <td width="155" style="border: 1px solid #454545;">
+                        <p>
+                            <strong> Đơn vị tính</strong>
+                        </p>
+                    </td>
+                    <td width="140" style="border: 1px solid #454545;">
+                        <p>
+                            <strong> Số lượng</strong>
+                        </p>
+                    </td>
+                    <td width="144" style="border: 1px solid #454545;">
+                        <p>
+                            <strong> Ngày nhập</strong>
+                        </p>
+                    </td>
+                    <td width="144" style="border: 1px solid #454545;">
+                        <p>
+                            <strong> Người nhập</strong>
+                        </p>
+                    </td>
+                    <td width="144" style="border: 1px solid #454545;">
+                        <p>
+                            <strong> NSX</strong>
+                        </p>
+                    </td>
+
+                    <td width="144" style="border: 1px solid #454545;">
+                        <p>
+                            <strong> HSD</strong>
+                        </p>
+                    </td>
+
+                    <td width="144" style="border: 1px solid #454545;">
+                        <p>
+                            <strong> Gửi thông báo trước</strong>
+                        </p>
+                    </td>
+                </tr>
+                <?php if(!empty($warehouse)):
+                foreach ($warehouse as $row):
+                ?>
+                <tr>
+                    <td width="112" style="border: 1px solid #454545; padding: 5px;"><a><b><?php echo !empty($products[$row['product_id']]) ? $products[$row['product_id']]['product_name'] : ''?></b></a></td>
+                    <td width="112" style="border: 1px solid #454545; padding: 5px;"><b><?php echo !empty($properties[$row['properties_id']]) ? $properties[$row['properties_id']]['properties_name'] : ''?></b></td>
+                    <td width="112" style="border: 1px solid #454545; padding: 5px;"><?php echo $row['quantity'];?></td>
+                    <td width="112" style="border: 1px solid #454545; padding: 5px;"><?php echo date('d-m-Y',$row['created_date']);?></td>
+                    <td width="112" style="border: 1px solid #454545; padding: 5px;"><?php echo !empty($users[$row['user_created']]) ? $users[$row['user_created']]['full_name'] : ''?></td>
+                    <td width="112" style="border: 1px solid #454545; padding: 5px;"><?php echo date('d-m-Y',$row['nsx']);?></td>
+                    <td width="112" style="border: 1px solid #454545; padding: 5px;"><b class="red"><?php echo date('d-m-Y',$row['hsd']);?></b></td>
+                    <td width="112" style="border: 1px solid #454545; padding: 5px;"><?php echo $row['flag_notify'];?> ngày</td>
+                </tr>
+                <?php endforeach;
+                endif;?>
+                </tbody>
+            </table>
+        </div>
+    </body>
+</html>

@@ -37,6 +37,21 @@ if (php_sapi_name() === 'cli-server') {
     unset($path);
 }
 
+if (!defined('ZEND_FRAMEWORK_PATH')) {
+    $fw_path = null;
+    $dir = explode(PATH_SEPARATOR, get_include_path());
+
+    foreach ($dir as $path) {
+        if (file_exists($path . '/vendor/autoload.php')) {
+            $fw_path = realpath($path);
+            break;
+        }
+    }
+    //
+    define('ZEND_FRAMEWORK_PATH', $fw_path);
+    unset($fw_path, $dir, $path);
+}
+
 // Setup autoloading
 require 'init_autoloader.php';
 
@@ -44,6 +59,8 @@ require 'init_autoloader.php';
 Zend\Loader\AutoloaderFactory::factory(array(
     'Zend\Loader\StandardAutoloader' => array(
         'namespaces' => array(
+            'APP' => ROOT_PATH . '/package/Application/library/APP',
+            'My' => ROOT_PATH . '/library/My',
             'TASK' => __DIR__ . '/tasks',
         ),
     )
@@ -59,8 +76,8 @@ $opts = new Zend\Console\Getopt(array(
 $env = $opts->getOption('env');
 $verbose = $opts->getOption('v');
 
-if (empty($env) || !in_array($env, array('development', 'sandbox', 'production'))) {
-    echo 'Error Environment server-name.php --env [development, sandbox, production]';
+if (empty($env) || !in_array($env, array('development', 'production'))) {
+    echo 'Error Environment server-name.php --env [development,production]';
     exit();
 }
 
@@ -76,6 +93,25 @@ if ($verbose) {
     echo "ROOT_PATH : " . ROOT_PATH . "\n";
     echo "ENVIRONMENT : " . APPLICATION_ENV . "\n";
 }
+
+APP\Utils::runJob(
+    'info',
+    'TASK\Notify',
+    'sendNotifyProductExpire',
+    'doHighBackgroundTask',
+    'admin_process',
+    array(
+        'cate_id' => 'chiennn'
+    )
+);
+
+die('1-done');
+
+$arrConfig = APP\Config::get('mail');
+echo '<pre>';
+print_r($arrConfig['mail']['adapters']['smtp']);
+echo '</pre>';
+die();
 
 //$redis = MT\Nosql\Redis::getInstance('caching');
 //echo '<pre>';

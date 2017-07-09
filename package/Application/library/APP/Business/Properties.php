@@ -32,7 +32,7 @@ class Properties
         ]);
 
         if (!empty($result['rows'])) {
-            $params['error'] = 'Nhãn hiệu này đã tồn tại!';
+            $params['error'] = 'Thuộc tính này đã tồn tại!';
             return $params;
         }
 
@@ -63,7 +63,7 @@ class Properties
         $params['offset'] = $offset;
         $params['limit'] = $limit;
         $params['order'] = 'id DESC';
-        $result = Model\Brand::get($params);
+        $result = Model\Properties::get($params);
         return $result;
     }
 

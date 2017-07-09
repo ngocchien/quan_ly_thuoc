@@ -10,13 +10,13 @@
                 <?php endif;?>
 
                 <div class="form-block">
-                    <label>Tên sản phẩm: <span class="red">(*)</span</label>
+                    <label>Tên thuốc: <span class="red">(*)</span</label>
                     <input name="product_name" class="movie-name new-product-title" type="text"
                         value="<?php echo !empty($this->params['product_name']) ? $this->params['product_name'] : ''?>">
                 </div>
 
                 <div class="editors">
-                    <label>Mô tả về sản phẩm: <span class="red">(*)</span</label>
+                    <label>Mô tả về thuốc: <span class="red">(*)</span</label>
                     <textarea name="description" class="ckeditor" cols="100" name="editor" rows="10"><?php
                         echo !empty($this->params['description']) ? $this->params['description'] : '' ?></textarea>
                 </div>
@@ -24,7 +24,7 @@
             <div class="new-product-right">
                 <div class="new-product-info">
                     <div class="new-product-info-title">
-                        <label>Thông tin sản phẩm</label>
+                        <label>Thông tin thuốc</label>
                     </div>
                     <div class="block-content">
                         <div class="new-product-info-item">
@@ -50,7 +50,7 @@
                             </div>
 	                        <?php endif;?>
                             <div class="block-item">
-                                <label>Mã sản phẩm: <span class="red">(*)</span</label>
+                                <label>Mã:</label>
                                 <input style="margin-bottom: 5px" class="number" type="text" name="product_code" value="<?php echo !empty($this->params['product_code']) ? $this->params['product_code'] : ''?>">
                             </div>
                             <div class="block-item">
@@ -65,7 +65,7 @@
                         <div class="new-product-info-item">
                             <div class="col-product-table block-item">
                                 <label class="upload-image">
-                                    Hình ảnh: <i class="icon-upload-alt"></i> <span class="red">(*)</span
+                                    Hình ảnh: <i class="icon-upload-alt"></i>
                                 </label>
                                 <div class="col-product-tab">
                                     <table>

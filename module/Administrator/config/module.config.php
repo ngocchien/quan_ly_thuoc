@@ -215,6 +215,22 @@ return [
                     ),
                 ),
             ),
+            'administratorWarehouse' => array(
+                'type' => Segment::class,
+                'options' => array(
+                    'module' => 'administrator',
+                    'route' => '/admin/warehouse[/:action][/:id]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z0-9_-]*',
+                        'id' => '[0-9]+',
+                    ),
+                    'defaults' => array(
+                        'module' => 'administrator',
+                        'controller' => 'Administrator\Controller\Warehouse',
+                        'action'        => 'index'
+                    ),
+                ),
+            ),
         ],
     ],
     'console' => array(
@@ -248,7 +264,8 @@ return [
             'Administrator\Controller\Brand' => 'Administrator\Controller\BrandController',
             'Administrator\Controller\Properties' => 'Administrator\Controller\PropertiesController',
             'Administrator\Controller\UploadsRest' => 'Administrator\Controller\UploadsRestController',
-            'Administrator\Controller\Console' => 'Administrator\Controller\ConsoleController'
+            'Administrator\Controller\Console' => 'Administrator\Controller\ConsoleController',
+            'Administrator\Controller\Warehouse' => 'Administrator\Controller\WarehouseController'
         )
     ],
     'module_layouts' => array(

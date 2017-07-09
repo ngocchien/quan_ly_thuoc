@@ -17,13 +17,14 @@ class PropertiesController extends MyController
 {
     public function indexAction() {
         $params = array_merge($this->params()->fromRoute(), $this->params()->fromQuery());
-        $params['not_status'] = Model\Brand::BRAND_STATUS_REMOVE;
+        $params['not_status'] = Model\Properties::PROPERTIES_STATUS_REMOVE;
 
         //get list
         $user_id = $users = [];
-        $brands = Business\Brand::getList($params);
-        if (!empty($brands['rows'])) {
-            foreach ($brands['rows'] as $row) {
+        $properties = Business\Properties::getList($params);
+
+        if (!empty($properties['rows'])) {
+            foreach ($properties['rows'] as $row) {
                 $user_id[] = $row['user_created'];
             }
         }
@@ -44,8 +45,7 @@ class PropertiesController extends MyController
 
         return [
             'params' => $params,
-            'brands' => $brands,
-            'arr_status' => Model\Banner::renderStatus(),
+            'properties' => $properties,
             'users' => $users
         ];
     }
@@ -75,9 +75,9 @@ class PropertiesController extends MyController
         }
 
         //check exist
-        $result = Business\Brand::getList([
-            'brand_id' => $id,
-            'not_status' => Model\Brand::BRAND_STATUS_REMOVE,
+        $result = Business\Properties::getList([
+            'id' => $id,
+            'not_status' => Model\Properties::PROPERTIES_STATUS_REMOVE,
             'limit' => 1,
             'page' => 1
         ]);
@@ -86,19 +86,19 @@ class PropertiesController extends MyController
             return $this->redirect()->toRoute('administrator');
         }
 
-        $brand = $result['rows'][0];
+        $properties = $result['rows'][0];
 
         if($this->request->isPost()){
             $params = $this->params()->fromPost();
             $params['id'] = $id;
-            $params = Business\Brand::update($params);
+            $params = Business\Properties::update($params);
             if(!empty($params['success'])){
-                return $this->redirect()->toRoute('administratorBrand', ['action' => 'edit', 'id' => $id]);
+                return $this->redirect()->toRoute('administratorProperties', ['action' => 'edit', 'id' => $id]);
             }
         }
         return [
             'params' => $params,
-            'brand' => $brand
+            'properties' => $properties
         ];
     }
 

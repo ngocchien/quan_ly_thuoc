@@ -8,6 +8,7 @@
 return [
     // Retrieve list of modules used in this application.
     'modules' => array(
+        'Zend\Mail',
         'Zend\Session',
         'Zend\Db',
         'Zend\Router',
