@@ -177,10 +177,19 @@ if (!empty($permission)) {
                         </li>
                     <?php endif; ?>
                     <?php if (IS_ADMIN || in_array('index', $per_controller_action['warehouse'])): ?>
-                        <li <?php echo $controller == 'product' && $action == 'index' ? 'class="active"' : ''; ?> >
+                        <li <?php echo $controller == 'warehouse' && $action == 'index' ? 'class="active"' : ''; ?> >
                             <a href="<?php echo SITE_URL; ?>admin/warehouse">
                                 <i class="icon-double-angle-right"></i>
                                 Danh sách nhập
+                            </a>
+                        </li>
+                    <?php endif; ?>
+
+                    <?php if (IS_ADMIN || in_array('expire', $per_controller_action['warehouse'])): ?>
+                        <li <?php echo $controller == 'warehouse' && $action == 'expire' ? 'class="active"' : ''; ?> >
+                            <a href="<?php echo SITE_URL; ?>admin/warehouse/expire">
+                                <i class="icon-double-angle-right"></i>
+                                Danh thuốc sắp hết hạn
                             </a>
                         </li>
                     <?php endif; ?>
