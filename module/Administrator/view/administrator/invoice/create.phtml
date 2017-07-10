@@ -1,0 +1,95 @@
+<div class="data-view" data-view="administrator/invoice/create">
+    <div class="page-content">
+        <form name="form" class="form-group" method="post">
+            <div class="row">
+                <div class="col-lg-3"> Chọn thuốc</div>
+                <div class="col-lg-9">
+                    <select class="select">
+                            <option>1</option>
+                            <option>1</option>
+                            <option>1</option>
+                            <option>1</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="col-lg-3"> Chọn thuốc</div>
+                    <div class="col-lg-9"></div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="col-lg-3"> Chọn thuốc</div>
+                    <div class="col-lg-9"></div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="col-lg-3"> Chọn thuốc</div>
+                    <div class="col-lg-9"></div>
+                </div>
+            </div>
+            <div class="col-cate-left" style="margin-bottom: 40px">
+                <?php if(!empty($this->params['error'])):?>
+                    <h4 class="header red lighter bigger" style="margin-top: -15px; margin-bottom: 30px">
+                        <center>--------<b>ERROR</b>----------</br></center>
+                        <center><?php echo $this->params['error']?></center>
+                    </h4>
+                <?php endif;?>
+                <span class="block input-icon input-icon-right">
+                    <label>Chọn thuốc muốn nhập<span class="red">(*)</span></label>
+                    <select name="product_id" class="select-picker">
+                        <?php foreach ($this->products['rows'] as $row):?>
+                        <option value="<?php echo $row['product_id']?>">
+                            <?php echo $row['product_name']?>
+                        </option>
+                        <?php endforeach;?>
+                    </select>
+                </span>
+                <span class="block input-icon input-icon-right">
+                    <label>Chọn đơn vị tính<span class="red">(*)</span></label>
+                    <select name="properties_id" class="select-picker" data-live-search="true">
+                        <?php foreach ($this->properties['rows'] as $row):?>
+                        <option value="<?php echo $row['id'];?>">
+                            <?php echo $row['properties_name']?>
+                        </option>
+                        <?php endforeach;?>
+                    </select>
+                </span>
+
+                <span class="block input-icon input-icon-right">
+                    <label>Số lượng nhập<span class="red">(*)</span></label>
+                     <input name="quantity" type="number" class="span12" placeholder="Nhập số lượng" required
+                            value="<?php echo empty($this->params['quantity']) ? '' : $this->params['quantity']?>"
+                     >
+                </span>
+
+                <span class="block input-icon input-icon-right">
+                    <label>Ngày sản xuất<span class="red">(*)</span></label>
+                     <input name="nsx" type="text" class="span12 datetimepicker" placeholder="Nhập ngày sản xuất" required
+                            value="<?php echo empty($this->params['nsx']) ? '' : $this->params['nsx']?>"
+                     >
+                </span>
+
+                <span class="block input-icon input-icon-right">
+                    <label>Hạn sử dụng<span class="red">(*)</span></label>
+                     <input name="hsd" type="text" class="span12 datetimepicker" placeholder="Nhập ngày hết hạn" required
+                            value="<?php echo empty($this->params['hsd']) ? '' : $this->params['hsd']?>"
+                     >
+                </span>
+
+                <span class="block input-icon input-icon-right">
+                    <label>Bật thông báo sắp hết hạn sử dụng trước bao nhiêu ngày?<span class="red">(*)</span></label>
+                     <input name="flag_notify" type="number" class="span12" placeholder="Nhập ngày bắt đầu cảnh báo trước khi hết hạn" required
+                            value="<?php echo empty($this->params['flag_notify']) ? '' : $this->params['flag_notify']?>"
+                     >
+                </span>
+
+                <span class="block input-icon input-icon-right" style="margin-top: 10px">
+                    <button class="button-item"><i class="icon icon-save"></i> Lưu</button>
+                </span>
+            </div>
+        </form>
+    </div>
+</div>

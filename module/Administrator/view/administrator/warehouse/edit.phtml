@@ -1,0 +1,74 @@
+<?php
+    $product_id = !empty($this->params['product_id']) ? $this->params['product_id']: $this->warehouse['product_id'];
+    $properties_id = !empty($this->params['properties_id']) ? $this->params['properties_id']: $this->warehouse['properties_id'];
+    $quantity = !empty($this->params['quantity']) ? $this->params['quantity']: $this->warehouse['quantity'];
+    $nsx = !empty($this->params['nsx']) ? $this->params['nsx']: date('d/m/Y',$this->warehouse['nsx']);
+    $hsd = !empty($this->params['hsd']) ? $this->params['hsd']: date('d/m/Y',$this->warehouse['hsd']);
+    $flag_notify = !empty($this->params['flag_notify']) ? $this->params['flag_notify']: $this->warehouse['flag_notify'];
+?>
+<div class="data-view" data-view="administrator/warehouse/edit">
+    <div class="cat-content">
+        <form name="form" class="form-group" method="post">
+            <div class="col-cate-left" style="margin-bottom: 40px">
+                <?php if(!empty($this->params['error'])):?>
+                    <h4 class="header red lighter bigger" style="margin-top: -15px; margin-bottom: 30px">
+                        <center>--------<b>ERROR</b>----------</br></center>
+                        <center><?php echo $this->params['error']?></center>
+                    </h4>
+                <?php endif;?>
+                <span class="block input-icon input-icon-right">
+                    <label>Chọn thuốc muốn nhập<span class="red">(*)</span></label>
+                    <select name="product_id" class="select-picker">
+                        <?php foreach ($this->products['rows'] as $row):?>
+                        <option value="<?php echo $row['product_id']?>" <?php if($row['product_id'] == $product_id) : ?> selected <?php endif;?>>
+                            <?php echo $row['product_name']?>
+                        </option>
+                        <?php endforeach;?>
+                    </select>
+                </span>
+                <span class="block input-icon input-icon-right">
+                    <label>Chọn đơn vị tính<span class="red">(*)</span></label>
+                    <select name="properties_id" class="select-picker" data-live-search="true">
+                        <?php foreach ($this->properties['rows'] as $row):?>
+                        <option value="<?php echo $row['id'];?>" <?php if($row['id'] == $properties_id) : ?> selected <?php endif;?>>
+                            <?php echo $row['properties_name']?>
+                        </option>
+                        <?php endforeach;?>
+                    </select>
+                </span>
+
+                <span class="block input-icon input-icon-right">
+                    <label>Số lượng nhập<span class="red">(*)</span></label>
+                     <input name="quantity" type="number" class="span12" placeholder="Nhập số lượng" required
+                            value="<?php echo $quantity;?>"
+                     >
+                </span>
+
+                <span class="block input-icon input-icon-right">
+                    <label>Ngày sản xuất<span class="red">(*)</span></label>
+                     <input name="nsx" type="text" class="span12 datetimepicker" placeholder="Nhập ngày sản xuất" required
+                            value="<?php echo $nsx;?>"
+                     >
+                </span>
+
+                <span class="block input-icon input-icon-right">
+                    <label>Hạn sử dụng<span class="red">(*)</span></label>
+                     <input name="hsd" type="text" class="span12 datetimepicker" placeholder="Nhập ngày hết hạn" required
+                            value="<?php echo $hsd;?>"
+                     >
+                </span>
+
+                <span class="block input-icon input-icon-right">
+                    <label>Bật thông báo sắp hết hạn sử dụng trước bao nhiêu ngày?<span class="red">(*)</span></label>
+                     <input name="flag_notify" type="number" class="span12" placeholder="Nhập ngày bắt đầu cảnh báo trước khi hết hạn" required
+                            value="<?php echo $flag_notify?>"
+                     >
+                </span>
+
+                <span class="block input-icon input-icon-right" style="margin-top: 10px">
+                    <button class="button-item"><i class="icon icon-save"></i> Cập nhật</button>
+                </span>
+            </div>
+        </form>
+    </div>
+</div>

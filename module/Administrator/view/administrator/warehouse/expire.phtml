@@ -28,7 +28,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <?php if(!empty($this->warehouses)):
+                <?php if(!empty($this->warehouses['rows'])):
                     foreach ($this->warehouses['rows'] as $row):
                     ?>
                     <tr>
@@ -41,7 +41,7 @@
                         <td class="center"><b class="red"><?php echo date('d-m-Y',$row['hsd']);?></b></td>
                         <td class="center"><?php echo $row['flag_notify'];?></td>
                         <td class="center">
-                            <a data-toggle="tooltip" title="Ngừng nhận thông báo" class="btn btn-small btn-primary">
+                            <a data-toggle="tooltip" title="Ngừng nhận thông báo" class="btn btn-small btn-primary remove" rel="<?php echo $row['warehouse_id']?>">
                                 <i class="icon icon-remove"></i>
                             </a>
 <!--                            <a data-toggle="tooltip" title="Đã bán hết" class="btn btn-small btn-primary">-->
@@ -49,7 +49,13 @@
 <!--                            </a>-->
                         </td>
                     </tr>
-                <?php endforeach; endif;?>
+                <?php endforeach; else:?>
+                    <tr>
+                        <td colspan="9" class="text-center">
+                            Không có thuốc nào sắp hết hạn cả
+                        </td>
+                    </tr>
+                <?php endif;?>
                 </tbody>
             </table>
         </form>

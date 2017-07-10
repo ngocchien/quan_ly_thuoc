@@ -108,7 +108,7 @@ class WarehouseController extends MyController
         ];
     }
 
-    public function updateAction(){
+    public function editAction(){
         $params = $this->params()->fromRoute();
         $id = $params['id'];
 
@@ -117,7 +117,7 @@ class WarehouseController extends MyController
         }
 
         //check exist
-        $result = Business\Banner::getList([
+        $result = Business\Warehouse::getList([
             'warehouse_id' => $id,
             'not_status' => Model\Warehouse::STATUS_REMOVE,
             'limit' => 1,
@@ -139,9 +139,20 @@ class WarehouseController extends MyController
             }
         }
 
+        //list properties
+        $properties = Business\Properties::getList([
+            'not_status' => Model\Properties::PROPERTIES_STATUS_REMOVE
+        ]);
+
+        $products = Business\Product::get([
+            'not_status' => Model\Product::PRODUCT_STATUS_REMOVE
+        ]);
+
         return [
             'params' => $params,
-            'warehouse' => $warehouse
+            'warehouse' => $warehouse,
+            'products' => $products,
+            'properties' => $properties
         ];
     }
 
@@ -220,5 +231,13 @@ class WarehouseController extends MyController
             'properties' => $properties,
             'products' => $products
         ];
+    }
+
+    public function deleteExpireAction(){
+        if($this->request->isPost()){
+            $params = $this->params()->fromPost();
+            $result = Business\Warehouse::deleteExpire($params);
+            return $this->getResponse()->setContent(json_encode($result));
+        }
     }
 }

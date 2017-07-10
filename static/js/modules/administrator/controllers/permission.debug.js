@@ -9,7 +9,7 @@ Controller.define('administrator/permission', function () {
             addPermission: function (params) {
                 return $.ajax({
                     type: 'post',
-                    url: Registry.get('SITE_URL') + 'administrator/permission/add',
+                    url: Registry.get('SITE_URL') + 'admin/permission/add',
                     data: params
                 });
             },
@@ -17,7 +17,7 @@ Controller.define('administrator/permission', function () {
                 console.log(params);
                 return $.ajax({
                     type: 'post',
-                    url: Registry.get('SITE_URL') + 'administrator/permission/delete',
+                    url: Registry.get('SITE_URL') + 'admin/permission/delete',
                     data: params
                 });
             }

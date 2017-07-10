@@ -101,7 +101,7 @@ APP\Utils::runJob(
     'doHighBackgroundTask',
     'admin_process',
     array(
-        'cate_id' => 'chiennn'
+        'actor' => 'chiennn'
     )
 );
 

@@ -9,7 +9,7 @@ Controller.define('administrator/product', function () {
             deleteProduct: function (params) {
                 return $.ajax({
                     type: 'post',
-                    url: Registry.get('SITE_URL') + 'administrator/product/delete',
+                    url: Registry.get('SITE_URL') + 'admin/product/delete',
                     data: params,
                     dataType : 'json'
                 });

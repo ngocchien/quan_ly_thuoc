@@ -9,7 +9,15 @@ Controller.define('administrator/warehouse', function () {
             deleteProduct: function (params) {
                 return $.ajax({
                     type: 'post',
-                    url: Registry.get('SITE_URL') + 'administrator/warehouse/delete',
+                    url: Registry.get('SITE_URL') + 'admin/warehouse/delete',
+                    data: params,
+                    dataType : 'json'
+                });
+            },
+            deleteExpire: function (params) {
+                return $.ajax({
+                    type: 'post',
+                    url: Registry.get('SITE_URL') + 'admin/warehouse/delete-expire',
                     data: params,
                     dataType : 'json'
                 });
@@ -59,57 +67,77 @@ Controller.define('administrator/warehouse', function () {
                 },
                 execute: function () {
                     var self = this;
-                    console.log(111);
                     self.find('.datetimepicker').datepicker({
-                        format: 'dd/mm/yyyy',
+                        format: 'dd/mm/yyyy'
                     });
-
                     self.find('.select-picker').selectpicker();
-                    // $(function () {
-                    //     $('#datetimepicker1').datetimepicker();
-                    // });
-                    // self.on('click', '.col-product-tab .remove', function () {
-                    //     $(this).parent().remove();
-                    // });
                 }
             },
             edit : {
                 require: {
-                    scripts: ['bootstrap-inputmask.js', 'tags.js', 'photojs/jquery.form.js', 'photojs.js','lightbox2-master/src/js/lightbox.js'],
-                    stylesheets: ['photojs.css','lightbox2-master/src/css/lightbox.css']
+                    scripts: ['bootstrap-datepicker.js', 'bootstrap-select.js'],
+                    stylesheets: ['datepicker.css', 'bootstrap-select.css']
                 },
                 execute: function () {
                     var self = this;
-                    self.find(".price-mask").inputmask({
-                        alias: 'decimal',
-                        radixPoint: '.',
-                        groupSeparator: ',',
-                        autoGroup: true,
-                        rightAlign: true,
-                        autoUnmask: true,
-                        removeMaskOnSubmit: true,
-                        digits: 0
+                    self.find('.datetimepicker').datepicker({
+                        format: 'dd/mm/yyyy'
                     });
+                    self.find('.select-picker').selectpicker();
+                }
+            },
+            expire: {
+                require: {
+                    scripts: ['bootbox/bootbox.js'],
+                    stylesheets: []
+                },
+                execute: function () {
+                    var self = this,
+                        removeNotify = function () {
+                            if(self.find('input[name=data-id]:checked').length <= 0){
+                                bootbox.alert('Vui lòng chọn sản phẩm muốn xóa!!!');
+                                return false;
+                            }
+                            bootbox.confirm('Bạn có chắc chắn muốn xóa các sản phẩm này không???', function (e) {
+                                if(e){
+                                    var arr_id = [];
+                                    self.find('input[name=data-id]:checked').each(function () {
+                                        arr_id.push($(this).val())
+                                    });
+                                    self.model.deleteProduct({arr_product_id : arr_id}).then(function (rs){
+                                        if(rs.st == 1){
+                                            bootbox.alert(rs.ms,function () {
+                                                window.location = window.location.href;
+                                            })
+                                        }else{
+                                            bootbox.alert(rs.ms)
+                                        }
+                                    });
+                                }
+                            });
+                        };
+                    self.on('click','.remove',function () {
+                        var id = $(this).attr('rel');
+                        if(!id){
+                            bootbox.alert('Xảy ra lỗi, vui lòng refresh trình duyệt và thử lại!!!');
+                            return false;
+                        }
 
-                    self.find('.photojs').photoJs({
-                        object: 'editor'
-                    });
+                        bootbox.confirm('Bạn có muốn ngừng nhận thông báo sắp hết hạn sử dụng cho thuốc này???', function (e) {
+                            if(e){
+                                self.model.deleteExpire({id : id}).then(function (rs){
+                                    if(rs.st == 1){
+                                        bootbox.alert(rs.ms,function () {
+                                            window.location = window.location.href;
+                                        })
+                                    }else{
+                                        bootbox.alert(rs.ms)
+                                    }
+                                });
+                            }
+                        });
+                    })
 
-                    self.find('.icon-upload-alt').photoJs({
-                        object: 'multiple'
-                    });
-
-                    //keywords
-                    self.find('.tags-js.tags-keywords').tags({
-                        object_name: 'tags',
-                        name: 'tags',
-                        placeholder: 'Chọn từ khóa',
-                        create: true
-                    });
-
-                    self.on('click', '.col-product-tab .remove', function () {
-                        $(this).parent().remove();
-                    });
                 }
             }
         }

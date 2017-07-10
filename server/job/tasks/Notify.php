@@ -30,7 +30,7 @@ class Notify
                     'limit' => $limit,
                     'offset' => $offset,
                     'is_notify' => 1,
-                    'is_expire' => 1,
+                    'expire' => 1,
                     'order' => 'hsd ASC'
                 ]);
 

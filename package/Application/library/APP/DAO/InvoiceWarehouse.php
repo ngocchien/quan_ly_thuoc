@@ -2,17 +2,18 @@
 /**
  * Created by PhpStorm.
  * User: chiennn
- * Date: 17/06/2017
- * Time: 15:55
+ * Date: 10/07/2017
+ * Time: 00:21
  */
 
 namespace APP\DAO;
+
 use Zend\Db\Sql\Sql;
 
-class Warehouse extends AbstractDAO
+class InvoiceWarehouse extends AbstractDAO
 {
-    const TABLE_NAME  = 'tbl_warehouse';
-    const PRIMARY_KEY = 'warehouse_id';
+    const TABLE_NAME  = 'tbl_invoice_warehouse';
+    const PRIMARY_KEY = 'invoice_warehouse_id';
 
     public static function create($params){
         try {
@@ -46,40 +47,7 @@ class Warehouse extends AbstractDAO
             $params = array_merge([
                 'limit' => 10,
                 'offset' => 0,
-                'order' => 'warehouse_id DESC'
-            ], $params);
-
-            $adapter = self::getInstance();
-            $sql = new Sql($adapter);
-            $strWhere = self::buildWhere($params);
-
-            $select = $sql->select()
-                ->from(self::TABLE_NAME)
-                ->order($params['order'])
-                ->limit($params['limit'])
-                ->offset($params['offset'])
-                ->where($strWhere);
-            $statement = $sql->prepareStatementForSqlObject($select);
-            $result = $statement->execute();
-
-            return self::_transform($result);
-        } catch (\Exception $e) {
-            if(APPLICATION_ENV != 'production'){
-                echo '<pre>';
-                print_r($e->getMessage(), $e->getCode());
-                echo '</pre>';
-                die();
-            }
-            throw new \Exception($e->getMessage(), $e->getCode());
-        }
-    }
-
-    public static function getExpire($params){
-        try {
-            $params = array_merge([
-                'limit' => 10,
-                'offset' => 0,
-                'order' => 'warehouse_id DESC'
+                'order' => 'invoice_id DESC'
             ], $params);
 
             $adapter = self::getInstance();
@@ -136,11 +104,54 @@ class Warehouse extends AbstractDAO
         }
     }
 
+    public static function updateByCondition($params, $condition){
+        try {
+            $adapter = self::getInstance();
+
+            $sql = new Sql($adapter, self::TABLE_NAME);
+
+            $update = $sql->update();
+
+            $update->set($params);
+
+            $strWhere = self::buildWhere($condition);
+
+            $update->where($strWhere);
+
+            $statement = $sql->prepareStatementForSqlObject($update);
+
+            $result = $statement->execute();
+
+            if(!$result->getAffectedRows()){
+                return false;
+            }
+            return true;
+        } catch (\Exception $e) {
+            echo '<pre>';
+            print_r($e->getMessage(), $e->getCode());
+            echo '</pre>';
+            die();
+            throw new \Exception($e->getMessage(), $e->getCode());
+        }
+    }
+
     public static function buildWhere($params){
         $strWhere = '1=1';
 
+        if(!empty($params['invoice_warehouse_id'])){
+            $strWhere .= ' AND invoice_warehouse_id = '. $params['invoice_warehouse_id'];
+        }
+
+        if(!empty($params['invoice_id'])){
+            $strWhere .= ' AND invoice_id = '. $params['invoice_id'];
+        }
+
         if(!empty($params['warehouse_id'])){
             $strWhere .= ' AND warehouse_id = '. $params['warehouse_id'];
+        }
+
+        if(!empty($params['not_invoice_id'])){
+            $strWhere .= ' AND invoice_id != '. $params['not_invoice_id'];
         }
 
         if(!empty($params['not_warehouse_id'])){
@@ -155,28 +166,20 @@ class Warehouse extends AbstractDAO
             $strWhere .= ' AND status != '.$params['not_status'];
         }
 
+        if(!empty($params['in_invoice_id'])){
+            $strWhere .= ' AND invoice_id IN ('. implode(',',$params['in_invoice_id']).')';
+        }
+
         if(!empty($params['search'])){
             $params['search'] = trim(strip_tags($params['search']));
             if(is_numeric($params['search'])){
-                $strWhere .= ' AND warehouse_id = '.$params['search'];
+                $strWhere .= ' AND invoice_id = '.$params['search'];
             }else{
                 $strWhere .= ' AND (banner_name like "%'.$params['search'].'%")';
             }
-        }
 
-        if(isset($params['expire'])){
-            $query_date = date('Y-m-d');
-            $first_time_day = strtotime(date('Y-m-d'));
-            $time_one_date = 60*60*24;
-            $current_time = time();
-            $strWhere .= ' AND hsd >= '.$first_time_day.' AND (hsd-'.$current_time.' <= flag_notify*'.$time_one_date.')';
-        }
-
-        if(isset($params['is_notify'])){
-            $strWhere .= ' AND is_notify = '.$params['is_notify'];
         }
 
         return $strWhere;
     }
-
 }

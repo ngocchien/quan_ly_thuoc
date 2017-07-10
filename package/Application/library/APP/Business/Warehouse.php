@@ -91,26 +91,24 @@ class Warehouse
 
     public static function update($params)
     {
-        if (empty($params['nsx']) || empty($params['hsx']) || empty($params['product_id']) || empty($params['quantity']) || empty($params['flag_notify'])) {
+        if (empty($params['nsx']) || empty($params['hsd']) || empty($params['product_id']) || empty($params['quantity']) || empty($params['flag_notify'])) {
             $params['error'] = 'Vui lòng đầy đủ thông tin';
             return $params;
         }
 
         $product_id = (int) $params['product_id'];
-        $nsx = $params['nsx'];
         $status = 1;
-        $hsd = $params['hsx'];
         $quantity = (int) $params['quantity'];
         $warehouse_id = $params['warehouse_id'];
         $flag_notify = $params['flag_notify'];
 
+        list($day,$month,$year) = explode('/', $params['nsx']);
+        $nsx = mktime(0, 0, 0, $month, $day, $year);
+        list($day,$month,$year) = explode('/', $params['hsd']);
+        $hsd = mktime(0, 0, 0, $month, $day, $year);
+
         if($quantity < 0){
             $params['error'] = 'Nhập số lượng không hợp lệ';
-            return $params;
-        }
-
-        if($hsd < time()){
-            $params['error'] = 'Hạn sử dụng không hợp lệ';
             return $params;
         }
 
@@ -185,6 +183,60 @@ class Warehouse
         return [
             'st' => 1,
             'ms' => 'Xóa nhập hàng thành công!',
+            'success' => 'success'
+        ];
+    }
+
+    public static function deleteExpire($params){
+        if(empty($params['id'])){
+            return [
+                'st' => -1,
+                'ms' => 'Xảy ra lỗi ! Vui lòng thử lại!',
+                'error' => 'error'
+            ];
+        }
+
+        $id = $params['id'];
+
+        //get info warehouse
+        $result = Model\Warehouse::get([
+            'warehouse_id' => $id,
+            'not_status' => Model\Warehouse::STATUS_REMOVE,
+            'is_notify' => Model\Warehouse::IS_NOTIFY
+        ]);
+
+        if(empty($result['rows'])){
+            return [
+                'st' => -1,
+                'ms' => 'Xảy ra lỗi ! Vui lòng thử lại!',
+                'error' => 'error'
+            ];
+        }
+
+        //delete
+        $status = Model\Warehouse::update([
+            'updated_date' => time(),
+            'user_updated' => USER_ID,
+            'is_notify' => Model\Warehouse::UN_NOTIFY
+        ],[
+            $id
+        ]);
+        echo '<pre>';
+        print_r($status);
+        echo '</pre>';
+        die();
+
+        if(!$status){
+            return [
+                'st' => -1,
+                'ms' => 'Xảy ra lỗi trong quá trình xử lý! Vui lòng thử lại!',
+                'error' => 'error'
+            ];
+        }
+
+        return [
+            'st' => 1,
+            'ms' => 'Ngừng nhận thông báo cho thuôc này thành công!',
             'success' => 'success'
         ];
     }

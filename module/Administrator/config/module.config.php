@@ -231,6 +231,22 @@ return [
                     ),
                 ),
             ),
+            'administratorInvoice' => array(
+                'type' => Segment::class,
+                'options' => array(
+                    'module' => 'administrator',
+                    'route' => '/admin/invoice[/:action][/:id]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z0-9_-]*',
+                        'id' => '[0-9]+',
+                    ),
+                    'defaults' => array(
+                        'module' => 'administrator',
+                        'controller' => 'Administrator\Controller\Invoice',
+                        'action'        => 'index'
+                    ),
+                ),
+            ),
         ],
     ],
     'console' => array(
@@ -265,7 +281,8 @@ return [
             'Administrator\Controller\Properties' => 'Administrator\Controller\PropertiesController',
             'Administrator\Controller\UploadsRest' => 'Administrator\Controller\UploadsRestController',
             'Administrator\Controller\Console' => 'Administrator\Controller\ConsoleController',
-            'Administrator\Controller\Warehouse' => 'Administrator\Controller\WarehouseController'
+            'Administrator\Controller\Warehouse' => 'Administrator\Controller\WarehouseController',
+            'Administrator\Controller\Invoice' => 'Administrator\Controller\InvoiceController'
         )
     ],
     'module_layouts' => array(

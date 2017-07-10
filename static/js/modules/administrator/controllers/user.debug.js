@@ -9,7 +9,7 @@ Controller.define('administrator/user', function () {
             delete: function (params) {
                 return $.ajax({
                     type: 'post',
-                    url: Registry.get('SITE_URL') + 'administrator/user/delete',
+                    url: Registry.get('SITE_URL') + 'admin/user/delete',
                     data: params,
                     dataType: 'json'
                 });

@@ -51,6 +51,35 @@ if (!empty($permission)) {
 <!--    #sidebar-shortcuts-->
 
     <ul class="nav nav-list">
+<!--        --><?php //if (IS_ADMIN || in_array('hidden', $per_controller)) : ?>
+<!--        --><?php //if (IS_ADMIN || in_array('invoice', $per_controller)) : ?>
+<!--            <li class="--><?php //if ($controller == 'invoice') : ?><!-- active --><?php //endif; ?><!--">-->
+<!--                <a href="#" class="dropdown-toggle">-->
+<!--                    <i class="icon-plus"></i>-->
+<!--                    <span class="menu-text"> Đơn thuốc </span>-->
+<!--                    <b class="arrow icon-angle-down"></b>-->
+<!--                </a>-->
+<!--                <ul class="submenu">-->
+<!--                    --><?php //if (IS_ADMIN || in_array('create', $per_controller_action['invoice'])): ?>
+<!--                        <li --><?php //echo $controller == 'invoice' && $action == 'create' ? 'class="active"' : ''; ?><!-- >-->
+<!--                            <a href="--><?php //echo SITE_URL; ?><!--admin/invoice/create">-->
+<!--                                <i class="icon-double-angle-right"></i>-->
+<!--                                Tạo đơn thuốc-->
+<!--                            </a>-->
+<!--                        </li>-->
+<!--                    --><?php //endif; ?>
+<!--                    --><?php //if (IS_ADMIN || in_array('index', $per_controller_action['invoice'])): ?>
+<!--                        <li --><?php //echo $controller == 'invoice' && $action == 'index' ? 'class="active"' : ''; ?><!-- >-->
+<!--                            <a href="--><?php //echo SITE_URL; ?><!--admin/invoice">-->
+<!--                                <i class="icon-double-angle-right"></i>-->
+<!--                                Danh sách-->
+<!--                            </a>-->
+<!--                        </li>-->
+<!--                    --><?php //endif; ?>
+<!--                </ul>-->
+<!--            </li>-->
+<!--        --><?php //endif; ?>
+
         <?php if (IS_ADMIN || in_array('category', $per_controller)) : ?>
             <li class="<?php if ($controller == 'category') : ?> active <?php endif; ?>">
                 <a href="#" class="dropdown-toggle">

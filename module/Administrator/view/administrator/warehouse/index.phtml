@@ -37,6 +37,12 @@
                 <tbody>
                 <?php if(!empty($this->warehouses)):
                     foreach ($this->warehouses['rows'] as $row):
+                        $flag_notify = $row['flag_notify'];
+                        $is_notify = empty($row['is_notify']) ? 0 : $row['is_notify'];
+                        $is_bell = false;
+                        if($row['hsd'] - time() <= $flag_notify * 60*60*24 && $is_notify){
+                            $is_bell = true;
+                        }
                     ?>
                     <tr>
                         <td class="center"><input type="checkbox" name="data-id" class="input" value="<?php echo $row['warehouse_id']?>"></td>
@@ -49,7 +55,12 @@
                         <td class="center"><b class="red"><?php echo date('d-m-Y',$row['hsd']);?></b></td>
                         <td class="center"><?php echo $row['flag_notify'];?></td>
                         <td class="center">
-                            <a data-toggle="tooltip" title="Cập nhật" class="btn btn-small btn-primary" href="<?php echo $this->Url('administratorProduct', ['action'=>'edit', 'id' => $row['product_id']])?>">
+                            <?php if($is_bell):?>
+                            <a data-toggle="tooltip" title="Thuốc sắp hết hạn" class="btn btn-small btn-primary">
+                                <i class="icon icon-bell-alt"></i>
+                            </a>
+                            <?php endif;?>
+                            <a data-toggle="tooltip" title="Cập nhật" class="btn btn-small btn-primary" href="<?php echo $this->Url('administratorWarehouse', ['action'=>'edit', 'id' => $row['warehouse_id']])?>">
                                 <i class="icon icon-edit"></i>
                             </a>
                         </td>

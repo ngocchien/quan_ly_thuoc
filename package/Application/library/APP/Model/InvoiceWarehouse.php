@@ -10,7 +10,7 @@ namespace APP\Model;
 
 use APP\DAO;
 
-class Warehouse
+class InvoiceWarehouse
 {
     const STATUS_ACTIVE = 1;
     const STATUS_INACTIVE = 2;
@@ -25,22 +25,17 @@ class Warehouse
 
     public static function create($params)
     {
-        return DAO\Warehouse::create($params);
+        return DAO\InvoiceWarehouse::create($params);
     }
 
     public static function get($params)
     {
-        return DAO\Warehouse::get($params);
+        return DAO\InvoiceWarehouse::get($params);
     }
 
     public static function update($params, $id)
     {
-        return DAO\Warehouse::update($params,$id);
-    }
-
-    public static function getExpire($params)
-    {
-        return DAO\Warehouse::getExpire($params);
+        return DAO\InvoiceWarehouse::update($params,$id);
     }
 
     public static function renderStatus(){
