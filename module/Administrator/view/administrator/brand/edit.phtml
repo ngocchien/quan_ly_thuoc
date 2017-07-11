@@ -1,3 +1,7 @@
+<?php
+    $country_id = !empty($this->params['country_id']) ? $this->params['country_id']: (empty($this->brand['country_id']) ? '' : $this->brand['country_id']);
+?>
+
 <div class="data-view" data-view="administrator/brand/edit">
     <div class="cat-content">
         <form name="form" class="form" method="post">
@@ -14,6 +18,20 @@
                            value="<?php echo empty($this->params['brand_name']) ? $this->brand['brand_name'] : $this->params['brand_name'];?>"
                     >
                 </span>
+
+                <?php if($this->countries):?>
+                    <span class="block input-icon input-icon-right">
+                    <label>Nguồn gốc - xuất xứ <span class="red">(*)</span></label>
+                    <select class="select-picker" data-live-search="true" name="country_id">
+                        <?php foreach ($this->countries['rows'] as $row): ?>
+                            <option value="<?php echo $row['country_id'];?>" <?php if($country_id == $row['country_id']):?> selected<?php endif;?>>
+                                <?php echo $row['country_name'];?>
+                            </option>
+                        <?php endforeach;?>
+                    </select>
+                </span>
+                <?php endif;?>
+
                 <span class="block input-icon input-icon-right" style="margin-top: 10px">
                     <button class="btn btn-success" name="save"><i class="icon icon-save"></i> Lưu</button>
                 </span>

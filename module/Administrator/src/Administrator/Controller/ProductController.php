@@ -103,11 +103,20 @@ class ProductController extends MyController {
             }
         }
 
+        //get brand
+        $brands = Business\Brand::getList([
+            'not_status' => Model\Brand::BRAND_STATUS_REMOVE,
+            'limit' => 1000,
+            'offset' => 0,
+            'order' => 'brand_id desc'
+        ]);
+
         return [
             'params' => $params,
             'categories' => $categories,
             'render_status' => Model\Product::renderStatus(),
-            'images' => $images
+            'images' => $images,
+            'brands' => $brands
         ];
 	}
 
@@ -179,12 +188,21 @@ class ProductController extends MyController {
             }
         }
 
+        //get brand
+        $brands = Business\Brand::getList([
+            'not_status' => Model\Brand::BRAND_STATUS_REMOVE,
+            'limit' => 1000,
+            'offset' => 0,
+            'order' => 'brand_id desc'
+        ]);
+
         return [
             'images' => $images,
             'product' => $product,
             'params' => $params,
             'categories' => $categories,
-            'render_status' => Model\Product::renderStatus()
+            'render_status' => Model\Product::renderStatus(),
+            'brands' => $brands
         ];
 
     }

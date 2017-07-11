@@ -1,8 +1,4 @@
 <?php
-define('KEY_PREFIX', 'thuoc_');
-define('UTF8_ENABLED', FALSE);
-define('STATIC_VERSION', '1479136124');
-
 if (php_sapi_name() != 'cli') {
     $protocol = strtolower(substr($_SERVER["SERVER_PROTOCOL"], 0, 5)) == 'https' ? 'https' : 'http';
     //

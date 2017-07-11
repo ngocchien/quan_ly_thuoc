@@ -30,8 +30,8 @@
                         <div class="new-product-info-item">
 	                        <?php if(!empty($this->categories['rows'])):?>
                             <div class="block-item">
-                                <label>Danh mục sản phẩm:</label>
-                                <select name="cate_id">
+                                <label>Thuộc Danh mục:</label>
+                                <select name="cate_id" class="select-picker" data-live-search="true">
 		                            <?php foreach($this->categories['rows'] as $category):?>
                                         <option value="<?php echo $category['cate_id']?>" <?php echo !empty($this->params['cate_id']) && $this->params['cate_id'] == $category['cate_id'] ? 'selected' : ''?>>
 				                            <?php
@@ -49,6 +49,20 @@
                                 </select>
                             </div>
 	                        <?php endif;?>
+
+                            <?php if(!empty($this->brands['rows'])):?>
+                                <div class="block-item">
+                                    <label>Thuộc nhãn hiệu:</label>
+                                    <select name="brand_id" class="select-picker" data-live-search="true">
+                                        <?php foreach($this->brands['rows'] as $row):?>
+                                            <option value="<?php echo $row['brand_id']?>" <?php echo !empty($this->params['brand_id']) && $this->params['brand_id'] == $row['brand_id'] ? 'selected' : ''?>>
+                                                <?php echo $row['brand_name'];?>
+                                            </option>
+                                        <?php endforeach;?>
+                                    </select>
+                                </div>
+                            <?php endif;?>
+
                             <div class="block-item">
                                 <label>Mã:</label>
                                 <input style="margin-bottom: 5px" class="number" type="text" name="product_code" value="<?php echo !empty($this->params['product_code']) ? $this->params['product_code'] : ''?>">

@@ -10,7 +10,7 @@
                 <?php endif;?>
                 <span class="block input-icon input-icon-right">
                     <label>Chọn thuốc muốn nhập<span class="red">(*)</span></label>
-                    <select name="product_id" class="select-picker">
+                    <select name="product_id" class="select-picker" data-live-search="true">
                         <?php foreach ($this->products['rows'] as $row):?>
                         <option value="<?php echo $row['product_id']?>">
                             <?php echo $row['product_name']?>

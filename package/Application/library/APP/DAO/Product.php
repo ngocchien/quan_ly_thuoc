@@ -161,12 +161,20 @@ class Product extends AbstractDAO
             $strWhere .= ' AND status = '.$params['status'];
         }
 
+        if(isset($params['brand_id'])){
+            $strWhere .= ' AND brand_id = '.$params['brand_id'];
+        }
+
         if(isset($params['not_status'])){
             $strWhere .= ' AND status != '.$params['not_status'];
         }
 
         if(isset($params['not_cate_id'])){
             $strWhere .= ' AND cate_id != '.$params['not_cate_id'];
+        }
+
+        if(isset($params['not_brand_id'])){
+            $strWhere .= ' AND brand_id != '.$params['not_brand_id'];
         }
 
         if(!empty($params['search'])){

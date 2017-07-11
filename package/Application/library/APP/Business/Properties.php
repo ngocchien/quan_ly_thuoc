@@ -135,6 +135,21 @@ class Properties
             ];
         }
 
+        //check kiem tra thuoc tinh da su dung de nhap hang cho thuoc nao chua
+        $result = Model\Warehouse::get([
+            'properties_id' => $id,
+            'not_status' => Model\Warehouse::STATUS_REMOVE,
+            'limit' => 1
+        ]);
+
+        if(!empty($result['rows'])){
+            return [
+                'st' => -1,
+                'ms' => 'Thuộc tính này đã dùng nhập kho cho nhiều loại thuốc, không thể xóa!',
+                'error' => 'error'
+            ];
+        }
+
         //delete
         $status = Model\Properties::update([
             'status' => Model\Properties::PROPERTIES_STATUS_REMOVE,
@@ -152,7 +167,7 @@ class Properties
 
         return [
             'st' => 1,
-            'ms' => 'Xóa nhãn hiệu thành công thành công!',
+            'ms' => 'Xóa thuộc tính thành công thành công!',
             'success' => 'success'
         ];
     }

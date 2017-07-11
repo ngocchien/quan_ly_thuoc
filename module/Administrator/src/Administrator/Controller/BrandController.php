@@ -19,11 +19,15 @@ class BrandController extends MyController
         $params['not_status'] = Model\Brand::BRAND_STATUS_REMOVE;
 
         //get list
-        $user_id = $users = [];
+        $user_id = $users = $country_id = $countries = [];
         $brands = Business\Brand::getList($params);
         if (!empty($brands['rows'])) {
             foreach ($brands['rows'] as $row) {
                 $user_id[] = $row['user_created'];
+                if(empty($row['country_id'])){
+                    continue;
+                }
+                $country_id[] = $row['country_id'];
             }
         }
 
@@ -41,11 +45,26 @@ class BrandController extends MyController
             }
         }
 
+        if(!empty($country_id)){
+            $result = Model\Country::get([
+                'in_country_id' => array_values($country_id),
+                'limit' => 1000,
+                'offset' => 0
+            ]);
+
+            if(!empty($result)){
+                foreach ($result['rows'] as $row){
+                    $countries[$row['country_id']] = $row;
+                }
+            }
+        }
+
         return [
             'params' => $params,
             'brands' => $brands,
             'arr_status' => Model\Banner::renderStatus(),
-            'users' => $users
+            'users' => $users,
+            'countries' => $countries
         ];
     }
 
@@ -60,8 +79,16 @@ class BrandController extends MyController
             }
         }
 
+        $countries = Business\Country::getList([
+            'not_status' => Model\Country::STATUS_REMOVE,
+            'limit' => 1000,
+            'offset' => 0,
+            'order' => 'country_id desc'
+        ]);
+
         return [
-            'params' => $params
+            'params' => $params,
+            'countries' => $countries
         ];
     }
 
@@ -95,9 +122,17 @@ class BrandController extends MyController
                 return $this->redirect()->toRoute('administratorBrand', ['action' => 'edit', 'id' => $id]);
             }
         }
+
+        $countries = Business\Country::getList([
+            'not_status' => Model\Country::STATUS_REMOVE,
+            'limit' => 1000,
+            'offset' => 0,
+            'order' => 'country_id desc'
+        ]);
         return [
             'params' => $params,
-            'brand' => $brand
+            'brand' => $brand,
+            'countries' => $countries
         ];
     }
 

@@ -29,8 +29,9 @@ Controller.define('administrator/properties', function () {
                             bootbox.alert('Xảy ra lỗi trong quá trình xử lý! Vui lòng refresh lại trình duyệt và thử lại!');
                             return false;
                         }
-                        bootbox.confirm('Bạn có chắc chắn muốn xóa nhãn hiệu này không ????', function (e) {
+                        bootbox.confirm('Bạn có chắc chắn muốn thuộc tính này không ????', function (e) {
                             if (e) {
+                                console.log(id);re
                                 self.model.delete({id: id}).then(function (rs) {
                                     if (rs.st == 1) {
                                         bootbox.alert(rs.ms, function () {

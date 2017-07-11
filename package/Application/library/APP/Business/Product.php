@@ -24,9 +24,25 @@ class Product
             return $params;
         }
 
+        if(empty($params['description'])){
+            $params['error'] = 'Nội dung sản phẩm không được bỏ trống!';
+            return $params;
+        }
+
+        if(empty($params['cate_id'])){
+            $params['error'] = 'Vui lòng chọn danh mục sản phẩm!';
+            return $params;
+        }
+
+        if(empty($params['brand_id'])){
+            $params['error'] = 'Vui lòng chọn nhãn hiệu cho sản phẩm!';
+            return $params;
+        }
+
         $product_name =  trim(strip_tags($params['product_name']));
         $description = $params['description'];
         $cate_id = $params['cate_id'];
+        $brand_id = $params['brand_id'];
         $product_code = $params['product_code'];
         $price = $params['price'];
         $price_cost = $params['price_cost'];
@@ -42,7 +58,8 @@ class Product
             'limit' => 1,
             'offset' => 0,
             'not_status' => Model\Product::PRODUCT_STATUS_REMOVE,
-            'cate_id' => $cate_id
+            'cate_id' => $cate_id,
+            'brand_id' => $brand_id
         ]);
 
         if(!empty($exist['rows'])){
@@ -64,7 +81,8 @@ class Product
             'description' => $description,
             'meta_keyword' => $meta_keyword,
             'meta_description' => $meta_description,
-            'meta_title' => $meta_title
+            'meta_title' => $meta_title,
+            'brand_id' => $brand_id
         ]);
 
         if(!$product_id){
@@ -99,18 +117,29 @@ class Product
             return $params;
         }
 
+        if(empty($params['cate_id'])){
+            $params['error'] = 'Vui lòng chọn danh mục sản phẩm!';
+            return $params;
+        }
+
+        if(empty($params['brand_id'])){
+            $params['error'] = 'Vui lòng chọn nhãn hiệu cho sản phẩm!';
+            return $params;
+        }
+
         $product_name =  trim(strip_tags($params['product_name']));
         $description = $params['description'];
         $cate_id = $params['cate_id'];
         $product_code = $params['product_code'];
         $price = $params['price'];
         $price_cost = $params['price_cost'];
-        $status = (int)$params['status'];
+        $status = 1;
         $images = empty($params['fid']) ? '': implode(',',$params['fid']);
         $meta_title = empty($params['meta_title']) ? : $params['meta_title'];
         $meta_description = empty($params['meta_description']) ? : $params['meta_description'];
         $meta_keyword = empty($params['meta_keyword']) ? : $params['meta_keyword'];
         $product_id = $params['product_id'];
+        $brand_id = $params['brand_id'];
 
         //check name
         $exist = Model\Product::get([
@@ -119,7 +148,8 @@ class Product
             'offset' => 0,
             'not_status' => Model\Product::PRODUCT_STATUS_REMOVE,
             'cate_id' => $cate_id,
-            'not_product_id' => $product_id
+            'not_product_id' => $product_id,
+            'not_brand_id' => $brand_id
         ]);
 
         if(!empty($exist['rows'])){
@@ -128,7 +158,6 @@ class Product
         }
 
         //update group
-
         $updated = Model\Product::update([
             'product_name' => $product_name,
             'product_slug' => Utils::getSlug($product_name),
@@ -143,7 +172,8 @@ class Product
             'description' => $description,
             'meta_keyword' => $meta_keyword,
             'meta_description' => $meta_description,
-            'meta_title' => $meta_title
+            'meta_title' => $meta_title,
+            'brand_id' => $brand_id
         ],$product_id);
 
         if(!$updated){

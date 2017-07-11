@@ -93,6 +93,99 @@ if ($verbose) {
     echo "ROOT_PATH : " . ROOT_PATH . "\n";
     echo "ENVIRONMENT : " . APPLICATION_ENV . "\n";
 }
+use Box\Spout\Reader\ReaderFactory;
+use Box\Spout\Common\Type;
+
+$path_file_excel = UPLOAD_PATH.'/Excel/nuoc_tren_the_gioi.xlsx';
+
+try {
+    $reader = ReaderFactory::create(Type::XLSX);
+    $reader->open($path_file_excel);
+    foreach ($reader->getSheetIterator() as $sheet) {
+        foreach ($sheet->getRowIterator() as $key => $row) {
+            if($key < 3){
+                continue;
+            }
+            if(empty($row[1])){
+                continue;
+            }
+
+            $id = APP\Model\Country::create([
+                'country_name' => $row[1],
+                'created_date' => time(),
+                'user_created' => 1,
+                'status' => APP\Model\Country::STATUS_ACTIVE,
+                'slug' => APP\Utils::getSlug($row[1])
+            ]);
+
+            if($id){
+                echo APP\Utils::getColoredString('Insert success country name: ' . $row[1] . ' id = '.$id, 'green');
+            }else{
+                echo APP\Utils::getColoredString('Insert country name: ' . $row[1] . ' error', 'red');
+            }
+
+        }
+    }
+    echo '<pre>';
+    print_r('DONE');
+    echo '</pre>';
+    die();
+
+    echo '<pre>';
+    print_r($reader->getSheetIterator()->current());
+    echo '</pre>';
+    die();
+
+    while ($reader->hasNextSheet()) {
+        $reader->nextSheet();
+
+        while ($reader->hasNextRow()) {
+            $row = $reader->nextRow();
+            echo '<pre>';
+            print_r($row);
+            echo '</pre>';
+            die();
+            // do stuff
+        }
+    }
+    echo '<pre>';
+    print_r(111);
+    echo '</pre>';
+    die();
+
+
+    $inputFileType = PHPExcel_IOFactory::identify($path_file_excel);
+    $objReader = PHPExcel_IOFactory::createReader($path_file_excel);
+    $objPHPExcel = $objReader->load($path_file_excel);
+    $sheet = $objPHPExcel->getSheet(0);
+    $highestRow = $sheet->getHighestRow();
+    $highestColumn = $sheet->getHighestColumn();
+    echo '<pre>';
+    print_r(1);
+    echo '</pre>';
+    die();
+//  Loop through each row of the worksheet in turn
+    for ($row = 1; $row <= $highestRow; $row++){
+        //  Read a row of data into an array
+        $rowData = $sheet->rangeToArray('A' . $row . ':' . $highestColumn . $row,
+            NULL,
+            TRUE,
+            FALSE);
+        echo '<pre>';
+        print_r($rowData);
+        echo '</pre>';
+        die();
+        //  Insert row data array into your database of choice here
+    }
+
+} catch(Exception $e) {
+    die('Error loading file "'.pathinfo($path_file_excel,PATHINFO_BASENAME).'": '.$e->getMessage());
+}
+
+echo '<pre>';
+print_r($path_file_excel);
+echo '</pre>';
+die();
 
 APP\Utils::runJob(
     'info',

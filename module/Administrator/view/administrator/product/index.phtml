@@ -30,7 +30,7 @@
                     <th class="center">Giá gốc (VNĐ)</th>
                     <th class="center"><span class="icon icon-calendar"></span> Ngày tạo</th>
                     <th class="center"><span class="icon icon-user"></span> Người tạo</th>
-                    <th class="center"><span class="icon icon-random"></span> Trạng thái</th>
+<!--                    <th class="center"><span class="icon icon-random"></span> Trạng thái</th>-->
                     <th class="center"><span class="icon icon-gears"></span> Tùy chỉnh</th>
                 </tr>
                 </thead>
@@ -47,7 +47,7 @@
                         <td class="center"><?php echo number_format($row['price_cost']);?></td>
                         <td class="center"><?php echo date('Y-m-d',$row['created_date']);?></td>
                         <td class="center"><?php echo $this->users[$row['user_created']]['full_name'];?></td>
-                        <td class="center"><?php echo $this->renderStatus[$row['status']];?></td>
+<!--                        <td class="center">--><?php //echo $this->renderStatus[$row['status']];?><!--</td>-->
                         <td class="center">
 <!--                            <a data-toggle="tooltip" title="Xem sản phẩm" class="btn btn-small btn-primary" target="_blank" href="--><?php //echo $this->Url('products', ['name'=>$row['product_slug']])?><!--">-->
 <!--                                <i class="icon icon-eye-open"></i>-->

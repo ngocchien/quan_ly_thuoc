@@ -105,7 +105,7 @@ class PropertiesController extends MyController
     public function deleteAction(){
         if($this->request->isPost()){
             $params = $this->params()->fromPost();
-            $result = Business\Brand::delete($params);
+            $result = Business\Properties::delete($params);
             return $this->getResponse()->setContent(json_encode($result));
         }
     }

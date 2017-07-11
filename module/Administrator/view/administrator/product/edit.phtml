@@ -10,6 +10,7 @@
     $images = isset($this->params['fid']) ? $this->params['fid']: (empty($this->product['images']) ? [] : explode(',',$this->product['images']));
     $cate_id = isset($this->params['cate_id']) ? $this->params['cate_id']: $this->product['cate_id'];
     $description = isset($this->params['description']) ? $this->params['description']: $this->product['description'];
+    $brand_id = isset($this->params['brand_id']) ? $this->params['brand_id']: $this->product['brand_id'];
 ?>
 <div class="data-view" data-view="administrator/product/edit">
     <div style="padding-left: 20px">
@@ -42,8 +43,8 @@
                         <div class="new-product-info-item">
 	                        <?php if(!empty($this->categories['rows'])):?>
                             <div class="block-item">
-                                <label>Danh mục thuốc:</label>
-                                <select name="cate_id">
+                                <label>Thuộc danh mục:</label>
+                                <select name="cate_id" class="select-picker" data-live-search="true">
 		                            <?php foreach($this->categories['rows'] as $category):?>
                                         <option value="<?php echo $category['cate_id']?>" <?php echo $cate_id == $category['cate_id'] ? 'selected' : ''?>>
 				                            <?php
@@ -61,6 +62,20 @@
                                 </select>
                             </div>
 	                        <?php endif;?>
+
+                            <?php if(!empty($this->brands['rows'])):?>
+                                <div class="block-item">
+                                    <label>Thuộc nhãn hiệu:</label>
+                                    <select name="brand_id" class="select-picker" data-live-search="true">
+                                        <?php foreach($this->brands['rows'] as $row):?>
+                                            <option value="<?php echo $row['brand_id']?>" <?php echo $brand_id == $row['brand_id'] ? 'selected' : ''?>>
+                                                <?php echo $row['brand_name'];?>
+                                            </option>
+                                        <?php endforeach;?>
+                                    </select>
+                                </div>
+                            <?php endif;?>
+
                             <div class="block-item">
                                 <label>Mã:</label>
                                 <input style="margin-bottom: 5px" class="number" type="text" name="product_code" value="<?php echo $product_code;?>">

@@ -23,6 +23,7 @@
                 <tr>
                     <th class="center"><span class="icon icon-list"> ID</th>
                     <th class="center"><span class="icon icon-list-alt"></span> Tên</th>
+                    <th class="center"><span class="icon icon-location-arrow"></span> Xuất xứ</th>
                     <th class="center"><span class="icon icon-calendar"></span> Ngày tạo</th>
                     <th class="center"><span class="icon icon-user"></span> Người tạo</th>
                     <th class="center"><span class="icon icon-gears"></span> Tùy chỉnh</th>
@@ -45,6 +46,11 @@
                                     echo $rows['brand_name']
                                 ?>
                             </td>
+
+                            <td class="center">
+                                <?php echo empty($this->countries[$rows['country_id']]) ? '' : $this->countries[$rows['country_id']]['country_name']?>
+                            </td>
+
                             <td class="center"><?php echo date('Y-m-d', $rows['created_date']);?></td>
                             <td class="center"><?php echo empty($this->users[$rows['user_created']]) ? '' : $this->users[$rows['user_created']]['full_name']?></td>
                             <td class="center">

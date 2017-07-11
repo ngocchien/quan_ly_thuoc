@@ -48,18 +48,22 @@ Controller.define('administrator/brand', function () {
             },
             create: {
                 require: {
-                    scripts: [],
-                    stylesheets: []
+                    scripts: ['bootstrap-select.js'],
+                    stylesheets: ['bootstrap-select.css']
                 },
                 execute: function () {
+                    var self = this;
+                    self.find('.select-picker').selectpicker();
                 }
             },
             edit: {
                 require: {
-                    scripts: [],
-                    stylesheets: []
+                    scripts: ['bootstrap-select.js'],
+                    stylesheets: ['bootstrap-select.css']
                 },
                 execute: function () {
+                    var self = this;
+                    self.find('.select-picker').selectpicker();
                 }
             }
         }

@@ -15,6 +15,19 @@
                     value="<?php echo empty($this->params['brand_name']) ? '' : $this->params['brand_name']?>"
                     >
                 </span>
+
+                <?php if($this->countries):?>
+                <span class="block input-icon input-icon-right">
+                    <label>Nguồn gốc - xuất xứ <span class="red">(*)</span></label>
+                    <select class="select-picker" data-live-search="true" name="country_id">
+                        <?php foreach ($this->countries['rows'] as $row): ?>
+                            <option value="<?php echo $row['country_id'];?>" <?php if(!empty($this->params['country_id']) && $this->params['country_id'] == $row['country_id']):?> selected<?php endif;?>>
+                                <?php echo $row['country_name'];?>
+                            </option>
+                        <?php endforeach;?>
+                    </select>
+                </span>
+                <?php endif;?>
                 <span class="block input-icon input-icon-right" style="margin-top: 10px">
                     <button class="button-item"><i class="icon icon-save"></i> Lưu</button>
                 </span>

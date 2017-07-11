@@ -54,8 +54,8 @@ Controller.define('administrator/product', function () {
             },
             create : {
                 require: {
-                    scripts: ['bootstrap-inputmask.js', 'tags.js', 'photojs/jquery.form.js', 'photojs.js'],
-                    stylesheets: ['photojs.css']
+                    scripts: ['bootstrap-inputmask.js', 'tags.js', 'photojs/jquery.form.js', 'photojs.js','bootstrap-select.js'],
+                    stylesheets: ['photojs.css','bootstrap-select.css']
                 },
                 execute: function () {
                     var self = this;
@@ -89,12 +89,14 @@ Controller.define('administrator/product', function () {
                     self.on('click', '.col-product-tab .remove', function () {
                         $(this).parent().remove();
                     });
+
+                    self.find('.select-picker').selectpicker();
                 }
             },
             edit : {
                 require: {
-                    scripts: ['bootstrap-inputmask.js', 'tags.js', 'photojs/jquery.form.js', 'photojs.js','lightbox2-master/src/js/lightbox.js'],
-                    stylesheets: ['photojs.css','lightbox2-master/src/css/lightbox.css']
+                    scripts: ['bootstrap-inputmask.js', 'tags.js', 'photojs/jquery.form.js', 'photojs.js','lightbox2-master/src/js/lightbox.js', 'bootstrap-select.js'],
+                    stylesheets: ['photojs.css','lightbox2-master/src/css/lightbox.css', 'bootstrap-select.css']
                 },
                 execute: function () {
                     var self = this;
@@ -128,6 +130,8 @@ Controller.define('administrator/product', function () {
                     self.on('click', '.col-product-tab .remove', function () {
                         $(this).parent().remove();
                     });
+
+                    self.find('.select-picker').selectpicker();
                 }
             }
         }

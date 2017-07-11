@@ -25,7 +25,9 @@
         "zendframework/zend-session": "^2.7.3",
         "zendframework/zend-code": "2.*",
         "zendframework/zend-mail" : "2.*",
-        "zendframework/zend-mime": "^2.5"
+        "zendframework/zend-mime": "^2.5",
+        "PHPOffice/PHPExcel": "1.8.*",
+        "box/spout": "*"
     },
     "autoload": {
         "psr-4": {
