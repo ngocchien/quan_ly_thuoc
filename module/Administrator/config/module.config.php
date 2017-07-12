@@ -16,12 +16,16 @@ return [
 	        'administrator' => array(
 		        'type' => Segment::class,
 		        'options' => array(
-			        'route' => '/admin[/:action]',
+			        'route' => '/admin[/:controller][/:action]',
 			        'defaults' => array(
 			            'module' => 'administrator',
 				        'controller' => 'Administrator\Controller\Index',
 				        'action'        => 'index'
 			        ),
+                    'constraints' => array(
+                        'controller' => '[a-zA-Z0-9_-]*',
+                        'action' => '[a-zA-Z0-9_-]*'
+                    ),
 		        ),
 	        ),
 	        'administratorUser' => array(

@@ -26,6 +26,8 @@
                     <th class="center"><span class="icon icon-list-alt"></span> Tên thuốc</th>
                     <th class="center"><span class="icon icon-barcode"></span> Mã</th>
                     <th class="center">Danh mục</th>
+                    <th class="center">Nhãn hiệu</th>
+                    <th class="center">Xuất xứ</th>
                     <th class="center"><span class="icon icon-dollar"></span> Giá bán (VNĐ)</th>
                     <th class="center">Giá gốc (VNĐ)</th>
                     <th class="center"><span class="icon icon-calendar"></span> Ngày tạo</th>
@@ -43,6 +45,8 @@
                         <td><a href="<?php echo $this->Url('products', ['name'=>$row['product_slug']])?>" target="_blank"><b><?php echo $row['product_name'];?></b></a></td>
                         <td class="center"><b><?php echo $row['product_code'];?></b></td>
                         <td class="center"><?php echo $this->categories[$row['cate_id']]['cate_name'];?></td>
+                        <td class="center"><?php echo empty($this->brands[$row['brand_id']]['brand_name']) ? 'Không xác định' : $this->brands[$row['brand_id']]['brand_name'];?></td>
+                        <td class="center"><?php echo empty($this->brands[$row['brand_id']]) || empty($this->countries[$this->brands[$row['brand_id']]['country_id']]['country_name']) ? 'Không xác định' : $this->countries[$this->brands[$row['brand_id']]['country_id']]['country_name'];?></td>
                         <td class="center"><b class="red"><?php echo number_format($row['price']);?></b></td>
                         <td class="center"><?php echo number_format($row['price_cost']);?></td>
                         <td class="center"><?php echo date('Y-m-d',$row['created_date']);?></td>

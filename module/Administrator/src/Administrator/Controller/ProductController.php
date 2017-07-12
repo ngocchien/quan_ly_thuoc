@@ -20,9 +20,9 @@ class ProductController extends MyController {
             $params['not_status'] = Model\Product::PRODUCT_STATUS_REMOVE;
             $products = Business\Product::get($params);
 
-            $categories = $users = [];
+            $categories = $users = $brands = $countries = [];
             if(!empty($products['rows'])){
-                $arr_cate_id = $arr_user_id = [];
+                $arr_cate_id = $arr_user_id = $brand_id = $country_id = [];
                 foreach ($products['rows'] as $row){
                     if(!in_array($row['cate_id'],$arr_cate_id)){
                         $arr_cate_id[] = $row['cate_id'];
@@ -30,6 +30,10 @@ class ProductController extends MyController {
 
                     if(!in_array($row['user_created'],$arr_user_id)){
                         $arr_user_id[] = $row['user_created'];
+                    }
+
+                    if(!empty($row['brand_id']) && !in_array($row['brand_id'], $brand_id)){
+                        $brand_id[] = $row['brand_id'];
                     }
                 }
 
@@ -56,6 +60,33 @@ class ProductController extends MyController {
                         }
                     }
                 }
+
+                if(!empty($brand_id)){
+                    $result = Business\Brand::getList([
+                        'in_brand_id' => $brand_id,
+                        'limit' => 1000
+                    ]);
+                    if(!empty($result['rows'])){
+                        foreach ($result['rows'] as $row){
+                            $brands[$row['brand_id']] = $row;
+                            if(!empty($row['country_id']) && !in_array($row['country_id'], $country_id)){
+                                $country_id[] = $row['country_id'];
+                            }
+                        }
+                    }
+                    if(!empty($country_id)){
+                        $result = Business\Country::getList([
+                            'in_country_id' => $country_id,
+                            'limit' => 1000
+                        ]);
+
+                        if(!empty($result['rows'])){
+                            foreach ($result['rows'] as $row){
+                                $countries[$row['country_id']] = $row;
+                            }
+                        }
+                    }
+                }
             }
 
             return [
@@ -63,7 +94,9 @@ class ProductController extends MyController {
                 'products' => $products,
                 'categories' => $categories,
                 'renderStatus' => Model\Product::renderStatus(),
-                'users' => $users
+                'users' => $users,
+                'brands' => $brands,
+                'countries' => $countries
             ];
         } catch (\Exception $e) {
             throw new \Exception($e->getMessage(), $e->getCode());

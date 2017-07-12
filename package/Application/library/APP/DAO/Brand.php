@@ -133,6 +133,10 @@ class Brand extends AbstractDAO
             $strWhere .= ' AND brand_id != '.$params['not_brand_id'];
         }
 
+        if(!empty($params['in_brand_id'])){
+            $strWhere .= ' AND brand_id IN ('. implode(',',$params['in_brand_id']).')';
+        }
+
         if(!empty($params['search'])){
             $params['search'] = trim(strip_tags($params['search']));
             if(is_numeric($params['search'])){

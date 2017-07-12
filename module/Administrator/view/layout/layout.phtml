@@ -54,7 +54,7 @@ $action = ACTION;
                 <div class="page-header position-relative" style="margin-bottom: 0">
                     <h1 class="header-title-top">
                         <small>
-                            <?php echo $this->translator($module . ':'. $controller); ?>
+                            <a href="<?php echo $this->Url('administrator', ['controller'=>$controller])?>"><?php echo $this->translator($module . ':'. $controller); ?></a>
                             <i class="icon-double-angle-right"></i>
                             <?php echo $this->translator($module . ':' . $controller . ':' . $action); ?>
                         </small>
