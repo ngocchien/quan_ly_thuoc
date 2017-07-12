@@ -51,6 +51,13 @@
                 </span>
 
                 <span class="block input-icon input-icon-right">
+                    <label>Số lô<span class="red">(*)</span></label>
+                     <input name="production_batch" type="text" class="span12" placeholder="Nhập số lô sản xuất" required
+                            value="<?php echo empty($this->params['production_batch']) ? '' : $this->params['production_batch']?>"
+                     >
+                </span>
+
+                <span class="block input-icon input-icon-right">
                     <label>Bật thông báo sắp hết hạn sử dụng trước bao nhiêu ngày?<span class="red">(*)</span></label>
                      <input name="flag_notify" type="number" class="span12" placeholder="Nhập ngày bắt đầu cảnh báo trước khi hết hạn" required
                             value="<?php echo empty($this->params['flag_notify']) ? '' : $this->params['flag_notify']?>"

@@ -30,6 +30,7 @@
                     <th class="center"><span class="icon icon-user"></span>Người nhập</th>
                     <th class="center"><span class="icon icon-calendar"></span> NSX</th>
                     <th class="center"><span class="icon icon-calendar"></span> HSD</th>
+                    <th class="center"><span class="icon icon-barcode"></span> Số lô SX</th>
                     <th class="center"><span class="icon icon-spin"></span> Thông báo</th>
                     <th class="center"><span class="icon icon-gears"></span> Tùy chỉnh</th>
                 </tr>
@@ -53,6 +54,7 @@
                         <td class="center"><?php echo !empty($this->users[$row['user_created']]) ? $this->users[$row['user_created']]['full_name'] : ''?></td>
                         <td class="center"><?php echo date('d-m-Y',$row['nsx']);?></td>
                         <td class="center"><b class="red"><?php echo date('d-m-Y',$row['hsd']);?></b></td>
+                        <td class="center"><?php echo empty($row['production_batch']) ? '' : $row['production_batch'];?></td>
                         <td class="center"><?php echo $row['flag_notify'];?></td>
                         <td class="center">
                             <?php if($is_bell):?>

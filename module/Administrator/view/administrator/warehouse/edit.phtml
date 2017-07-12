@@ -5,6 +5,7 @@
     $nsx = !empty($this->params['nsx']) ? $this->params['nsx']: date('d/m/Y',$this->warehouse['nsx']);
     $hsd = !empty($this->params['hsd']) ? $this->params['hsd']: date('d/m/Y',$this->warehouse['hsd']);
     $flag_notify = !empty($this->params['flag_notify']) ? $this->params['flag_notify']: $this->warehouse['flag_notify'];
+    $production_batch = !empty($this->params['production_batch']) ? $this->params['production_batch']: $this->warehouse['production_batch'];
 ?>
 <div class="data-view" data-view="administrator/warehouse/edit">
     <div class="cat-content">
@@ -55,6 +56,13 @@
                     <label>Hạn sử dụng<span class="red">(*)</span></label>
                      <input name="hsd" type="text" class="span12 datetimepicker" placeholder="Nhập ngày hết hạn" required
                             value="<?php echo $hsd;?>"
+                     >
+                </span>
+
+                <span class="block input-icon input-icon-right">
+                    <label>Số lô<span class="red">(*)</span></label>
+                     <input name="production_batch" type="text" class="span12" placeholder="Nhập số lô sản xuất" required
+                            value="<?php echo $production_batch;?>"
                      >
                 </span>
 

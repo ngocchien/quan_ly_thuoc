@@ -28,6 +28,7 @@ class Warehouse
         $quantity = (int) $params['quantity'];
         $flag_notify = (int) $params['flag_notify'];
         $properties_id = $params['properties_id'];
+        $production_batch = empty($params['production_batch']) ? '' : $params['production_batch'];
 
         if($quantity < 0){
             $params['error'] = 'Nhập số lượng không hợp lệ';
@@ -43,6 +44,7 @@ class Warehouse
             $params['error'] = 'Nhập ngày thông báo hết hạn không hợp lệ';
             return $params;
         }
+
         $id = Model\Warehouse::create([
             'user_created' => USER_ID,
             'created_date' => time(),
@@ -52,7 +54,8 @@ class Warehouse
             'product_id' => $product_id,
             'quantity' => $quantity,
             'flag_notify' => $flag_notify,
-            'properties_id' => $properties_id
+            'properties_id' => $properties_id,
+            'production_batch' => $production_batch
         ]);
 
         if (!$id) {
@@ -107,6 +110,8 @@ class Warehouse
         list($day,$month,$year) = explode('/', $params['hsd']);
         $hsd = mktime(0, 0, 0, $month, $day, $year);
 
+        $production_batch = empty($params['production_batch']) ? '' : $params['production_batch'];
+
         if($quantity < 0){
             $params['error'] = 'Nhập số lượng không hợp lệ';
             return $params;
@@ -125,7 +130,8 @@ class Warehouse
             'hsd' => $hsd,
             'product_id' => $product_id,
             'quantity' => $quantity,
-            'flag_notify' => $flag_notify
+            'flag_notify' => $flag_notify,
+            'production_batch' => $production_batch
         ], $warehouse_id);
 
         if (!$updated) {
@@ -221,10 +227,6 @@ class Warehouse
         ],[
             $id
         ]);
-        echo '<pre>';
-        print_r($status);
-        echo '</pre>';
-        die();
 
         if(!$status){
             return [
