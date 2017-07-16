@@ -41,6 +41,8 @@ class GroupController extends MyController
                     }
                 }
             }
+
+            $params['total'] = $groups['total'];
             return [
                 'params' => $params,
                 'groups' => $groups,

@@ -59,7 +59,7 @@ class Brand
     }
 
     public static function getList($params){
-        $limit = empty($params['limit']) ? 100 : (int) $params['limit'];
+        $limit = empty($params['limit']) ? 10 : (int) $params['limit'];
         $page = empty($params['page']) ? 1 : (int)$params['page'];
         $offset = $limit * ($page - 1);
         $params['offset'] = $offset;

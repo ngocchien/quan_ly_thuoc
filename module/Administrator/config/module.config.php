@@ -7,129 +7,144 @@
 
 namespace Administrator;
 
-use Zend\Router\Http\Literal;
+//use Zend\Router\Http\Literal;
 use Zend\Router\Http\Segment;
 
 return [
     'router' => [
         'routes' => [
-	        'administrator' => array(
-		        'type' => Segment::class,
-		        'options' => array(
-			        'route' => '/admin[/:controller][/:action]',
-			        'defaults' => array(
-			            'module' => 'administrator',
-				        'controller' => 'Administrator\Controller\Index',
-				        'action'        => 'index'
-			        ),
+            'administrator' => array(
+                'type' => Segment::class,
+                'options' => array(
+                    'route' => '/admin[/:controller][/:action]',
+                    'defaults' => array(
+                        'module' => 'administrator',
+                        'controller' => 'Administrator\Controller\Index',
+                        'action'        => 'index',
+                        'route' => 'administrator',
+                        'strController' => 'index',
+                    ),
                     'constraints' => array(
                         'controller' => '[a-zA-Z0-9_-]*',
                         'action' => '[a-zA-Z0-9_-]*'
                     ),
-		        ),
-	        ),
-	        'administratorUser' => array(
-		        'type' => Segment::class,
-		        'options' => array(
-			        'route' => '/admin/user[/:action][/:id][/:page][/:limit]',
-			        'constraints' => array(
-				        'id' => '[0-9]+',
-				        'page' => '[0-9]+',
-				        'limit' => '[0-9]+',
+                ),
+            ),
+            'administratorUser' => array(
+                'type' => Segment::class,
+                'options' => array(
+                    'route' => '/admin/user[/:action][/:id][/:page][/:limit]',
+                    'constraints' => array(
+                        'id' => '[0-9]+',
+                        'page' => '[0-9]+',
+                        'limit' => '[0-9]+',
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*'
-			        ),
-			        'defaults' => array(
+                    ),
+                    'defaults' => array(
                         'module' => 'Administrator',
-				        'controller' => 'Administrator\Controller\User',
-				        'action'        => 'index',
+                        'controller' => 'Administrator\Controller\User',
+                        'action'        => 'index',
+                        'strController' => 'user',
                         'page' => 1,
                         'limit' => 10,
-			        ),
-		        ),
-	        ),
-	        'administratorBanner' => array(
-		        'type' => Segment::class,
-		        'options' => array(
-			        'route' => '/admin/banner[/:action][/:id]',
-			        'constraints' => array(
-				        'id' => '[0-9]+',
-			        ),
-			        'defaults' => array(
+                        'route' => 'administratorUser'
+                    ),
+                ),
+            ),
+            'administratorBanner' => array(
+                'type' => Segment::class,
+                'options' => array(
+                    'route' => '/admin/banner[/:action][/:id]',
+                    'constraints' => array(
+                        'id' => '[0-9]+',
+                    ),
+                    'defaults' => array(
                         'module' => 'administrator',
-				        'controller' => 'Administrator\Controller\Banner',
-				        'action'        => 'index'
-			        ),
-		        ),
-	        ),
-	        'administratorCategory' => array(
-		        'type' => Segment::class,
-		        'options' => array(
-			        'route' => '/admin/category[/:action][/:id]',
-			        'constraints' => array(
-				        'id' => '[0-9]+',
-			        ),
-			        'defaults' => array(
+                        'controller' => 'Administrator\Controller\Banner',
+                        'action'        => 'index',
+                        'strController' => 'banner',
+                        'route' => 'administratorBanner'
+                    ),
+                ),
+            ),
+            'administratorCategory' => array(
+                'type' => Segment::class,
+                'options' => array(
+                    'route' => '/admin/category[/:action][/id/:id][/page/:page][/limit/:limit]',
+                    'constraints' => array(
+                        'id' => '[0-9]+',
+                        'page' => '[0-9]+'
+                    ),
+                    'defaults' => array(
                         'module' => 'administrator',
-				        'controller' => 'Administrator\Controller\Category',
-				        'action'        => 'index'
-			        ),
-		        ),
-	        ),
-	        'administratorMenu' => array(
-		        'type' => Segment::class,
-		        'options' => array(
-			        'route' => '/admin/menu[/:action][/:id]',
-			        'constraints' => array(
-				        'id' => '[0-9]+',
-			        ),
-			        'defaults' => array(
+                        'controller' => 'Administrator\Controller\Category',
+                        'action'        => 'index',
+                        'route' => 'administratorCategory',
+                        'strController' => 'Category',
+                    ),
+                ),
+            ),
+            'administratorMenu' => array(
+                'type' => Segment::class,
+                'options' => array(
+                    'route' => '/admin/menu[/:action][/id/:id][/page/:page][/limit/:limit]',
+                    'constraints' => array(
+                        'id' => '[0-9]+',
+                    ),
+                    'defaults' => array(
                         'module' => 'administrator',
-				        'controller' => 'Administrator\Controller\Menu',
-				        'action'        => 'index'
-			        ),
-		        ),
-	        ),
-	        'administratorPost' => array(
-		        'type' => Segment::class,
-		        'options' => array(
-			        'route' => '/admin/post[/:action][/:id]',
-			        'constraints' => array(
-				        'id' => '[0-9]+',
-			        ),
-			        'defaults' => array(
+                        'controller' => 'Administrator\Controller\Menu',
+                        'action'        => 'index',
+                        'strController' => 'menu',
+                        'route' => 'administratorMenu'
+                    ),
+                ),
+            ),
+            'administratorPost' => array(
+                'type' => Segment::class,
+                'options' => array(
+                    'route' => '/admin/post[/:action][/:id]',
+                    'constraints' => array(
+                        'id' => '[0-9]+',
+                    ),
+                    'defaults' => array(
                         'module' => 'administrator',
-				        'controller' => 'Administrator\Controller\Post',
-				        'action'        => 'index'
-			        ),
-		        ),
-	        ),
-	        'administratorProduct' => array(
-		        'type' => Segment::class,
-		        'options' => array(
-			        'route' => '/admin/product[/:action][/:id]',
-			        'constraints' => array(
-				        'id' => '[0-9]+',
-			        ),
-			        'defaults' => array(
+                        'controller' => 'Administrator\Controller\Post',
+                        'action'        => 'index',
+                        'strController' => 'post',
+                        'route' => 'administratorPost'
+                    ),
+                ),
+            ),
+            'administratorProduct' => array(
+                'type' => Segment::class,
+                'options' => array(
+                    'route' => '/admin/product[/:action][/id/:id][/page/:page][/limit/:limit]',
+                    'constraints' => array(
+                        'id' => '[0-9]+',
+                    ),
+                    'defaults' => array(
                         'module' => 'administrator',
-				        'controller' => 'Administrator\Controller\Product',
-				        'action'        => 'index'
-			        ),
-		        ),
-	        ),
-	        'administratorIndexRestApi' => array(
-		        'type' => Segment::class,
-		        'options' => array(
+                        'controller' => 'Administrator\Controller\Product',
+                        'action'        => 'index',
+                        'strController' => 'product',
+                        'route' => 'administratorProduct'
+                    ),
+                ),
+            ),
+            'administratorIndexRestApi' => array(
+                'type' => Segment::class,
+                'options' => array(
                     'module' => 'administrator',
-			        'route' => '/api/administrator/index[/:id]',
-			        'constraints' => array(
-				        'id' => '[0-9]+',
-			        ),
-			        'defaults' => array(
-				        'controller' => 'Administrator\Controller\IndexRest',
-			        ),
-		        ),
-	        ),
+                    'route' => '/api/administrator/index[/:id]',
+                    'constraints' => array(
+                        'id' => '[0-9]+',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Administrator\Controller\IndexRest',
+                    ),
+                ),
+            ),
             'administratorAuth' => array(
                 'type' => Segment::class,
                 'options' => array(
@@ -146,7 +161,7 @@ return [
                 'type' => Segment::class,
                 'options' => array(
                     'module' => 'administrator',
-                    'route' => '/admin/group[/:action][/:id]',
+                    'route' => '/admin/group[/:action][/id/:id][/page/:page][/limit/:limit]',
                     'constraints' => array(
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id' => '[0-9]+',
@@ -154,7 +169,9 @@ return [
                     'defaults' => array(
                         'module' => 'administrator',
                         'controller' => 'Administrator\Controller\Group',
-                        'action'        => 'index'
+                        'action'        => 'index',
+                        'strController' => 'group',
+                        'route' => 'administratorGroup'
                     ),
                 ),
             ),
@@ -175,23 +192,23 @@ return [
                     ),
                 ),
             ),
-	        'administratorUploadsRestApi' => array(
-		        'type' => Segment::class,
-		        'options' => array(
-			        'route' => '/api/administrator/uploads[/:id]',
-			        'constraints' => array(
-				        'id' => '[0-9]+',
-			        ),
-			        'defaults' => array(
-				        'controller' => 'Administrator\Controller\UploadsRest',
-			        ),
-		        ),
-	        ),
+            'administratorUploadsRestApi' => array(
+                'type' => Segment::class,
+                'options' => array(
+                    'route' => '/api/administrator/uploads[/:id]',
+                    'constraints' => array(
+                        'id' => '[0-9]+',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Administrator\Controller\UploadsRest',
+                    ),
+                ),
+            ),
             'administratorBrand' => array(
                 'type' => Segment::class,
                 'options' => array(
                     'module' => 'administrator',
-                    'route' => '/admin/brand[/:action][/:id]',
+                    'route' => '/admin/brand[/:action][/id/:id][/page/:page][/limit/:limit]',
                     'constraints' => array(
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id' => '[0-9]+',
@@ -199,7 +216,9 @@ return [
                     'defaults' => array(
                         'module' => 'administrator',
                         'controller' => 'Administrator\Controller\Brand',
-                        'action'        => 'index'
+                        'action'        => 'index',
+                        'strController' => 'brand',
+                        'route' => 'administratorBrand'
                     ),
                 ),
             ),
@@ -207,7 +226,7 @@ return [
                 'type' => Segment::class,
                 'options' => array(
                     'module' => 'administrator',
-                    'route' => '/admin/properties[/:action][/:id]',
+                    'route' => '/admin/properties[/:action][/id/:id][/page/:page][/limit/:limit]',
                     'constraints' => array(
                         'action' => '[a-zA-Z0-9_-]*',
                         'id' => '[0-9]+',
@@ -215,7 +234,9 @@ return [
                     'defaults' => array(
                         'module' => 'administrator',
                         'controller' => 'Administrator\Controller\Properties',
-                        'action'        => 'index'
+                        'action'        => 'index',
+                        'strController' => 'properties',
+                        'route' => 'administratorProperties'
                     ),
                 ),
             ),
@@ -223,7 +244,7 @@ return [
                 'type' => Segment::class,
                 'options' => array(
                     'module' => 'administrator',
-                    'route' => '/admin/warehouse[/:action][/:id]',
+                    'route' => '/admin/warehouse[/:action][/id/:id][/page/:page][/limit/:limit]',
                     'constraints' => array(
                         'action' => '[a-zA-Z0-9_-]*',
                         'id' => '[0-9]+',
@@ -231,7 +252,9 @@ return [
                     'defaults' => array(
                         'module' => 'administrator',
                         'controller' => 'Administrator\Controller\Warehouse',
-                        'action'        => 'index'
+                        'action'        => 'index',
+                        'strController' => 'warehouse',
+                        'route' => 'administratorWarehouse'
                     ),
                 ),
             ),
@@ -239,7 +262,7 @@ return [
                 'type' => Segment::class,
                 'options' => array(
                     'module' => 'administrator',
-                    'route' => '/admin/invoice[/:action][/:id]',
+                    'route' => '/admin/invoice[/:action][/id/:id][/page/:page][/limit/:limit]',
                     'constraints' => array(
                         'action' => '[a-zA-Z0-9_-]*',
                         'id' => '[0-9]+',
@@ -247,7 +270,9 @@ return [
                     'defaults' => array(
                         'module' => 'administrator',
                         'controller' => 'Administrator\Controller\Invoice',
-                        'action'        => 'index'
+                        'action'        => 'index',
+                        'strController' => 'invoice',
+                        'route' => 'administratorInvoice'
                     ),
                 ),
             ),
@@ -270,16 +295,16 @@ return [
     ),
     'controllers' => [
         'invokables' => array(
-	        'Administrator\Controller\Index' => 'Administrator\Controller\IndexController',
-	        'Administrator\Controller\User' => 'Administrator\Controller\UserController',
-	        'Administrator\Controller\Group' => 'Administrator\Controller\GroupController',
-	        'Administrator\Controller\Banner' => 'Administrator\Controller\BannerController',
-	        'Administrator\Controller\Category' => 'Administrator\Controller\CategoryController',
-	        'Administrator\Controller\Menu' => 'Administrator\Controller\MenuController',
-	        'Administrator\Controller\Post' => 'Administrator\Controller\PostController',
-	        'Administrator\Controller\Product' => 'Administrator\Controller\ProductController',
-	        'Administrator\Controller\IndexRest' => 'Administrator\Controller\IndexRestController',
-	        'Administrator\Controller\Auth' => 'Administrator\Controller\AuthController',
+            'Administrator\Controller\Index' => 'Administrator\Controller\IndexController',
+            'Administrator\Controller\User' => 'Administrator\Controller\UserController',
+            'Administrator\Controller\Group' => 'Administrator\Controller\GroupController',
+            'Administrator\Controller\Banner' => 'Administrator\Controller\BannerController',
+            'Administrator\Controller\Category' => 'Administrator\Controller\CategoryController',
+            'Administrator\Controller\Menu' => 'Administrator\Controller\MenuController',
+            'Administrator\Controller\Post' => 'Administrator\Controller\PostController',
+            'Administrator\Controller\Product' => 'Administrator\Controller\ProductController',
+            'Administrator\Controller\IndexRest' => 'Administrator\Controller\IndexRestController',
+            'Administrator\Controller\Auth' => 'Administrator\Controller\AuthController',
             'Administrator\Controller\Permission' => 'Administrator\Controller\PermissionController',
             'Administrator\Controller\Brand' => 'Administrator\Controller\BrandController',
             'Administrator\Controller\Properties' => 'Administrator\Controller\PropertiesController',
@@ -296,6 +321,7 @@ return [
         'invokables' => array(
             'translator' => 'APP\Helper\Translator',
             'paging' => 'APP\Helper\Paging',
+            'pagingText' => 'APP\Helper\PagingText',
         )
     ),
     'view_manager' => [
@@ -310,13 +336,13 @@ return [
         'not_found_template'       => 'error/404',
         'exception_template'       => 'error/index',
         'template_map' => [
-	        'administrator/layout'    => __DIR__ . '/../view/layout/layout.phtml',
-	        'administrator/header'    => __DIR__ . '/../view/layout/header.phtml',
-	        'administrator/left_menu'    => __DIR__ . '/../view/layout/left-menu.phtml',
-	        'administrator/footer'    => __DIR__ . '/../view/layout/footer.phtml',
-	        'error/404'               => __DIR__ . '/../view/error/404.phtml',
-	        'error/index'             => __DIR__ . '/../view/error/index.phtml',
-	        'error/access-deni'             => __DIR__ . '/../view/error/access-deni.phtml',
+            'administrator/layout'    => __DIR__ . '/../view/layout/layout.phtml',
+            'administrator/header'    => __DIR__ . '/../view/layout/header.phtml',
+            'administrator/left_menu'    => __DIR__ . '/../view/layout/left-menu.phtml',
+            'administrator/footer'    => __DIR__ . '/../view/layout/footer.phtml',
+            'error/404'               => __DIR__ . '/../view/error/404.phtml',
+            'error/index'             => __DIR__ . '/../view/error/index.phtml',
+            'error/access-deni'             => __DIR__ . '/../view/error/access-deni.phtml',
             'administrator/login'    => __DIR__ . '/../view/layout/login.phtml',
         ],
         'template_path_stack' => [

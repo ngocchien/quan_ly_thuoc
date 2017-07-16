@@ -40,13 +40,15 @@ class UserController extends MyController
 //            $intPage = empty($params['page']) ? 1 : (int) $params['page'];
 //            $intLimit = empty($params['limit']) ? 10 : (int) $params['limit'];
 
-            $route = $this->getEvent()->getRouteMatch()->getMatchedRouteName();
+//            $route = $this->getEvent()->getRouteMatch()->getMatchedRouteName();
+
+            $params['total'] = $users['total'];
 
             return [
                 'params' => $params,
                 'users' => $users,
                 'groups' => $groups,
-                'route' => $route
+//                'route' => $route
             ];
 
         } catch (\Exception $e) {

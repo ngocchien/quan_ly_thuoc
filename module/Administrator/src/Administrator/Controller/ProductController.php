@@ -89,6 +89,8 @@ class ProductController extends MyController {
                 }
             }
 
+            $params['total'] = $products['total'];
+
             return [
                 'params' => $params,
                 'products' => $products,

@@ -64,6 +64,16 @@
                 <?php endforeach; endif;?>
                 </tbody>
             </table>
+            <?php
+            if(!empty($this->products)) {
+                $params = $this->params;
+                $params['controller'] = $params['strController'];
+                $paging = $this->pagingText($params);
+                if (!empty($paging)) {
+                    echo $paging;
+                }
+            }
+            ?>
         </form>
     </div>
 </div>

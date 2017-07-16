@@ -67,9 +67,18 @@
                                 <a class="btn-circle delete" data-toggle="tooltip" rel="<?php echo $category['cate_id']?>" title="Xóa danh mục"><i class="icon icon-trash"></i></a>
                             </td>
                         </tr>
-                    <?php endforeach; endif;?>
+                    <?php endforeach;?>
+                    <?php endif;?>
                 </tbody>
             </table>
+            <?php
+            $params = $this->params;
+            $params['controller'] = $params['strController'];
+            $paging = $this->pagingText($params);
+            if(!empty($paging)){
+                echo $paging;
+            }
+            ?>
         </form>
     </div>
 </div>

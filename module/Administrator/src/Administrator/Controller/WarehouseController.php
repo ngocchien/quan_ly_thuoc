@@ -72,6 +72,8 @@ class WarehouseController extends MyController
             }
         }
 
+        $params['total'] = $warehouses['total'];
+
         return [
             'params' => $params,
             'warehouses' => $warehouses,

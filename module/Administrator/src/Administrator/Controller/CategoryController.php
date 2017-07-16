@@ -11,13 +11,13 @@ namespace Administrator\Controller;
 use APP\Controller\MyController;
 use APP\Business;
 use APP\Model;
+use APP\Helper\PagingText;
 
 class CategoryController extends MyController {
 
 	public function indexAction() {
         $params = array_merge($this->params()->fromRoute(),$this->params()->fromQuery());
         $params['not_status'] = Model\Category::CATEGORY_STATUS_REMOVE;
-
         //get list
         $categories = Business\Category::getList($params);
 
@@ -40,6 +40,7 @@ class CategoryController extends MyController {
             }
         }
 
+        $params['total'] = $categories['total'];
         //get list category
         return [
             'params' => $params,

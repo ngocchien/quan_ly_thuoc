@@ -43,6 +43,8 @@ class PropertiesController extends MyController
             }
         }
 
+        $params['total'] = $properties['total'];
+
         return [
             'params' => $params,
             'properties' => $properties,

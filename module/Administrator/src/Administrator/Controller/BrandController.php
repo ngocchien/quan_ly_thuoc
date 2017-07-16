@@ -59,6 +59,8 @@ class BrandController extends MyController
             }
         }
 
+        $params['total'] = $brands['total'];
+
         return [
             'params' => $params,
             'brands' => $brands,
