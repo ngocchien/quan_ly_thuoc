@@ -11,6 +11,7 @@ namespace APP\DAO;
 use APP\Database;
 use Zend\Db\Sql\Sql;
 use Zend\Validator\Digits;
+use Zend\Db\Sql\Expression;
 
 
 class User extends AbstractDAO
@@ -41,7 +42,25 @@ class User extends AbstractDAO
 
 			$result = $statement->execute();
 
-			return self::_transform($result);
+            $arr_result = [
+                'total' => 0,
+                'rows' => self::_transform($result)
+            ];
+            unset($result);
+
+            //get count
+            $select = $sql->select()
+                ->from(self::TABLE_NAME)
+                ->columns(array('total' => new Expression('COUNT(*)')))
+                ->where($strWhere);
+            $statement = $sql->prepareStatementForSqlObject($select);
+            $result = $statement->execute();
+
+            $arr_result['total'] = $result->current()['total'];
+
+            unset($result);
+            return $arr_result;
+
 		} catch (\Exception $e) {
 		    if(APPLICATION_ENV != 'production'){
                 echo '<pre>';

@@ -19,6 +19,8 @@ class CategoryController extends MyController {
         $params = array_merge($this->params()->fromRoute(),$this->params()->fromQuery());
         $params['not_status'] = Model\Category::CATEGORY_STATUS_REMOVE;
         //get list
+        $params['limit'] = 1;
+//        $categories = Business\Category::getList($params);
         $categories = Business\Category::getList($params);
 
         $arr_user_id = $users = [];

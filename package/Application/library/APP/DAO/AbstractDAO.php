@@ -12,26 +12,22 @@ abstract class AbstractDAO
         return $adapter;
     }
 
-    protected static function _transform(&$result)
+    protected static function _transform($result)
     {
         $rows = array();
         if ($result instanceof ResultInterface && $result->isQueryResult()) {
             $resultSet = new ResultSet;
             $resultSet->initialize($result);
 
-            $data = $resultSet->toArray();
+            $rows = $resultSet->toArray();
 
             if(!empty($data)){
                 foreach($data as &$value){
-
                     $value = array_change_key_case($value, CASE_LOWER);
                 }
             }
-            $rows['rows'] = $data;
-            $rows['total'] = $resultSet->count();
             unset($resultSet);
         }
-
         return $rows;
     }
 }
