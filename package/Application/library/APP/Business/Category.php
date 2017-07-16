@@ -77,7 +77,7 @@ class Category
         $offset = $limit * ($page - 1);
         $params['offset'] = $offset;
         $params['limit'] = $limit;
-        $params['order'] = 'full_sort ASC';
+        $params['order'] = 'full_sort ASC, cate_id DESC';
         $result = Model\Category::get($params);
         return $result;
     }
