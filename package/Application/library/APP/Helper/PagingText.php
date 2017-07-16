@@ -89,13 +89,14 @@ class PagingText extends AbstractHelper {
                     $result .= '<li class="paginate_button" aria-controls="dynamic-table" tabindex="0"><a class="page-link" href="' . $serverUrl . $urlHelper($strRoute, $arrCondition) . '">Cuối »</a></li>';
                 }
                 $result .= '</ul>';
-                $result .='<div class="pull-right" style="margin-right: -500px; margin-top: 10px; margin-bottom: 10px">';
-                $from = ($intLimit * ($intCurrentPage - 1)) + 1;
-                $tmp1 = 'Hiển thị từ ' . $from . ' đến ';
-                $tmp2 = ($intLimit * $intCurrentPage > $intTotal) ? number_format($intTotal, 0, ',', '.') : $intLimit * $intCurrentPage;
-                $tmp3 = ' trong tổng số ' . number_format($intTotal, 0, ',', '.') . ' ' . $str;
-                $from == $intTotal ? $result .= $str . ' cuối cùng trong tổng số ' . number_format($intTotal, 0, ',', '.') . ' ' . $str : $result .= $tmp1 . $tmp2 . $tmp3;
-                $result .= '</div></div>';
+//                $result .='<div class="pull-right" style="margin-right: -500px; margin-top: 10px; margin-bottom: 10px">';
+//                $from = ($intLimit * ($intCurrentPage - 1)) + 1;
+//                $tmp1 = 'Hiển thị từ ' . $from . ' đến ';
+//                $tmp2 = ($intLimit * $intCurrentPage > $intTotal) ? number_format($intTotal, 0, ',', '.') : $intLimit * $intCurrentPage;
+//                $tmp3 = ' trong tổng số ' . number_format($intTotal, 0, ',', '.') . ' ' . $str;
+//                $from == $intTotal ? $result .= $str . ' cuối cùng trong tổng số ' . number_format($intTotal, 0, ',', '.') . ' ' . $str : $result .= $tmp1 . $tmp2 . $tmp3;
+//                $result .= '</div></div>';
+                $result .= '</div>';
 
                 ##################################################
             } elseif ($strModule === 'application') {
