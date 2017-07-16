@@ -17,9 +17,7 @@ return array(
                 'username' => 'root',
                 'password' => '123123',
                 'charset' => 'utf8',
-                'options' => array(
-                    'buffer_result' => true
-                )
+                'options' => array('buffer_results' => true)
             )
         )
     )

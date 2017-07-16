@@ -27,10 +27,9 @@ abstract class AbstractDAO
                     $value = array_change_key_case($value, CASE_LOWER);
                 }
             }
-
             $rows['rows'] = $data;
-            $rows['total'] = count($data);
-
+            $rows['total'] = $resultSet->count();
+            unset($resultSet);
         }
 
         return $rows;
