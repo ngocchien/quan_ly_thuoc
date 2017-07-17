@@ -41,8 +41,12 @@
                         $flag_notify = $row['flag_notify'];
                         $is_notify = empty($row['is_notify']) ? 0 : $row['is_notify'];
                         $is_bell = false;
-                        if($row['hsd'] - time() <= $flag_notify * 60*60*24 && $is_notify){
+                        $icon = '';
+                        if($row['hsd'] > time() && $row['hsd'] - time() <= $flag_notify * 60*60*24 && $is_notify){
                             $is_bell = true;
+                            $icon = 'icon icon-bell-alt';
+                        }elseif($row['hsd'] < time()){
+                            $icon = 'icon icon-frown';
                         }
                     ?>
                     <tr>
@@ -59,8 +63,12 @@
                         <td class="center">
                             <?php if($is_bell):?>
                             <a data-toggle="tooltip" title="Thuốc sắp hết hạn" class="btn btn-small btn-primary">
-                                <i class="icon icon-bell-alt"></i>
+                                <i class="<?php echo $icon;?>"></i>
                             </a>
+                            <?php elseif (!empty($icon)):;?>
+                                <a data-toggle="tooltip" title="Thuốc đã hết hạn" class="btn btn-small btn-primary">
+                                    <i class="<?php echo $icon;?>"></i>
+                                </a>
                             <?php endif;?>
                             <a data-toggle="tooltip" title="Cập nhật" class="btn btn-small btn-primary" href="<?php echo $this->Url('administratorWarehouse', ['action'=>'edit', 'id' => $row['warehouse_id']])?>">
                                 <i class="icon icon-edit"></i>
