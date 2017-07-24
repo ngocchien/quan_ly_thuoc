@@ -291,8 +291,8 @@ class WarehouseController extends MyController
 
         if(!empty($product_id)){
             $result = Model\Product::get([
-                'in_id' => array_values($product_id),
-                'limit' => 100,
+                'in_product_id' => array_values($product_id),
+                'limit' => 1000,
                 'offset' => 0
             ]);
 
