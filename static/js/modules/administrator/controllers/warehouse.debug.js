@@ -21,6 +21,14 @@ Controller.define('administrator/warehouse', function () {
                     data: params,
                     dataType : 'json'
                 });
+            },
+            calculatorTotalPrice : function (params) {
+                var unit_price = params.unit_price,
+                    discount = params.discount,
+                    quantity = params.quantity;
+                var price_discount = unit_price*quantity*discount/100,
+                    amount_price = unit_price*quantity;
+                return amount_price-price_discount;
             }
         },
         actions: {
@@ -56,34 +64,98 @@ Controller.define('administrator/warehouse', function () {
                         };
                     self.on('click','.remove-all',function () {
                         removeAll();
+                    }).on('change','.limit-query',function () {
+                        window.location = $(this).val();
                     })
 
                 }
             },
             create : {
                 require: {
-                    scripts: ['bootstrap-datepicker.js', 'bootstrap-select.js'],
-                    stylesheets: ['datepicker.css', 'bootstrap-select.css']
+                    scripts: ['bootstrap-inputmask.js','bootstrap-datepicker.js','bootstrap-datepicker.vi.js', 'bootstrap-select.js'],
+                    stylesheets: ['bootstrap-datepicker.css', 'bootstrap-select.css']
                 },
                 execute: function () {
                     var self = this;
-                    self.find('.datetimepicker').datepicker({
-                        format: 'dd/mm/yyyy'
-                    });
-                    self.find('.select-picker').selectpicker();
+                    var today = new Date();
+                    var calculatorTotalPrice = function () {
+                        var unit_price = +self.find('input[name=unit_price]').val(),
+                            quantity = +self.find('input[name=quantity]').val(),
+                            discount = +self.find('input[name=discount]').val();
+                        var total_price = self.model.calculatorTotalPrice({
+                            unit_price : unit_price,
+                            quantity : quantity,
+                            discount : discount
+                        });
+                        self.find('input[name=total_price]').val(total_price);
+                    };
+                        self.find(".price-mask").inputmask({
+                            alias: 'decimal',
+                            radixPoint: '.',
+                            groupSeparator: ',',
+                            autoGroup: true,
+                            rightAlign: true,
+                            autoUnmask: true,
+                            removeMaskOnSubmit: true,
+                            digits: 0
+                        });
+                        self.find('.datetimepicker').inputmask({"mask": "99/99/9999"});
+                        self.find('input[name=nsx]').datepicker({
+                            format: 'dd/mm/yyyy',
+                            endDate: "today",
+                            maxDate: today
+                        });
+                        self.find('input[name=hsd]').datepicker({
+                            format: 'dd/mm/yyyy',
+                            startDate: "today",
+                            minDate: today
+                        });
+                        self.find('.select-picker').selectpicker();
+                        self.on('keyup' , 'input[name=unit_price],input[name=discount],input[name=quantity]',calculatorTotalPrice);
                 }
             },
             edit : {
                 require: {
-                    scripts: ['bootstrap-datepicker.js', 'bootstrap-select.js'],
-                    stylesheets: ['datepicker.css', 'bootstrap-select.css']
+                    scripts: ['bootstrap-inputmask.js','bootstrap-datepicker.js','bootstrap-datepicker.vi.js', 'bootstrap-select.js'],
+                    stylesheets: ['bootstrap-datepicker.css', 'bootstrap-select.css']
                 },
                 execute: function () {
                     var self = this;
-                    self.find('.datetimepicker').datepicker({
-                        format: 'dd/mm/yyyy'
+                    var today = new Date();
+                    var calculatorTotalPrice = function () {
+                        var unit_price = +self.find('input[name=unit_price]').val(),
+                            quantity = +self.find('input[name=quantity]').val(),
+                            discount = +self.find('input[name=discount]').val();
+                        var total_price = self.model.calculatorTotalPrice({
+                            unit_price : unit_price,
+                            quantity : quantity,
+                            discount : discount
+                        });
+                        self.find('input[name=total_price]').val(total_price);
+                    };
+                    self.find(".price-mask").inputmask({
+                        alias: 'decimal',
+                        radixPoint: '.',
+                        groupSeparator: ',',
+                        autoGroup: true,
+                        rightAlign: true,
+                        autoUnmask: true,
+                        removeMaskOnSubmit: true,
+                        digits: 0
+                    });
+                    self.find('.datetimepicker').inputmask({"mask": "99/99/9999"});
+                    self.find('input[name=nsx]').datepicker({
+                        format: 'dd/mm/yyyy',
+                        endDate: "today",
+                        maxDate: today
+                    });
+                    self.find('input[name=hsd]').datepicker({
+                        format: 'dd/mm/yyyy',
+                        startDate: "today",
+                        minDate: today
                     });
                     self.find('.select-picker').selectpicker();
+                    self.on('keyup' , 'input[name=unit_price],input[name=discount],input[name=quantity]',calculatorTotalPrice);
                 }
             },
             expire: {

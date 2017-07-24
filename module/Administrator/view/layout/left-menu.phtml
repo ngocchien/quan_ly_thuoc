@@ -12,121 +12,64 @@ if (!empty($permission)) {
 
         $per_controller_action[$item['controller']][] = $item['action'];
     }
-}
-
-?>
-<a class="menu-toggler" id="menu-toggler" href="#">
-    <span class="menu-text"></span>
-</a>
-<div class="sidebar" id="sidebar">
-<!--    <div class="sidebar-shortcuts" id="sidebar-shortcuts">-->
-<!--        <div class="sidebar-shortcuts-large" id="sidebar-shortcuts-large">-->
-<!--            <button class="btn btn-small btn-success">-->
-<!--                <i class="icon-signal"></i>-->
-<!--            </button>-->
-<!---->
-<!--            <button class="btn btn-small btn-info">-->
-<!--                <i class="icon-pencil"></i>-->
-<!--            </button>-->
-<!---->
-<!--            <button class="btn btn-small btn-warning">-->
-<!--                <i class="icon-group"></i>-->
-<!--            </button>-->
-<!---->
-<!--            <button class="btn btn-small btn-danger">-->
-<!--                <i class="icon-cogs"></i>-->
-<!--            </button>-->
-<!--        </div>-->
-<!---->
-<!--        <div class="sidebar-shortcuts-mini" id="sidebar-shortcuts-mini">-->
-<!--            <span class="btn btn-success"></span>-->
-<!---->
-<!--            <span class="btn btn-info"></span>-->
-<!---->
-<!--            <span class="btn btn-warning"></span>-->
-<!---->
-<!--            <span class="btn btn-danger"></span>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--    #sidebar-shortcuts-->
-
-    <ul class="nav nav-list">
-<!--        --><?php //if (IS_ADMIN || in_array('hidden', $per_controller)) : ?>
-<!--        --><?php //if (IS_ADMIN || in_array('invoice', $per_controller)) : ?>
-<!--            <li class="--><?php //if ($controller == 'invoice') : ?><!-- active --><?php //endif; ?><!--">-->
-<!--                <a href="#" class="dropdown-toggle">-->
-<!--                    <i class="icon-plus"></i>-->
-<!--                    <span class="menu-text"> Đơn thuốc </span>-->
-<!--                    <b class="arrow icon-angle-down"></b>-->
-<!--                </a>-->
-<!--                <ul class="submenu">-->
-<!--                    --><?php //if (IS_ADMIN || in_array('create', $per_controller_action['invoice'])): ?>
-<!--                        <li --><?php //echo $controller == 'invoice' && $action == 'create' ? 'class="active"' : ''; ?><!-- >-->
-<!--                            <a href="--><?php //echo SITE_URL; ?><!--admin/invoice/create">-->
-<!--                                <i class="icon-double-angle-right"></i>-->
-<!--                                Tạo đơn thuốc-->
-<!--                            </a>-->
-<!--                        </li>-->
-<!--                    --><?php //endif; ?>
-<!--                    --><?php //if (IS_ADMIN || in_array('index', $per_controller_action['invoice'])): ?>
-<!--                        <li --><?php //echo $controller == 'invoice' && $action == 'index' ? 'class="active"' : ''; ?><!-- >-->
-<!--                            <a href="--><?php //echo SITE_URL; ?><!--admin/invoice">-->
-<!--                                <i class="icon-double-angle-right"></i>-->
-<!--                                Danh sách-->
-<!--                            </a>-->
-<!--                        </li>-->
-<!--                    --><?php //endif; ?>
-<!--                </ul>-->
-<!--            </li>-->
-<!--        --><?php //endif; ?>
-
+}?>
+<div id="sidebar" class="sidebar responsive ace-save-state" data-sidebar="true" data-sidebar-scroll="true" data-sidebar-hover="true">
+    <script type="text/javascript">
+        try{ace.settings.loadState('sidebar')}catch(e){}
+    </script>
+    <ul class="nav nav-list" style="top: 0px;">
         <?php if (IS_ADMIN || in_array('category', $per_controller)) : ?>
-            <li class="<?php if ($controller == 'category') : ?> active <?php endif; ?>">
+            <li class="<?php if ($controller == 'category') : ?>active open<?php endif; ?>">
                 <a href="#" class="dropdown-toggle">
-                    <i class="icon-list"></i>
+                    <i class="menu-icon fa fa-list"></i>
                     <span class="menu-text"> Danh mục </span>
-                    <b class="arrow icon-angle-down"></b>
+                    <b class="arrow fa fa-angle-down"></b>
                 </a>
+                <b class="arrow"></b>
                 <ul class="submenu">
                     <?php if (IS_ADMIN || in_array('create', $per_controller_action['category'])): ?>
-                        <li <?php echo $controller == 'category' && $action == 'create' ? 'class="active"' : ''; ?> >
-                            <a href="<?php echo SITE_URL; ?>admin/category/create">
-                                <i class="icon-double-angle-right"></i>
+                        <li <?php echo $controller == 'category' && $action == 'create' ? 'class="active"' : ''; ?>>
+                            <a href="<?php echo $this->Url('administratorCategory', ['action'=>'create']);?>">
+                                <i class="menu-icon fa fa-angle-double-right"></i>
                                 Tạo mới
                             </a>
+                            <b class="arrow"></b>
                         </li>
                     <?php endif; ?>
                     <?php if (IS_ADMIN || in_array('index', $per_controller_action['category'])): ?>
                         <li <?php echo $controller == 'category' && $action == 'index' ? 'class="active"' : ''; ?> >
-                            <a href="<?php echo SITE_URL; ?>admin/category">
-                                <i class="icon-double-angle-right"></i>
+                            <a href="<?php echo $this->Url('administratorCategory')?>">
+                                <i class="menu-icon fa fa-angle-double-right"></i>
                                 Danh sách
                             </a>
+                            <b class="arrow"></b>
                         </li>
                     <?php endif; ?>
                 </ul>
             </li>
         <?php endif; ?>
         <?php if (IS_ADMIN || in_array('brand', $per_controller)) : ?>
-            <li class="<?php if ($controller == 'brand') : ?> active <?php endif; ?>">
+            <li class="<?php if ($controller == 'brand') : ?>active open<?php endif; ?>">
                 <a href="#" class="dropdown-toggle">
-                    <i class="icon-fire"></i>
+                    <i class="menu-icon fa fa-fire"></i>
                     <span class="menu-text"> Nhãn hiệu </span>
-                    <b class="arrow icon-angle-down"></b>
+                    <b class="arrow fa fa-angle-down"></b>
                 </a>
+                <b class="arrow"></b>
                 <ul class="submenu">
                     <?php if (IS_ADMIN || in_array('create', $per_controller_action['brand'])): ?>
                         <li <?php echo $controller == 'brand' && $action == 'create' ? 'class="active"' : ''; ?> >
-                            <a href="<?php echo SITE_URL; ?>admin/brand/create">
-                                <i class="icon-double-angle-right"></i>
+                            <a href="<?php echo $this->Url('administratorBrand', ['action'=>'create']);?>">
+                                <i class="menu-icon fa fa-angle-double-right"></i>
                                 Tạo mới
                             </a>
+                            <b class="arrow"></b>
                         </li>
                     <?php endif; ?>
                     <?php if (IS_ADMIN || in_array('index', $per_controller_action['brand'])): ?>
                         <li <?php echo $controller == 'brand' && $action == 'index' ? 'class="active"' : ''; ?> >
-                            <a href="<?php echo SITE_URL; ?>admin/brand">
-                                <i class="icon-double-angle-right"></i>
+                            <a href="<?php echo $this->Url('administratorBrand')?>">
+                                <i class="menu-icon fa fa-angle-double-right"></i>
                                 Danh sách
                             </a>
                         </li>
@@ -135,25 +78,27 @@ if (!empty($permission)) {
             </li>
         <?php endif; ?>
         <?php if (IS_ADMIN || in_array('properties', $per_controller)) : ?>
-            <li class="<?php if ($controller == 'properties') : ?> active <?php endif; ?>">
+            <li class="<?php if ($controller == 'properties') : ?>active open<?php endif; ?>">
                 <a href="#" class="dropdown-toggle">
-                    <i class="icon-adjust"></i>
+                    <i class="menu-icon fa fa-adjust"></i>
                     <span class="menu-text"><?php echo $this->translator('properties')?></span>
-                    <b class="arrow icon-angle-down"></b>
+                    <b class="arrow fa fa-angle-down"></b>
                 </a>
+                <b class="arrow"></b>
                 <ul class="submenu">
                     <?php if (IS_ADMIN || in_array('create', $per_controller_action['properties'])): ?>
                         <li <?php echo $controller == 'properties' && $action == 'create' ? 'class="active"' : ''; ?> >
-                            <a href="<?php echo SITE_URL; ?>admin/properties/create">
-                                <i class="icon-double-angle-right"></i>
+                            <a href="<?php echo $this->Url('administratorProperties', ['action'=>'create'])?>">
+                                <i class="menu-icon fa fa-angle-double-right"></i>
                                 Tạo mới
                             </a>
+                            <b class="arrow"></b>
                         </li>
                     <?php endif; ?>
                     <?php if (IS_ADMIN || in_array('index', $per_controller_action['properties'])): ?>
                         <li <?php echo $controller == 'properties' && $action == 'index' ? 'class="active"' : ''; ?> >
-                            <a href="<?php echo SITE_URL; ?>admin/properties">
-                                <i class="icon-double-angle-right"></i>
+                            <a href="<?php echo $this->Url('administratorProperties')?>">
+                                <i class="menu-icon fa fa-angle-double-right"></i>
                                 Danh sách
                             </a>
                         </li>
@@ -162,25 +107,27 @@ if (!empty($permission)) {
             </li>
         <?php endif; ?>
         <?php if (IS_ADMIN || in_array('product', $per_controller)) : ?>
-            <li class="<?php if ($controller == 'product') : ?> active <?php endif; ?>">
+            <li class="<?php if ($controller == 'product') : ?>active open<?php endif; ?>">
                 <a href="#" class="dropdown-toggle">
-                    <i class="icon-leaf"></i>
+                    <i class="menu-icon fa fa-leaf"></i>
                     <span class="menu-text"> Thuốc </span>
-                    <b class="arrow icon-angle-down"></b>
+                    <b class="arrow fa fa-angle-down"></b>
                 </a>
+                <b class="arrow"></b>
                 <ul class="submenu">
                     <?php if (IS_ADMIN || in_array('create', $per_controller_action['product'])): ?>
                         <li <?php echo $controller == 'product' && $action == 'create' ? 'class="active"' : ''; ?> >
-                            <a href="<?php echo SITE_URL; ?>admin/product/create">
-                                <i class="icon-double-angle-right"></i>
+                            <a href="<?php echo $this->Url('administratorProduct', ['action'=>'create'])?>">
+                                <i class="menu-icon fa fa-angle-double-right"></i>
                                 Thêm thuốc mới
                             </a>
+                            <b class="arrow"></b>
                         </li>
                     <?php endif; ?>
                     <?php if (IS_ADMIN || in_array('index', $per_controller_action['product'])): ?>
                         <li <?php echo $controller == 'product' && $action == 'index' ? 'class="active"' : ''; ?> >
-                            <a href="<?php echo SITE_URL; ?>admin/product">
-                                <i class="icon-double-angle-right"></i>
+                            <a href="<?php echo $this->Url('administratorProduct')?>">
+                                <i class="menu-icon fa fa-angle-double-right"></i>
                                 Danh sách
                             </a>
                         </li>
@@ -190,25 +137,27 @@ if (!empty($permission)) {
         <?php endif; ?>
 
         <?php if (IS_ADMIN || in_array('warehouse', $per_controller)) : ?>
-            <li class="<?php if ($controller == 'warehouse') : ?> active <?php endif; ?>">
+            <li class="<?php if ($controller == 'warehouse') : ?>active open<?php endif; ?>">
                 <a href="#" class="dropdown-toggle">
-                    <i class="icon-home"></i>
+                    <i class="menu-icon fa fa-home"></i>
                     <span class="menu-text"> Quản lý kho </span>
-                    <b class="arrow icon-angle-down"></b>
+                    <b class="arrow fa fa-angle-down"></b>
                 </a>
+                <b class="arrow"></b>
                 <ul class="submenu">
                     <?php if (IS_ADMIN || in_array('create', $per_controller_action['warehouse'])): ?>
                         <li <?php echo $controller == 'warehouse' && $action == 'create' ? 'class="active"' : ''; ?> >
-                            <a href="<?php echo SITE_URL; ?>admin/warehouse/create">
-                                <i class="icon-double-angle-right"></i>
+                            <a href="<?php echo $this->Url('administratorWarehouse', ['action'=>'create'])?>">
+                                <i class="menu-icon fa fa-angle-double-right"></i>
                                 Nhập thuốc mới
                             </a>
+                            <b class="arrow"></b>
                         </li>
                     <?php endif; ?>
                     <?php if (IS_ADMIN || in_array('index', $per_controller_action['warehouse'])): ?>
                         <li <?php echo $controller == 'warehouse' && $action == 'index' ? 'class="active"' : ''; ?> >
-                            <a href="<?php echo SITE_URL; ?>admin/warehouse">
-                                <i class="icon-double-angle-right"></i>
+                            <a href="<?php echo $this->Url('administratorWarehouse')?>">
+                                <i class="menu-icon fa fa-angle-double-right"></i>
                                 Danh sách nhập
                             </a>
                         </li>
@@ -216,9 +165,18 @@ if (!empty($permission)) {
 
                     <?php if (IS_ADMIN || in_array('expire', $per_controller_action['warehouse'])): ?>
                         <li <?php echo $controller == 'warehouse' && $action == 'expire' ? 'class="active"' : ''; ?> >
-                            <a href="<?php echo SITE_URL; ?>admin/warehouse/expire">
-                                <i class="icon-double-angle-right"></i>
+                            <a href="<?php echo $this->Url('administratorWarehouse', ['action'=>'expire'])?>">
+                                <i class="menu-icon fa fa-angle-double-right"></i>
                                 Danh thuốc sắp hết hạn
+                            </a>
+                        </li>
+                    <?php endif; ?>
+
+                    <?php if (IS_ADMIN || in_array('expired', $per_controller_action['warehouse'])): ?>
+                        <li <?php echo $controller == 'warehouse' && $action == 'expired' ? 'class="active"' : ''; ?> >
+                            <a href="<?php echo $this->Url('administratorWarehouse', ['action'=>'expired'])?>">
+                                <i class="menu-icon fa fa-angle-double-right"></i>
+                                Danh thuốc hết hạn
                             </a>
                         </li>
                     <?php endif; ?>
@@ -226,89 +184,86 @@ if (!empty($permission)) {
             </li>
         <?php endif; ?>
 
-        <?php if (IS_ADMIN || in_array('user', $per_controller)) : ?>
-            <li class="<?php if ($controller == 'user') : ?> active <?php endif; ?>">
-                <a href="#" class="dropdown-toggle">
-                    <i class="icon-user"></i>
-                    <span class="menu-text"> Người dùng </span>
-                    <b class="arrow icon-angle-down"></b>
-                </a>
-                <ul class="submenu">
-                    <?php if (IS_ADMIN || in_array('create', $per_controller_action['user'])): ?>
-                        <li <?php echo $controller == 'user' && $action == 'create' ? 'class="active"' : ''; ?> >
-                            <a href="<?php echo SITE_URL; ?>admin/user/create">
-                                <i class="icon-double-angle-right"></i>
-                                Người dùng mới
-                            </a>
-                        </li>
-                    <?php endif; ?>
-                    <?php if (IS_ADMIN || in_array('index', $per_controller_action['user'])): ?>
-                        <li <?php echo $controller == 'user' && $action == 'index' ? 'class="active"' : ''; ?> >
-                            <a href="<?php echo SITE_URL; ?>admin/user">
-                                <i class="icon-double-angle-right"></i>
-                                Danh sách
-                            </a>
-                        </li>
-                    <?php endif; ?>
-                </ul>
-            </li>
-        <?php endif; ?>
-        <?php if (IS_ADMIN || in_array('group', $per_controller)) : ?>
-            <li class="<?php if ($controller == 'group') : ?> active <?php endif; ?>">
-                <a href="#" class="dropdown-toggle">
-                    <i class="icon-group"></i>
-                    <span class="menu-text"> Nhóm </span>
-                    <b class="arrow icon-angle-down"></b>
-                </a>
-                <ul class="submenu">
-                    <?php if (IS_ADMIN || in_array('create', $per_controller_action['group'])): ?>
-                        <li <?php echo $controller == 'group' && $action == 'create' ? 'class="active"' : ''; ?> >
-                            <a href="<?php echo SITE_URL; ?>admin/group/create">
-                                <i class="icon-double-angle-right"></i>
-                                Thêm nhóm
-                            </a>
-                        </li>
-                    <?php endif; ?>
-                    <?php if (IS_ADMIN || in_array('index', $per_controller_action['group'])): ?>
-                        <li <?php echo $controller == 'group' && $action == 'index' ? 'class="active"' : ''; ?> >
-                            <a href="<?php echo SITE_URL; ?>admin/group">
-                                <i class="icon-double-angle-right"></i>
-                                Danh sách
-                            </a>
-                        </li>
-                    <?php endif; ?>
-                </ul>
-            </li>
-        <?php endif; ?>
-        <?php if (IS_ADMIN || in_array('permission', $per_controller)) : ?>
-            <li class="<?php if ($controller == 'permission') : ?> active <?php endif; ?>">
-                <a href="#" class="dropdown-toggle">
-                    <i class="icon-lock"></i>
-                    <span class="menu-text"> Phân quyền </span>
-                    <b class="arrow icon-angle-down"></b>
-                </a>
-                <ul class="submenu">
-                    <!--                <li -->
-                    <?php //echo $controller == 'group' && $action == 'create' ? 'class="active"' : ''; ?><!-- >-->
-                    <!--                    <a href="-->
-                    <?php //echo SITE_URL; ?><!--administrator/permission/create">-->
-                    <!--                        <i class="icon-double-angle-right"></i>-->
-                    <!--                        Quyền-->
-                    <!--                    </a>-->
-                    <!--                </li>-->
-                    <?php if (IS_ADMIN || in_array('index', $per_controller_action['permission'])): ?>
-                        <li <?php echo $controller == 'permission' && $action == 'index' ? 'class="active"' : ''; ?> >
-                            <a href="<?php echo SITE_URL; ?>admin/permission">
-                                <i class="icon-double-angle-right"></i>
-                                Danh sách quyền
-                            </a>
-                        </li>
-                    <?php endif; ?>
-                </ul>
-            </li>
-        <?php endif; ?>
-    </ul>
-    <div class="sidebar-collapse" id="sidebar-collapse">
-        <i class="icon-double-angle-left"></i>
+<!--        --><?php //if (IS_ADMIN || in_array('user', $per_controller)) : ?>
+<!--            <li class="--><?php //if ($controller == 'user') : ?><!--active open--><?php //endif; ?><!--">-->
+<!--                <a href="#" class="dropdown-toggle">-->
+<!--                    <i class="menu-icon fa fa-user"></i>-->
+<!--                    <span class="menu-text"> Người dùng </span>-->
+<!--                    <b class="arrow fa fa-angle-down"></b>-->
+<!--                </a>-->
+<!--                <b class="arrow"></b>-->
+<!--                <ul class="submenu">-->
+<!--                    --><?php //if (IS_ADMIN || in_array('create', $per_controller_action['user'])): ?>
+<!--                        <li --><?php //echo $controller == 'user' && $action == 'create' ? 'class="active"' : ''; ?><!-- >-->
+<!--                            <a href="--><?php //echo $this->Url('administratorUser', ['action'=>'create'])?><!--">-->
+<!--                                <i class="menu-icon fa fa-angle-double-right"></i>-->
+<!--                                Người dùng mới-->
+<!--                            </a>-->
+<!--                        </li>-->
+<!--                    --><?php //endif; ?>
+<!--                    --><?php //if (IS_ADMIN || in_array('index', $per_controller_action['user'])): ?>
+<!--                        <li --><?php //echo $controller == 'user' && $action == 'index' ? 'class="active"' : ''; ?><!-- >-->
+<!--                            <a href="--><?php //echo $this->Url('administratorUser')?><!--">-->
+<!--                                <i class="menu-icon fa fa-angle-double-right"></i>-->
+<!--                                Danh sách-->
+<!--                            </a>-->
+<!--                        </li>-->
+<!--                    --><?php //endif; ?>
+<!--                </ul>-->
+<!--            </li>-->
+<!--        --><?php //endif; ?>
+<!--        --><?php //if (IS_ADMIN || in_array('group', $per_controller)) : ?>
+<!--            <li class="--><?php //if ($controller == 'group') : ?><!--active open--><?php //endif; ?><!--">-->
+<!--                <a href="#" class="dropdown-toggle">-->
+<!--                    <i class="menu-icon fa fa-group"></i>-->
+<!--                    <span class="menu-text"> Nhóm </span>-->
+<!--                    <b class="arrow fa fa-angle-down"></b>-->
+<!--                </a>-->
+<!--                <b class="arrow"></b>-->
+<!--                <ul class="submenu">-->
+<!--                    --><?php //if (IS_ADMIN || in_array('create', $per_controller_action['group'])): ?>
+<!--                        <li --><?php //echo $controller == 'group' && $action == 'create' ? 'class="active"' : ''; ?><!-- >-->
+<!--                            <a href="--><?php //echo $this->Url('administratorGroup', ['action'=>'create'])?><!--">-->
+<!--                                <i class="menu-icon fa fa-angle-double-right"></i>-->
+<!--                                Thêm nhóm-->
+<!--                            </a>-->
+<!--                            <b class="arrow"></b>-->
+<!--                        </li>-->
+<!--                    --><?php //endif; ?>
+<!--                    --><?php //if (IS_ADMIN || in_array('index', $per_controller_action['group'])): ?>
+<!--                        <li --><?php //echo $controller == 'group' && $action == 'index' ? 'class="active"' : ''; ?><!-- >-->
+<!--                            <a href="--><?php //echo $this->Url('administratorGroup')?><!--">-->
+<!--                                <i class="menu-icon fa fa-angle-double-right"></i>-->
+<!--                                Danh sách-->
+<!--                            </a>-->
+<!--                        </li>-->
+<!--                    --><?php //endif; ?>
+<!--                </ul>-->
+<!--            </li>-->
+<!--        --><?php //endif; ?>
+<!--        --><?php //if (IS_ADMIN || in_array('permission', $per_controller)) : ?>
+<!--            <li class="--><?php //if ($controller == 'permission') : ?><!--active open--><?php //endif; ?><!--">-->
+<!--                <a href="#" class="dropdown-toggle">-->
+<!--                    <i class="menu-icon fa fa-lock"></i>-->
+<!--                    <span class="menu-text"> Phân quyền </span>-->
+<!--                    <b class="arrow fa fa-angle-down"></b>-->
+<!--                </a>-->
+<!--                <b class="arrow"></b>-->
+<!--                <ul class="submenu">-->
+<!--                    --><?php //if (IS_ADMIN || in_array('index', $per_controller_action['permission'])): ?>
+<!--                        <li --><?php //echo $controller == 'permission' && $action == 'index' ? 'class="active"' : ''; ?><!-- >-->
+<!--                            <a href="--><?php //echo $this->Url('administratorPermission')?><!--">-->
+<!--                                <i class="menu-icon fa fa-angle-double-right"></i>-->
+<!--                                Danh sách quyền-->
+<!--                            </a>-->
+<!--                        </li>-->
+<!--                    --><?php //endif; ?>
+<!--                </ul>-->
+<!--            </li>-->
+<!--        --><?php //endif; ?>
+    </ul><!-- /.nav-list -->
+
+    <div class="sidebar-toggle sidebar-collapse" id="sidebar-collapse">
+        <i id="sidebar-toggle-icon" class="ace-save-state ace-icon fa fa-angle-double-left" data-icon1="ace-icon fa fa-angle-double-left" data-icon2="ace-icon fa fa-angle-double-right"></i>
     </div>
 </div>

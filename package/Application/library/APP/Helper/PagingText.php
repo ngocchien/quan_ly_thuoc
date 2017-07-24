@@ -12,6 +12,7 @@ namespace APP\Helper;
 
 use APP\Exception;
 use Zend\View\Helper\AbstractHelper;
+use APP\Model\Common;
 
 class PagingText extends AbstractHelper {
 
@@ -53,14 +54,32 @@ class PagingText extends AbstractHelper {
                 return $result;
             }
             $urlHelper = $this->view->plugin('url');
-            $arrCondition = array('controller' => $strController, 'action' => $strAction, 'page' => $intCurrentPage);
-            //arrCondition = $arrParams ? $arrCondition + $arrParams : $arrCondition;
-
+            $arrCondition = array('controller' => $strController, 'action' => $strAction, 'page' => $intCurrentPage, 'limit' => $intLimit);
+            $arrCondition = $params ? $arrCondition + $params : $arrCondition;
+            $arr_limit = Common::getListLimitQuery();
             if ($strModule === 'administrator') {
                 $serverUrl = $urlHelper('home', array(), array('force_canonical' => true));
                 $serverUrl = substr($serverUrl, 0, -1);
-                $result .= '<div class="rows" style="margin-bottom: 40px">';
-                $result .= '<ul class="pagination" style="margin-top: 35px;">';
+                $result .= '<div class="rows">';
+                $result .= '<div class="col-xs-12">';
+                $result .= '<div class="pagination pull-left" style="padding: 0px">';
+                $result .= '<select class="form-group limit-query" style="margin-bottom: 0px">';
+                foreach ($arr_limit as $temp_limit){
+                    $arr_temp = $arrCondition;
+                    $arr_temp['limit'] = $temp_limit;
+                    $selected = '';
+                    if($temp_limit == $intLimit){
+                        $selected = 'selected';
+                    }
+                    $link = $serverUrl . $urlHelper($strRoute,$arr_temp);
+                    $result .= '<option value="'.$link.'"'.$selected.' >';
+                    $result .= $temp_limit;
+                    $result .= '</option>';
+                }
+                $result .= '</select>';
+                $result .= '&#160;&#160;&#160;&#160;&#160;Dòng';
+                $result .= '</div>';
+                $result .= '<ul class="pagination pull-right">';
                 if ($intCurrentPage == 1) {
                     $intPage = 1;
                     $intLimitPage = 10;
@@ -88,15 +107,15 @@ class PagingText extends AbstractHelper {
                     $arrCondition['page'] = $intTotalPage;
                     $result .= '<li class="paginate_button" aria-controls="dynamic-table" tabindex="0"><a class="page-link" href="' . $serverUrl . $urlHelper($strRoute, $arrCondition) . '">Cuối »</a></li>';
                 }
-                $result .= '</ul>';
-//                $result .='<div class="pull-right" style="margin-right: -500px; margin-top: 10px; margin-bottom: 10px">';
-//                $from = ($intLimit * ($intCurrentPage - 1)) + 1;
-//                $tmp1 = 'Hiển thị từ ' . $from . ' đến ';
-//                $tmp2 = ($intLimit * $intCurrentPage > $intTotal) ? number_format($intTotal, 0, ',', '.') : $intLimit * $intCurrentPage;
-//                $tmp3 = ' trong tổng số ' . number_format($intTotal, 0, ',', '.') . ' ' . $str;
-//                $from == $intTotal ? $result .= $str . ' cuối cùng trong tổng số ' . number_format($intTotal, 0, ',', '.') . ' ' . $str : $result .= $tmp1 . $tmp2 . $tmp3;
-//                $result .= '</div></div>';
-                $result .= '</div>';
+                $result .= '</ul></div>';
+                $result .='<div class="col-xs-12">';
+                $result .='<div class="pull-right">';
+                $from = ($intLimit * ($intCurrentPage - 1)) + 1;
+                $tmp1 = 'Hiển thị từ ' . $from . ' đến ';
+                $tmp2 = ($intLimit * $intCurrentPage > $intTotal) ? number_format($intTotal, 0, ',', '.') : $intLimit * $intCurrentPage;
+                $tmp3 = ' trong tổng số ' . number_format($intTotal, 0, ',', '.') . ' ' . $str;
+                $from == $intTotal ? $result .= $str . ' cuối cùng trong tổng số ' . number_format($intTotal, 0, ',', '.') . ' ' . $str : $result .= $tmp1 . $tmp2 . $tmp3;
+                $result .= '</div></div></div>';
 
                 ##################################################
             } elseif ($strModule === 'application') {

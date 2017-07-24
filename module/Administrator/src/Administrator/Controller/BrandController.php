@@ -75,9 +75,9 @@ class BrandController extends MyController
 
         if ($this->request->isPost()) {
             $params = $this->params()->fromPost();
-            $result = Business\Brand::create($params);
-            if (!empty($result['success'])) {
-                return $this->redirect()->toRoute('administratorBrand', ['action' => 'edit', 'id' => $result['id']]);
+            $params = Business\Brand::create($params);
+            if (!empty($params['success'])) {
+                return $this->redirect()->toRoute('administratorBrand', ['action' => 'edit', 'id' => $params['id']]);
             }
         }
 

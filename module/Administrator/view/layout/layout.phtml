@@ -7,65 +7,66 @@ $action = ACTION;
 <html lang="en">
 <head>
     <meta charset="utf-8"/>
-    <title>Dashboard - Admin</title>
+    <title>Quản lý thuốc - ChienNN</title>
+
     <meta name="description" content="overview &amp; stats"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
 
-    <!--basic styles-->
-    <link href="<?php echo STATIC_URL; ?>assets/css/bootstrap.min.css" rel="stylesheet"/>
-    <link href="<?php echo STATIC_URL; ?>assets/css/bootstrap-responsive.min.css" rel="stylesheet"/>
-    <link rel="stylesheet" href="<?php echo STATIC_URL; ?>assets/css/font-awesome.min.css"/>
+    <!-- bootstrap & fontawesome -->
+    <link rel="stylesheet" href="<?php echo STATIC_URL; ?>assets/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="<?php echo STATIC_URL; ?>assets/font-awesome/4.5.0/css/font-awesome.min.css"/>
 
-    <link href="<?php echo STATIC_URL; ?>css/css.css" rel="stylesheet"/>
+    <!-- text fonts -->
+    <link rel="stylesheet" href="<?php echo STATIC_URL; ?>assets/css/fonts.googleapis.com.css"/>
 
-    <!--ace styles-->
-    <link rel="stylesheet" href="<?php echo STATIC_URL; ?>assets/css/ace.min.css"/>
-    <link rel="stylesheet" href="<?php echo STATIC_URL; ?>assets/css/ace-responsive.min.css"/>
-    <link rel="stylesheet" href="<?php echo STATIC_URL; ?>assets/css/ace-skins.min.css"/>
+    <!-- ace styles -->
+    <link rel="stylesheet" href="<?php echo STATIC_URL; ?>assets/css/ace.min.css" class="ace-main-stylesheet"
+          id="main-ace-style"/>
 
-    <!--[if lte IE 8]>
-    <link rel="stylesheet" href="<?php echo STATIC_URL; ?>assets/css/ace-ie.min.css"/>
-    <![endif]-->
-    <script src="<?php echo STATIC_URL; ?>js/libs/jquery/jquery-2.2.4.min.js"></script>
-    <script type="application/javascript" src="<?php echo STATIC_URL; ?>js/main.js"></script>
-    <script type="application/javascript" src="<?php echo STATIC_URL; ?>js/libs/editor/ckeditor.js"
-            charset="utf-8"></script>
-    <link rel="stylesheet" href="<?php echo STATIC_URL; ?>css/admin-custom-theme.css"/>
-    <link rel="stylesheet" href="<?php echo STATIC_URL; ?>css/admin.css"/>
-    <link rel="stylesheet" href="<?php echo STATIC_URL; ?>css/administrator.css"/>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <link rel="icon" sizes="192x192" href="/favicon.png">
+    <!-- ace settings handler -->
+    <script src="<?php echo STATIC_URL; ?>assets/js/ace-extra.min.js"></script>
 </head>
-<body>
-<?php echo $this->render('administrator/header'); ?>
-<div class="main-container container-fluid">
+
+<body class="no-skin">
+<div class="main-container ace-save-state" id="main-container">
+    <?php echo $this->render('administrator/header'); ?>
+    <script type="text/javascript">
+        try {
+            ace.settings.loadState('main-container')
+        } catch (e) {
+        }
+    </script>
     <?php echo $this->render('administrator/left_menu'); ?>
-    <?php if ($controller != 'index'): ?>
-        <div class="main-content">
-            <div class="breadcrumbs" id="breadcrumbs">
+    <div class="main-content">
+        <div class="main-content-inner" STYLE="margin-bottom:100px">
+            <div class="breadcrumbs ace-save-state" id="breadcrumbs">
                 <ul class="breadcrumb">
                     <li>
-                        <i class="icon-home home-icon"></i>
-                        <a target="_blank" href="<?php echo SITE_URL; ?>">Trang chủ</a>
+                        <i class="ace-icon fa fa-home home-icon"></i>
+                        <a href="<?php echo $this->Url('administrator', ['controller'=>$controller])?>">Home</a>
                     </li>
+                    <li class="active"><?php echo $this->translator($module . ':' . $controller . ':' . $action); ?></li>
                 </ul>
             </div>
             <div class="page-content">
-                <div class="page-header position-relative" style="margin-bottom: 0">
-                    <h1 class="header-title-top">
-                        <small>
-                            <a href="<?php echo $this->Url('administrator', ['controller'=>$controller])?>"><?php echo $this->translator($module . ':'. $controller); ?></a>
-                            <i class="icon-double-angle-right"></i>
-                            <?php echo $this->translator($module . ':' . $controller . ':' . $action); ?>
-                        </small>
-                    </h1>
-                </div>
-            </div>
-            <?php echo $this->layout()->content; ?>
+                <?php echo $this->layout()->content; ?>
+            </div><!-- /.page-content -->
         </div>
-    <?php endif; ?>
-</div>
-<?php echo $this->render('administrator/footer'); ?>
+    </div><!-- /.main-content -->
+    <?php echo $this->render('administrator/footer'); ?>
+</div><!-- /.main-container -->
+
+<script src="<?php echo STATIC_URL; ?>assets/js/jquery-2.1.4.min.js"></script>
+<script src="<?php echo STATIC_URL; ?>js/libs/editor/ckeditor.js"></script>
+<script type="application/javascript" src="<?php echo STATIC_URL; ?>js/main.js"></script>
+<!--<script type="application/javascript" src="--><?php //echo STATIC_URL; ?><!--js/libs/editor/ckeditor.js" charset="utf-8"></script>-->
+
+<script src="<?php echo STATIC_URL; ?>assets/js/bootstrap.min.js"></script>
+<script src="<?php echo STATIC_URL; ?>assets/js/jquery-ui.custom.min.js"></script>
+<script src="<?php echo STATIC_URL; ?>assets/js/jquery.ui.touch-punch.min.js"></script>
+<script src="<?php echo STATIC_URL; ?>assets/js/ace-elements.min.js"></script>
+<script src="<?php echo STATIC_URL; ?>assets/js/ace.min.js"></script>
+
 <script type="application/javascript">
     MVC.setup({
         css_url: '<?php echo STATIC_URL; ?>/css',
@@ -78,6 +79,5 @@ $action = ACTION;
     Registry.set('SITE_URL', '<?php echo SITE_URL; ?>');
     Registry.set('STATIC_URL', '<?php echo STATIC_URL; ?>');
 </script>
-<script type="application/javascript" src="<?php echo STATIC_URL; ?>/js/modules/administrator/layout.js"></script>
 </body>
 </html>

@@ -14,36 +14,69 @@ class Warehouse
 {
     public static function create($params)
     {
-        if (empty($params['nsx']) || empty($params['hsd']) || empty($params['product_id']) || empty($params['quantity']) || empty($params['flag_notify'])) {
-            $params['error'] = 'Vui lòng đầy đủ thông tin';
-            return $params;
+        $error = false;
+
+        $nsx = '';
+        if(empty($params['nsx'])){
+            $error = true;
+            $params['messages'][] = 'Ngày sản xuất không được bỏ trống!';
+        }else{
+            list($day,$month,$year) = explode('/', $params['nsx']);
+            $nsx = mktime(0, 0, 0, $month, $day, $year);
+            if($nsx > time()){
+                $error = true;
+                $params['messages'][] = 'Nhập ngày sản xuất không hợp lệ!';
+            }
         }
 
+        $hsd = '';
+        if(empty($params['hsd'])){
+            $error = true;
+            $params['messages'][] = 'Hạn sử dụng không được bỏ trống!';
+        }else{
+            list($day,$month,$year) = explode('/', $params['hsd']);
+            $hsd = mktime(23, 59, 59, $month, $day, $year);
+            if($hsd < time()){
+                $error = true;
+                $params['messages'][] = 'Nhập hạn sử dụng không hợp lệ!';
+            }
+        }
+
+        if(empty($params['quantity'])){
+            $error = true;
+            $params['messages'][] = 'Số lượng không được bỏ trống!';
+        }elseif ($params['quantity'] <= 0){
+            $error = true;
+            $params['messages'][] = 'Nhập số lượng không hợp lệ! Số lượng phải > 0!';
+        }
+
+        if(empty($params['flag_notify'])){
+            $error = true;
+            $params['messages'][] = 'Ngày bật thông báo hết hạn không được bỏ trống!';
+        }elseif($params['flag_notify'] <= 0){
+            $error = true;
+            $params['messages'][] = 'Ngày bật thông báo hết hạn không hợp lệ! Ngày bật thông báo hết hạn phải > 0';
+        }
+
+        if(!isset($params['production_batch'])){
+            $error = true;
+            $params['messages'][] = 'Số lô sản xuất không được bỏ trống!';
+        }
+
+        if($error){
+            $params['error'] = true;
+            return $params;
+        }
         $product_id = (int) $params['product_id'];
-        list($day,$month,$year) = explode('/', $params['nsx']);
-        $nsx = mktime(0, 0, 0, $month, $day, $year);
-        list($day,$month,$year) = explode('/', $params['hsd']);
-        $hsd = mktime(0, 0, 0, $month, $day, $year);
         $status = 1;
         $quantity = (int) $params['quantity'];
         $flag_notify = (int) $params['flag_notify'];
         $properties_id = $params['properties_id'];
         $production_batch = empty($params['production_batch']) ? '' : $params['production_batch'];
-
-        if($quantity < 0){
-            $params['error'] = 'Nhập số lượng không hợp lệ';
-            return $params;
-        }
-
-        if($hsd < time()){
-            $params['error'] = 'Hạn sử dụng không hợp lệ';
-            return $params;
-        }
-
-        if($flag_notify <= 0){
-            $params['error'] = 'Nhập ngày thông báo hết hạn không hợp lệ';
-            return $params;
-        }
+        $unit_price = isset($params['unit_price']) ? (int) $params['unit_price'] : 0 ;
+        $total_price = isset($params['total_price']) ? (int) ($params['total_price']) : 0;
+        $discount = isset($params['discount']) ? (float) ($params['discount']) : 0;
+        $note = isset($params['note']) ? ($params['note']) : null;
 
         $id = Model\Warehouse::create([
             'user_created' => USER_ID,
@@ -55,11 +88,17 @@ class Warehouse
             'quantity' => $quantity,
             'flag_notify' => $flag_notify,
             'properties_id' => $properties_id,
-            'production_batch' => $production_batch
+            'production_batch' => $production_batch,
+            'unit_price' => $unit_price,
+            'total_price' => $total_price,
+            'discount' => $discount,
+            'note' => $note,
+            'stock' => $quantity
         ]);
 
         if (!$id) {
-            $params['error'] = 'Xảy ra lỗi trong quá trình xử lý! <br/> Vui lòng thử lại sau giây lát!';
+            $params['error'] = true;
+            $params['messages'][] = 'Xảy ra lỗi trong quá trình xử lý! Vui lòng thử lại sau giây lát!';
             return $params;
         }
 
@@ -88,54 +127,129 @@ class Warehouse
         $params['offset'] = $offset;
         $params['limit'] = $limit;
         $params['order'] = 'hsd ASC';
+        $params['lt_stock'] = 0;
+        $result = Model\Warehouse::get($params);
+        return $result;
+    }
+
+    public static function getListExpired($params){
+        $limit = empty($params['limit']) ? 100 : (int) $params['limit'];
+        $page = empty($params['page']) ? 1 : (int)$params['page'];
+        $offset = $limit * ($page - 1);
+        $params['offset'] = $offset;
+        $params['limit'] = $limit;
+        $params['order'] = 'hsd DESC';
+        $params['lt_stock'] = 0;
+        $params['is_expired'] = true;
+        $params['lt_stock'] = 0;
         $result = Model\Warehouse::get($params);
         return $result;
     }
 
     public static function update($params)
     {
-        if (empty($params['nsx']) || empty($params['hsd']) || empty($params['product_id']) || empty($params['quantity']) || empty($params['flag_notify'])) {
-            $params['error'] = 'Vui lòng đầy đủ thông tin';
-            return $params;
+        $error = false;
+        $nsx = '';
+        if(empty($params['nsx'])){
+            $error = true;
+            $params['messages'][] = 'Ngày sản xuất không được bỏ trống!';
+        }else{
+            list($day,$month,$year) = explode('/', $params['nsx']);
+            $nsx = mktime(0, 0, 0, $month, $day, $year);
+            if($nsx > time()){
+                $error = true;
+                $params['messages'][] = 'Nhập ngày sản xuất không hợp lệ!';
+            }
         }
 
+        $hsd = '';
+        if(empty($params['hsd'])){
+            $error = true;
+            $params['messages'][] = 'Hạn sử dụng không được bỏ trống!';
+        }else{
+            list($day,$month,$year) = explode('/', $params['hsd']);
+            $hsd = mktime(23, 59, 59, $month, $day, $year);
+        }
+
+        if(empty($params['quantity'])){
+            $error = true;
+            $params['messages'][] = 'Số lượng không được bỏ trống!';
+        }elseif ($params['quantity'] <= 0){
+            $error = true;
+            $params['messages'][] = 'Nhập số lượng không hợp lệ! Số lượng phải > 0!';
+        }
+
+        if(empty($params['flag_notify'])){
+            $error = true;
+            $params['messages'][] = 'Ngày bật thông báo hết hạn không được bỏ trống!';
+        }elseif($params['flag_notify'] <= 0){
+            $error = true;
+            $params['messages'][] = 'Ngày bật thông báo hết hạn không hợp lệ! Ngày bật thông báo hết hạn phải > 0';
+        }
+
+        if(!isset($params['production_batch'])){
+            $error = true;
+            $params['messages'][] = 'Số lô sản xuất không được bỏ trống!';
+        }
+
+        if($error){
+            $params['error'] = true;
+            return $params;
+        }
         $product_id = (int) $params['product_id'];
         $status = 1;
-        $quantity = (int) $params['quantity'];
-        $warehouse_id = $params['warehouse_id'];
-        $flag_notify = $params['flag_notify'];
-
-        list($day,$month,$year) = explode('/', $params['nsx']);
-        $nsx = mktime(0, 0, 0, $month, $day, $year);
-        list($day,$month,$year) = explode('/', $params['hsd']);
-        $hsd = mktime(0, 0, 0, $month, $day, $year);
-
+        $stock = $quantity = (int) $params['quantity'];
+        $flag_notify = (int) $params['flag_notify'];
+        $properties_id = $params['properties_id'];
         $production_batch = empty($params['production_batch']) ? '' : $params['production_batch'];
+        $unit_price = isset($params['unit_price']) ? (int) $params['unit_price'] : 0 ;
+        $total_price = isset($params['total_price']) ? (int) ($params['total_price']) : 0;
+        $discount = isset($params['discount']) ? (float) ($params['discount']) : 0;
+        $note = isset($params['note']) ? ($params['note']) : null;
+        $warehouse_id = $params['warehouse_id'];
 
-        if($quantity < 0){
-            $params['error'] = 'Nhập số lượng không hợp lệ';
-            return $params;
-        }
+        //check thuoc da ban
+        $invoice_warehouse = Model\InvoiceWarehouse::get([
+            'not_status' => Model\InvoiceWarehouse::STATUS_REMOVE,
+            'warehouse_id' => $warehouse_id,
+            'limit' => 10000
+        ]);
 
-        if($flag_notify <= 0){
-            $params['error'] = 'Nhập ngày thông báo hết hạn không hợp lệ';
-            return $params;
+        if(!empty($invoice_warehouse['total'])){
+            $total_quantity_in_invoice = 0;
+            foreach ($invoice_warehouse['rows'] as $row){
+                $total_quantity_in_invoice += (int) $row['quantity'];
+            }
+
+            if($total_quantity_in_invoice > $quantity){
+                $params['error'] = true;
+                $params['messages'][] = 'Số lượng thuốc này đã bán ra nhiều hơn số lượng cập nhật! Vui lòng kiểm tra lại!';
+                return $params;
+            }
+            $stock = $quantity-$total_quantity_in_invoice;
         }
 
         $updated = Model\Warehouse::update([
-            'user_updated' => USER_ID,
-            'updated_date' => time(),
+            'user_created' => USER_ID,
+            'created_date' => time(),
             'nsx' => $nsx,
             'status' => $status,
             'hsd' => $hsd,
             'product_id' => $product_id,
             'quantity' => $quantity,
             'flag_notify' => $flag_notify,
-            'production_batch' => $production_batch
-        ], $warehouse_id);
+            'properties_id' => $properties_id,
+            'production_batch' => $production_batch,
+            'unit_price' => $unit_price,
+            'total_price' => $total_price,
+            'discount' => $discount,
+            'note' => $note,
+            'stock' => $stock
+        ],$warehouse_id);
 
         if (!$updated) {
-            $params['error'] = 'Xảy ra lỗi trong quá trình xử lý! <br/> Vui lòng thử lại sau giây lát!';
+            $params['error'] = true;
+            $params['messages'] = 'Xảy ra lỗi trong quá trình xử lý! Vui lòng thử lại sau giây lát!';
             return $params;
         }
 
@@ -241,5 +355,70 @@ class Warehouse
             'ms' => 'Ngừng nhận thông báo cho thuôc này thành công!',
             'success' => 'success'
         ];
+    }
+
+    public static function getProductStockInWarehouse($params){
+        $params = array_merge([
+            'gt_stock' => 0,
+            'not_status' => Model\Warehouse::STATUS_REMOVE,
+            'limit' => 10000
+        ], $params);
+        $result = Model\Warehouse::get($params);
+
+        if(!empty($result['rows'])){
+            $arr_product_id = $properties_id = $products_format = $properties_format = $arr_brand_id = $brand_format = [];
+            foreach ($result['rows'] as $row){
+                $arr_product_id[] = $row['product_id'];
+                $properties_id[] = $row['properties_id'];
+            }
+
+            //get list product name
+            $products = Model\Product::get([
+                'in_product_id' => array_values($arr_product_id),
+                'columns' => [
+                    'product_id' , 'product_name' , 'brand_id'
+                ],
+                'limit' => 10000
+            ]);
+
+            foreach ($products['rows'] as $row){
+                $products_format[$row['product_id']] = $row;
+                if(!empty($row['brand_id'])){
+                    $arr_brand_id[] = $row['brand_id'];
+                }
+            }
+
+            $brands =  Model\Brand::get([
+                'in_brand_id' => array_values($arr_brand_id),
+                'columns' => [
+                    'brand_id' , 'brand_name'
+                ],
+                'limit' => 10000
+            ]);
+
+            foreach ($brands['rows'] as $row){
+                $brand_format[$row['brand_id']] = $row;
+            }
+
+            $properties = Model\Properties::get([
+                'in_id' => array_values($properties_id),
+                'columns' => [
+                    'id' , 'properties_name'
+                ],
+                'limit' => 10000
+            ]);
+
+            foreach ($properties['rows'] as $row){
+                $properties_format[$row['id']] = $row;
+            }
+
+            foreach ($result['rows'] as &$row){
+                $row['product_name'] = $products_format[$row['product_id']]['product_name'];
+                $row['properties_name'] = $properties_format[$row['properties_id']]['properties_name'];
+                $row['brand_name'] = empty($products_format[$row['product_id']]['brand_id']) ? '' : $brand_format[$products_format[$row['product_id']]['brand_id']]['brand_name'];
+            }
+        }
+
+        return $result;
     }
 }

@@ -1,0 +1,39 @@
+<div data-view="administrator/warehouse/expire">
+    <div class="col-xs-12">
+        <table id="simple-table" class="table  table-bordered table-hover">
+            <thead>
+            <tr>
+                <th class="center"><span class="fa fa-list-alt"></span> Tên thuốc</th>
+                <th class="center"><span class="fa fa-barcode"></span> Đơn vị tính </th>
+                <th class="center"> Số lượng hết hạn</th>
+                <th class="center"><span class="fa fa-calendar"></span> Ngày nhập</th>
+                <th class="center"><span class="fa fa-calendar"></span> NSX</th>
+                <th class="center"><span class="fa fa-calendar"></span> HSD</th>
+                <th class="center"><span class="fa fa-barcode"></span> Số lô</th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php if(!empty($this->warehouses)):
+                foreach ($this->warehouses['rows'] as $row):?>
+                    <tr>
+                        <td><a><b><?php echo !empty($this->products[$row['product_id']]) ? $this->products[$row['product_id']]['product_name'] : ''?></b></a></td>
+                        <td class="center"><b><?php echo !empty($this->properties[$row['properties_id']]) ? $this->properties[$row['properties_id']]['properties_name'] : ''?></b></td>
+                        <td class="center"><?php echo number_format($row['stock']);?></td>
+                        <td class="center"><b class="red"><?php echo date('d-m-Y',$row['created_date']);?></b></td>
+                        <td class="center"><?php echo date('d-m-Y',$row['nsx']);?></td>
+                        <td class="center"><b class="red"><?php echo date('d-m-Y',$row['hsd']);?></b></td>
+                        <td class="center"><?php echo empty($row['production_batch']) ? '' : $row['production_batch'];?></td>
+                    </tr>
+                <?php endforeach; endif;?>
+            </tbody>
+        </table>
+        <?php
+        $params = $this->params;
+        $params['controller'] = $params['strController'];
+        $paging = $this->pagingText($params);
+        if(!empty($paging)){
+            echo $paging;
+        }
+        ?>
+    </div>
+</div>

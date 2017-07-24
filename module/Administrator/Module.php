@@ -2,11 +2,10 @@
 
 namespace Administrator;
 
-use Zend\ModuleManager\ModuleManager;
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
-use Zend\Session\Container,
-    Zend\Session\SessionManager;
+use Zend\Session\Container;
+use Zend\Session\SessionManager;
 
 class Module
 {

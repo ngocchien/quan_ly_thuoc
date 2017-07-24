@@ -186,12 +186,31 @@ class Warehouse extends AbstractDAO
             }
         }
 
+        if(isset($params['lte_stock'])){
+            $strWhere .= ' AND stock >= '.$params['lte_stock'];
+        }
+
+        if(isset($params['lt_stock'])){
+            $strWhere .= ' AND stock > '.$params['lt_stock'];
+        }
+
+//        if(isset($params['expire'])){
+//            $strWhere .= ' AND expire = '.$params['expire'];
+//        }
+
+        if(isset($params['hsd'])){
+            $strWhere .= ' AND expire = '.$params['expire'];
+        }
+
         if(isset($params['expire'])){
-            $query_date = date('Y-m-d');
             $first_time_day = strtotime(date('Y-m-d'));
             $time_one_date = 60*60*24;
             $current_time = time();
             $strWhere .= ' AND hsd >= '.$first_time_day.' AND (hsd-'.$current_time.' <= flag_notify*'.$time_one_date.')';
+        }
+
+        if(isset($params['is_expired'])){
+            $strWhere .= ' AND hsd < '.time();
         }
 
         if(isset($params['is_notify'])){

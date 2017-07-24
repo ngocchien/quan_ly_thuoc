@@ -54,8 +54,8 @@ Controller.define('administrator/product', function () {
             },
             create : {
                 require: {
-                    scripts: ['bootstrap-inputmask.js', 'tags.js', 'photojs/jquery.form.js', 'photojs.js','bootstrap-select.js'],
-                    stylesheets: ['photojs.css','bootstrap-select.css']
+                    scripts: ['bootstrap-inputmask.js','bootstrap-select.js'],
+                    stylesheets: ['bootstrap-select.css']
                 },
                 execute: function () {
                     var self = this;
@@ -70,27 +70,37 @@ Controller.define('administrator/product', function () {
                         digits: 0
                     });
 
-                    self.find('.photojs').photoJs({
-                        object: 'editor'
-                    });
-
-                    self.find('.icon-upload-alt').photoJs({
-                        object: 'multiple'
-                    });
+                    // self.find('.photojs').photoJs({
+                    //     object: 'editor'
+                    // });
+                    //
+                    // self.find('.icon-upload-alt').photoJs({
+                    //     object: 'multiple'
+                    // });
 
                     //keywords
-                    self.find('.tags-js.tags-keywords').tags({
-                        object_name: 'tags',
-                        name: 'tags',
-                        placeholder: 'Chọn từ khóa',
-                        create: true
-                    });
-
-                    self.on('click', '.col-product-tab .remove', function () {
-                        $(this).parent().remove();
-                    });
+                    // self.find('.tags-js.tags-keywords').tags({
+                    //     object_name: 'tags',
+                    //     name: 'tags',
+                    //     placeholder: 'Chọn từ khóa',
+                    //     create: true
+                    // });
+                    //
+                    // self.on('click', '.col-product-tab .remove', function () {
+                    //     $(this).parent().remove();
+                    // });
 
                     self.find('.select-picker').selectpicker();
+
+                    CKEDITOR.config.toolbar = [
+                        ['Styles','Format','Font','FontSize'],
+                        '/',
+                        ['Bold','Italic','Underline','StrikeThrough','-','Undo','Redo','-','Cut','Copy','Paste','Find','Replace','-','Outdent','Indent','-','Print'],
+                        '/',
+                        ['NumberedList','BulletedList','-','JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],
+                        ['Image','Table','-','Link','Flash','Smiley','TextColor','BGColor','Source']
+                    ];
+                    CKEDITOR.config.height = '100px';
                 }
             },
             edit : {
@@ -111,25 +121,35 @@ Controller.define('administrator/product', function () {
                         digits: 0
                     });
 
-                    self.find('.photojs').photoJs({
-                        object: 'editor'
-                    });
+                    // self.find('.photojs').photoJs({
+                    //     object: 'editor'
+                    // });
+                    //
+                    // self.find('.icon-upload-alt').photoJs({
+                    //     object: 'multiple'
+                    // });
+                    //
+                    // //keywords
+                    // self.find('.tags-js.tags-keywords').tags({
+                    //     object_name: 'tags',
+                    //     name: 'tags',
+                    //     placeholder: 'Chọn từ khóa',
+                    //     create: true
+                    // });
+                    //
+                    // self.on('click', '.col-product-tab .remove', function () {
+                    //     $(this).parent().remove();
+                    // });
 
-                    self.find('.icon-upload-alt').photoJs({
-                        object: 'multiple'
-                    });
-
-                    //keywords
-                    self.find('.tags-js.tags-keywords').tags({
-                        object_name: 'tags',
-                        name: 'tags',
-                        placeholder: 'Chọn từ khóa',
-                        create: true
-                    });
-
-                    self.on('click', '.col-product-tab .remove', function () {
-                        $(this).parent().remove();
-                    });
+                    CKEDITOR.config.toolbar = [
+                        ['Styles','Format','Font','FontSize'],
+                        '/',
+                        ['Bold','Italic','Underline','StrikeThrough','-','Undo','Redo','-','Cut','Copy','Paste','Find','Replace','-','Outdent','Indent','-','Print'],
+                        '/',
+                        ['NumberedList','BulletedList','-','JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],
+                        ['Image','Table','-','Link','Flash','Smiley','TextColor','BGColor','Source']
+                    ];
+                    CKEDITOR.config.height = '100px';
 
                     self.find('.select-picker').selectpicker();
                 }

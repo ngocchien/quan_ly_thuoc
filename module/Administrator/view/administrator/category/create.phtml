@@ -1,81 +1,89 @@
 <div class="data-view" data-view="administrator/category/create">
-    <div class="cat-content">
-        <form name="form" class="form-group" method="post">
-            <div class="col-cate-left" style="margin-bottom: 40px">
-                <?php if(!empty($this->params['error'])):?>
-                    <h4 class="header red lighter bigger" style="margin-top: -15px; margin-bottom: 30px">
-                        <center>--------<b>ERROR</b>----------</br></center>
-                        <center><?php echo $this->params['error']?></center>
-                    </h4>
-                <?php endif;?>
+    <div class="col-xs-9">
+        <div class="widget-box">
+            <div class="widget-body">
+                <div class="widget-main">
+                    <div id="fuelux-wizard-container" class="no-steps-container">
+                        <div class="step-content pos-rel">
+                            <div class="step-pane active" data-step="1">
+                                <h3 class="lighter block green">Nhập thông tin</h3>
+                                <form class="form-horizontal" id="sample-form" method="post">
+                                    <?php if(!empty($this->params['error'])):?>
+                                        <div class="alert alert-danger">
+                                            <button type="button" class="close" data-dismiss="alert">
+                                                <i class="ace-icon fa fa-times"></i>
+                                            </button>
+                                            <strong>
+                                                <i class="ace-icon fa fa-times"></i>
+                                                Oh snap!
+                                            </strong>
+                                            <?php echo $this->params['error']?>
+                                            <br>
+                                        </div>
+                                    <?php endif;?>
+                                    <div class="form-group">
+                                        <label for="inputWarning" class="col-xs-12 col-sm-3 control-label no-padding-right">Tên danh mục</label>
+                                        <div class="col-xs-12 col-sm-5">
+                                            <span class="block input-icon input-icon-right">
+                                                <input type="text" class="width-100" name="cate_name" placeholder="Nhập tên danh mục"
+                                                       value="<?php echo empty($this->params['cate_name']) ? '' : $this->params['cate_name']?>">
+                                            </span>
+                                        </div>
+                                    </div>
 
-                <span class="block input-icon input-icon-right">
-                    <label>Tên danh mục <span class="red">(*)</span></label>
-                    <input name="cate_name" type="text" class="span12" placeholder="Nhập tên danh mục" required>
-                </span>
-                <span class="block input-icon input-icon-right">
-                    <label>Danh mục cha</label>
-                    <select class="form-group input-lg" name="parent_id">
-                        <option value="0">
-                            Chọn danh mục
-                        </option>
-                        <?php if (!empty($this->parent['rows'])):
-                            foreach ($this->parent['rows'] as $row):
-                                ?>
-                                <option value="<?php echo $row['cate_id'];?>">
-                                    <?php
-                                    if ($row['parent_id'] == 0) {
-                                        echo '<a href="javascript:;"><b>' . $row['cate_name'] . '</b></a>';
-                                    } else {
-                                        $temp = substr_count($row['full_sort'], ':');
-                                        echo str_repeat('&nbsp;&nbsp;&nbsp;', $temp);
-                                        echo '&#x21b3;&nbsp;&nbsp;';
-                                        echo '<a href="javascript:;"><b>' . $row['cate_name'] . '</b></a>';
-                                    }
-                                    ?>
-<!--                                    --><?php //echo $row['cate_name'] ?>
-                                </option>
-                            <?php endforeach;
-                        endif;
-                        ?>
-                    </select>
-                </span>
+                                    <div class="form-group">
+                                        <label for="inputError" class="col-xs-12 col-sm-3 col-md-3 control-label no-padding-right">Danh mục cha</label>
+                                        <div class="col-xs-12 col-sm-5">
+                                            <span class="block input-icon input-icon-right">
+                                                <select class="select-picker width-100" data-live-search="true" name="parent_id">
+                                                    <option value="0">
+                                                            Chọn danh mục
+                                                    </option>
+                                                    <?php if (!empty($this->parent['rows'])):
+                                                        foreach ($this->parent['rows'] as $row):
+                                                            ?>
+                                                         <option value="<?php echo $row['cate_id'];?>">
+                                                        <?php
+                                                        if ($row['parent_id'] == 0) {
+                                                            echo '<a href="javascript:;"><b>' . $row['cate_name'] . '</b></a>';
+                                                        } else {
+                                                            $temp = substr_count($row['full_sort'], ':');
+                                                            echo str_repeat('&nbsp;&nbsp;&nbsp;', $temp);
+                                                            echo '&#x21b3;&nbsp;&nbsp;';
+                                                            echo '<a href="javascript:;"><b>' . $row['cate_name'] . '</b></a>';
+                                                        }
+                                                        ?>
+                                                            </option>
+                                                            <?php endforeach;
+                                                        endif;
+                                                        ?>
+                                                </select>
+                                            </span>
+                                        </div>
+                                    </div>
 
-                <span class="block input-icon input-icon-right">
-                    <label>Độ ưu tiên</label>
-                    <input name="sort" type="text" class="span12" placeholder="" required>
-                </span>
-
-<!--                <span class="block input-icon input-icon-right">-->
-<!--                    <label>Trạng thái</label>-->
-<!--                    <select class="form-group input-lg" name="status">-->
-<!--                        <option value="1">-->
-<!--                            Hiển thị-->
-<!--                        </option>-->
-<!--                        <option value="2">-->
-<!--                            Ẩn-->
-<!--                        </option>-->
-<!--                    </select>-->
-<!--                </span>-->
-
-<!--                <span class="block input-icon input-icon-right">-->
-<!--                    <label>SEO Meta Title <span class="red">(*)</span></label>-->
-<!--                    <input name="meta_title" type="text" class="span12" placeholder="" required>-->
-<!--                </span>-->
-<!---->
-<!--                <span class="block input-icon input-icon-right">-->
-<!--                    <label>SEO Meta Keyword <span class="red">(*)</span></label>-->
-<!--                    <input name="meta_keyword" type="text" class="span12" placeholder="" required>-->
-<!--                </span>-->
-<!---->
-<!--                <span class="block input-icon input-icon-right">-->
-<!--                    <label>SEO Meta Description <span class="red">(*)</span></label>-->
-<!--                    <input name="meta_description" type="text" class="span12" placeholder="" required>-->
-<!--                </span>-->
-                <span class="block input-icon input-icon-right" style="margin-top: 10px">
-                    <button class="button-item"><i class="icon icon-save"></i> Lưu</button>
-                </span>
-            </div>
-        </form>
+                                    <div class="form-group">
+                                        <label for="inputWarning" class="col-xs-12 col-sm-3 control-label no-padding-right">Độ ưu tiên</label>
+                                        <div class="col-xs-12 col-sm-5">
+                                            <span class="block input-icon input-icon-right">
+                                                <input type="text" class="width-100" name="sort" placeholder="Nhập độ ưu tiên hiển thị"
+                                                       value="<?php echo empty($this->params['sort']) ? '' : $this->params['sort']?>">
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <div class="center">
+                                        <button class="btn btn-success" type="submit">
+                                            <i class="ace-icon fa fa-save"></i>
+                                            Tạo
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div
+                </div><!-- /.widget-main -->
+            </div><!-- /.widget-body -->
+        </div>
     </div>
 </div>

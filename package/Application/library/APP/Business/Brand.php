@@ -16,7 +16,7 @@ class Brand
     public static function create($params)
     {
         if (empty($params['brand_name'])) {
-            $params['error'] = 'Vui lòng đầy đủ thông tin';
+            $params['error'] = 'Vui lòng nhập đầy đủ thông tin';
             return $params;
         }
 

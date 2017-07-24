@@ -1,118 +1,127 @@
-<div class="data-view" data-view="administrator/product/create">
-    <div style="padding-left: 20px">
-        <form method="post" class="form" id="create_form" name="submit">
-            <div class="new-product-left">
-                <?php if(!empty($this->params['error'])):?>
-                    <h4 class="header red lighter bigger" style="margin-top: -15px; margin-bottom: 30px">
-                        <center>--------<b>ERROR</b>----------</br></center>
-                        <center><?php echo $this->params['error']?></center>
-                    </h4>
-                <?php endif;?>
+<div class="rows" data-view="administrator/product/create">
+    <div class="col-xs-12">
+        <div class="widget-box">
+            <div class="widget-body">
+                <div class="widget-main">
+                    <div id="fuelux-wizard-container" class="no-steps-container">
+                        <div class="step-content pos-rel">
+                            <div class="step-pane active" data-step="1">
+                                <h3 class="lighter block green">Nhập thông tin</h3>
+                                <form class="form-horizontal" id="sample-form" method="post">
+                                    <?php if(!empty($this->params['error'])):?>
+                                        <div class="alert alert-danger">
+                                            <button type="button" class="close" data-dismiss="alert">
+                                                <i class="ace-icon fa fa-times"></i>
+                                            </button>
+                                            <strong>
+                                                <i class="ace-icon fa fa-times"></i>
+                                                Oh snap!
+                                            </strong>
+                                            <?php echo $this->params['error']?>
+                                            <br>
+                                        </div>
+                                    <?php endif;?>
+                                    <div class="form-group">
+                                        <label for="inputWarning" class="col-xs-12 col-sm-3 control-label no-padding-right">Tên thuốc <span class="red"> (*)</span></label>
+                                        <div class="col-xs-12 col-sm-5">
+                                            <span class="block input-icon input-icon-right">
+                                                <input type="text" class="width-100" name="product_name" placeholder="Nhập tên thuốc"
+                                                       value="<?php echo empty($this->params['product_name']) ? '' : $this->params['product_name']?>">
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <?php if(!empty($this->categories['rows'])):?>
+                                    <div class="form-group">
+                                        <label for="inputError" class="col-xs-12 col-sm-3 col-md-3 control-label no-padding-right">Thuộc danh mục</label>
+                                        <div class="col-xs-12 col-sm-5">
+                                            <span class="block input-icon input-icon-right">
+                                                <select name="cate_id" class="select-picker width-100" data-live-search="true">
+                                                    <?php foreach($this->categories['rows'] as $category):?>
+                                                        <option value="<?php echo $category['cate_id']?>" <?php echo !empty($this->params['cate_id']) && $this->params['cate_id'] == $category['cate_id'] ? 'selected' : ''?>>
+                                                            <?php
+                                                            if ($category['parent_id'] == 0) {
+                                                                echo '<a href="javascript:;"><b>' . $category['cate_name'] . '</b></a>';
+                                                            } else {
+                                                                $temp = substr_count($category['full_sort'], ':');
+                                                                echo str_repeat('&nbsp;&nbsp;&nbsp;', $temp);
+                                                                echo '&#x21b3;&nbsp;&nbsp;';
+                                                                echo '<a href="javascript:;"><b>' . $category['cate_name'] . '</b></a>';
+                                                            }
+                                                            ?>
+                                                        </option>
+                                                    <?php endforeach;?>
+                                                </select>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <?php endif;?>
+                                    <?php if(!empty($this->brands['rows'])):?>
+                                        <div class="form-group">
+                                            <label for="inputError" class="col-xs-12 col-sm-3 col-md-3 control-label no-padding-right">Thuộc nhãn hiệu</label>
+                                            <div class="col-xs-12 col-sm-5">
+                                            <span class="block input-icon input-icon-right">
+                                                <select name="brand_id" class="select-picker width-100" data-live-search="true">
+                                                <?php foreach($this->brands['rows'] as $row):?>
+                                                    <option value="<?php echo $row['brand_id']?>" <?php echo !empty($this->params['brand_id']) && $this->params['brand_id'] == $row['brand_id'] ? 'selected' : ''?>>
+                                                        <?php echo $row['brand_name'];?>
+                                                    </option>
+                                                <?php endforeach;?>
+                                            </select>
+                                            </span>
+                                            </div>
+                                        </div>
+                                    <?php endif;?>
 
-                <div class="form-block">
-                    <label>Tên thuốc: <span class="red">(*)</span</label>
-                    <input name="product_name" class="movie-name new-product-title" type="text"
-                        value="<?php echo !empty($this->params['product_name']) ? $this->params['product_name'] : ''?>">
-                </div>
+                                    <div class="form-group">
+                                        <label for="inputWarning" class="col-xs-12 col-sm-3 control-label no-padding-right">Mã thuốc</label>
+                                        <div class="col-xs-12 col-sm-5">
+                                            <span class="block input-icon input-icon-right">
+                                                <input class="width-100" type="text" name="product_code" value="<?php echo !empty($this->params['product_code']) ? $this->params['product_code'] : ''?>">
+                                            </span>
+                                        </div>
+                                    </div>
 
-                <div class="editors">
-                    <label>Mô tả về thuốc: <span class="red">(*)</span</label>
-                    <textarea name="description" class="ckeditor" cols="100" name="editor" rows="10"><?php
-                        echo !empty($this->params['description']) ? $this->params['description'] : '' ?></textarea>
-                </div>
-            </div>
-            <div class="new-product-right">
-                <div class="new-product-info">
-                    <div class="new-product-info-title">
-                        <label>Thông tin thuốc</label>
-                    </div>
-                    <div class="block-content">
-                        <div class="new-product-info-item">
-	                        <?php if(!empty($this->categories['rows'])):?>
-                            <div class="block-item">
-                                <label>Thuộc Danh mục:</label>
-                                <select name="cate_id" class="select-picker" data-live-search="true">
-		                            <?php foreach($this->categories['rows'] as $category):?>
-                                        <option value="<?php echo $category['cate_id']?>" <?php echo !empty($this->params['cate_id']) && $this->params['cate_id'] == $category['cate_id'] ? 'selected' : ''?>>
-				                            <?php
-				                            if ($category['parent_id'] == 0) {
-					                            echo '<a href="javascript:;"><b>' . $category['cate_name'] . '</b></a>';
-				                            } else {
-					                            $temp = substr_count($category['full_sort'], ':');
-					                            echo str_repeat('&nbsp;&nbsp;&nbsp;', $temp);
-					                            echo '&#x21b3;&nbsp;&nbsp;';
-					                            echo '<a href="javascript:;"><b>' . $category['cate_name'] . '</b></a>';
-				                            }
-				                            ?>
-                                        </option>
-		                            <?php endforeach;?>
-                                </select>
-                            </div>
-	                        <?php endif;?>
+                                    <div class="form-group">
+                                        <label for="inputWarning" class="col-xs-12 col-sm-3 control-label no-padding-right">Giá gốc</label>
+                                        <div class="col-xs-12 col-sm-5">
+                                            <span class="block input-icon input-icon-right">
+                                                <input class="width-100 price-mask" type="text" name="price_cost" value="<?php echo !empty($this->params['price_cost']) ? $this->params['price_cost'] : ''?>">
+                                            </span>
+                                        </div>
+                                    </div>
 
-                            <?php if(!empty($this->brands['rows'])):?>
-                                <div class="block-item">
-                                    <label>Thuộc nhãn hiệu:</label>
-                                    <select name="brand_id" class="select-picker" data-live-search="true">
-                                        <?php foreach($this->brands['rows'] as $row):?>
-                                            <option value="<?php echo $row['brand_id']?>" <?php echo !empty($this->params['brand_id']) && $this->params['brand_id'] == $row['brand_id'] ? 'selected' : ''?>>
-                                                <?php echo $row['brand_name'];?>
-                                            </option>
-                                        <?php endforeach;?>
-                                    </select>
-                                </div>
-                            <?php endif;?>
+                                    <div class="form-group">
+                                        <label for="inputWarning" class="col-xs-12 col-sm-3 control-label no-padding-right">Giá bán</label>
+                                        <div class="col-xs-12 col-sm-5">
+                                            <span class="block input-icon input-icon-right">
+                                                <input class="width-100 price-mask" type="text" name="price width-100" value="<?php echo !empty($this->params['price']) ? $this->params['price'] : ''?>">
+                                            </span>
+                                        </div>
+                                    </div>
 
-                            <div class="block-item">
-                                <label>Mã:</label>
-                                <input style="margin-bottom: 5px" class="number" type="text" name="product_code" value="<?php echo !empty($this->params['product_code']) ? $this->params['product_code'] : ''?>">
-                            </div>
-                            <div class="block-item">
-                                <label>Giá gốc:</label>
-                                <input style="margin-bottom: 5px" class="number price-mask" type="text" name="price_cost" value="<?php echo !empty($this->params['price_cost']) ? $this->params['price_cost'] : ''?>">
-                            </div>
-                            <div class="block-item">
-                                <label>Giá bán:</label>
-                                <input style="margin-bottom: 5px" class="number price-mask" type="text" name="price" value="<?php echo !empty($this->params['price']) ? $this->params['price'] : ''?>">
+                                    <div class="form-group">
+                                        <label for="inputWarning" class="col-xs-12 col-sm-3 control-label no-padding-right">Mô tả về thuốc <span class="red"> (*)</span></label>
+                                        <div class="col-xs-12 col-sm-7">
+                                            <span class="block input-icon input-icon-right">
+                                                <textarea name="description" class="ckeditor" rows="10" cols="20" name="editor"><?php
+                                                    echo !empty($this->params['description']) ? $this->params['description'] : '' ?></textarea>
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <hr>
+                                    <div class="center">
+                                        <button class="btn btn-success" type="submit">
+                                            <i class="ace-icon fa fa-save"></i>
+                                            Lưu
+                                        </button>
+                                    </div>
+                                </form>
                             </div>
                         </div>
-                        <div class="new-product-info-item">
-                            <div class="col-product-table block-item">
-                                <label class="upload-image">
-                                    Hình ảnh: <i class="icon-upload-alt"></i>
-                                </label>
-                                <div class="col-product-tab">
-                                    <table>
-                                        <tbody>
-                                            <?php if(!empty($this->params['fid'])):
-                                                foreach ($this->params['fid'] as $fid):
-                                                ?>
-                                                    <tr>
-                                                        <td>
-                                                            <img src="<?php echo empty($this->images[$fid]) ? '' : STATIC_URL.$this->images[$fid]['src']?>">
-                                                            <input type="hidden" name="fid[]" value="<?php echo $fid;?>">
-                                                            <input type="hidden" name="file-name[]" value="<?php echo empty($this->images[$fid]) ? '' : $this->images[$fid]['file_name']?>">
-                                                        </td>
-                                                        <td><?php echo empty($this->images[$fid]) ? '' : $this->images[$fid]['file_name']?></td>
-                                                        <td class="remove" data-fid="<?php echo $fid;?>">
-                                                            <i class="product-galaxy-remove icon-trash"></i>
-                                                        </td>
-                                                    </tr>
-                                            <?php endforeach; endif;?>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="new-product-info-item">
-                        <div class="">
-                            <label id="publish-notification"></label>
-                            <button type="submit" class="movie-submit button-item">Xuất bản</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </form>
+                    </div
+                </div><!-- /.widget-main -->
+            </div><!-- /.widget-body -->
+        </div>
     </div>
 </div>

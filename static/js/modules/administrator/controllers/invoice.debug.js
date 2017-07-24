@@ -54,19 +54,20 @@ Controller.define('administrator/invoice', function () {
             },
             create : {
                 require: {
-                    scripts: ['bootstrap-datepicker.js', 'bootstrap-select.js'],
-                    stylesheets: ['datepicker.css', 'bootstrap-select.css']
+                    scripts: ['bootstrap-datepicker.js', 'bootstrap-select.js', 'jquery.sumoselect.min.js'],
+                    stylesheets: ['datepicker.css', 'bootstrap-select.css', 'sumoselect.css']
                 },
                 execute: function () {
                     var self = this;
-                    self.find('.datetimepicker').datepicker({
-                        format: 'dd/mm/yyyy'
-                    });
-                    self.find('.select-picker').selectpicker({
-                        'width' : 400,
-                        'showContent' : true,
-                        'showSubtext' : true,
-                        'container' : true
+                    // self.find('.datetimepicker').datepicker({
+                    //     format: 'dd/mm/yyyy'
+                    // });
+                    self.find('.select-picker').SumoSelect({
+                        'search' : true,
+                        'floatWidth' : '400px'
+                        // 'showContent' : true,
+                        // 'showSubtext' : true,
+                        // 'container' : true
                     });
                     $('[data-toggle="tooltip"]').tooltip();
 

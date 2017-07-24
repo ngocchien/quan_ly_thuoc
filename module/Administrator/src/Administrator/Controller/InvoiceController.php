@@ -30,9 +30,12 @@ class InvoiceController extends MyController
             }
         }
 
+        //get list product stock in ware house
+        $warehouses = Business\Warehouse::getProductStockInWarehouse([]);
+
         return [
             'params' => $params,
-            'arr_status' => Model\Banner::renderStatus()
+            'warehouses' => $warehouses
         ];
     }
 

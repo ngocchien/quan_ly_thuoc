@@ -1,70 +1,60 @@
-<div data-view="administrator/properties/index">
-    <div class="col-item">
-        <form method="get">
-            <div class="rows" style="border-bottom: none; border-top: 1px solid #ddd">
-                <div class="col-lg-2 pull-left" style="margin-top: 25px">
-                    <div id="editable-sample_length" class="dataTables_length no-padding">
-                        <a class="btn btn-success" href="<?php echo $this->Url('administratorProperties', ['action'=>'create'])?>"><i class="icon-plus-sign-alt"></i> Thêm</a>
-                    </div>
-                </div>
-                <div class="search-product">
-                    <div class="search-title">
-                        <div class="search-title-block">
-                            <input name="search" class="search-product-title" type="text" value="<?php echo !empty($this->params['search']) ? $this->params['search'] : ''?>" placeholder="Tìm kiếm theo tên">
-                            <button class="search-products" type="submit">
-                                <i class="icon-search"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <table style="margin-bottom: 0" class="table table-striped table-bordered table-hover">
-                <thead>
-                <tr>
-                    <th class="center"><span class="icon icon-list"> ID</th>
-                    <th class="center"><span class="icon icon-list-alt"></span> Tên</th>
-                    <th class="center"><span class="icon icon-calendar"></span> Ngày tạo</th>
-                    <th class="center"><span class="icon icon-user"></span> Người tạo</th>
-                    <th class="center"><span class="icon icon-gears"></span> Tùy chỉnh</th>
-                </tr>
-                </thead>
-                <tbody>
-                <?php if(!empty($this->properties['rows'])):
-                    foreach ($this->properties['rows'] as $rows):
-                        ?>
-                        <tr>
-                            <td class="center">
-                                <b>
-                                    <a href="javascript:;">
-                                        <?php echo $rows['id']?>
-                                    </a>
-                                </b>
-                            </td>
-                            <td>
-                                <?php
-                                    echo $rows['properties_name']
-                                ?>
-                            </td>
-                            <td class="center"><?php echo date('Y-m-d', $rows['created_date']);?></td>
-                            <td class="center"><?php echo empty($this->users[$rows['user_created']]) ? '' : $this->users[$rows['user_created']]['full_name']?></td>
-                            <td class="center">
-                                <a class="btn-circle" data-toggle="tooltip" title="Cập nhật" href="<?php echo $this->Url('administratorProperties', ['action'=>'edit', 'id' => $rows['id']])?>"><i class="icon icon-pencil"></i></a>
-                                <a class="btn-circle delete" data-toggle="tooltip" rel="<?php echo $rows['id']?>" title="Xóa thuộc tính"><i class="icon icon-trash"></i></a>
-                            </td>
-                        </tr>
-                    <?php endforeach; endif;?>
-                </tbody>
-            </table>
-            <?php
-            if(!empty($this->properties)) {
-                $params = $this->params;
-                $params['controller'] = $params['strController'];
-                $paging = $this->pagingText($params);
-                if (!empty($paging)) {
-                    echo $paging;
-                }
-            }
-            ?>
-        </form>
+<div class="rows" data-view="administrator/properties/index">
+    <div class="col-xs-12">
+        <div class="col-sx-12" style="margin-bottom: 5px">
+            <a class="btn btn-xs btn-success" href="<?php echo $this->Url('administratorProperties', ['action'=>'create'])?>">
+                <i class="ace-icon fa fa-plus">
+                    Thêm
+                </i>
+            </a>
+        </div>
+        <table id="simple-table" class="table  table-bordered table-hover">
+            <thead>
+            <tr>
+                <th class="center"><span class="fa fa-list"> ID</th>
+                <th class="center"><span class="fa fa-list-alt"></span> Tên</th>
+                <th class="center"><span class="fa fa-calendar"></span> Ngày tạo</th>
+                <th class="center"><span class="fa fa-user"></span> Người tạo</th>
+                <th class="center"><span class="fa fa-gears"></span> Tùy chỉnh</th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php if(!empty($this->properties['rows'])):
+                foreach ($this->properties['rows'] as $rows):
+                    ?>
+                    <tr>
+                        <td class="center">
+                            <b>
+                                <a href="javascript:;">
+                                    <?php echo $rows['id']?>
+                                </a>
+                            </b>
+                        </td>
+                        <td class="text-center">
+                            <?php
+                            echo $rows['properties_name']
+                            ?>
+                        </td>
+                        <td class="center"><?php echo date('Y-m-d', $rows['created_date']);?></td>
+                        <td class="center"><?php echo empty($this->users[$rows['user_created']]) ? '' : $this->users[$rows['user_created']]['full_name']?></td>
+                        <td class="center">
+                            <div class="hidden-sm hidden-xs btn-group">
+                                <a class="btn btn-xs btn-info" data-toggle="tooltip" title="Cập nhật" href="<?php echo $this->Url('administratorProperties', ['action'=>'edit', 'id' =>$rows['id']])?>">
+                                    <i class="ace-icon fa fa-pencil bigger-120"></i>
+                                </a>
+                                <a class="btn btn-xs btn-danger delete" data-toggle="tooltip" rel="<?php echo $rows['id']?>" title="Xóa thuộc tính"><i class="ace-icon fa fa-trash-o bigger-120"></i></a>
+                            </div>
+                        </td>
+                    </tr>
+                <?php endforeach; endif;?>
+            </tbody>
+        </table>
+        <?php
+        $params = $this->params;
+        $params['controller'] = $params['strController'];
+        $paging = $this->pagingText($params);
+        if(!empty($paging)){
+            echo $paging;
+        }
+        ?>
     </div>
 </div>

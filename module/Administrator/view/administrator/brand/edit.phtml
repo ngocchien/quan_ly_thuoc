@@ -1,41 +1,67 @@
 <?php
     $country_id = !empty($this->params['country_id']) ? $this->params['country_id']: (empty($this->brand['country_id']) ? '' : $this->brand['country_id']);
 ?>
+<div class="row" data-view="administrator/brand/edit">
+    <div class="col-xs-9">
+        <div class="widget-box">
+            <div class="widget-body">
+                <div class="widget-main">
+                    <div id="fuelux-wizard-container" class="no-steps-container">
+                        <div class="step-content pos-rel">
+                            <div class="step-pane active" data-step="1">
+                                <h3 class="lighter block green">Nhập thông tin</h3>
+                                <form class="form-horizontal" id="sample-form" method="post">
+                                    <?php if(!empty($this->params['error'])):?>
+                                        <div class="alert alert-danger">
+                                            <button type="button" class="close" data-dismiss="alert">
+                                                <i class="ace-icon fa fa-times"></i>
+                                            </button>
+                                            <strong>
+                                                <i class="ace-icon fa fa-times"></i>
+                                                Oh snap!
+                                            </strong>
+                                            <?php echo $this->params['error']?>
+                                            <br>
+                                        </div>
+                                    <?php endif;?>
+                                    <div class="form-group">
+                                        <label for="inputWarning" class="col-xs-12 col-sm-3 control-label no-padding-right">Tên nhãn hiệu</label>
+                                        <div class="col-xs-12 col-sm-5">
+                                            <span class="block input-icon input-icon-right">
+                                                <input type="text" class="width-100" name="brand_name" placeholder="Nhập tên nhãn hiệu"
+                                                       value="<?php echo empty($this->params['brand_name']) ? $this->brand['brand_name'] : $this->params['brand_name'];?>">
+                                            </span>
+                                        </div>
+                                    </div>
 
-<div class="data-view" data-view="administrator/brand/edit">
-    <div class="cat-content">
-        <form name="form" class="form" method="post">
-            <div class="col-cate-left" style="margin-bottom: 40px">
-                <?php if(!empty($this->params['error'])):?>
-                    <h4 class="header red lighter bigger" style="margin-top: -15px; margin-bottom: 30px">
-                        <center>--------<b>ERROR</b>----------</br></center>
-                        <center><?php echo $this->params['error']?></center>
-                    </h4>
-                <?php endif;?>
-                <span class="block input-icon input-icon-right">
-                    <label>Tên nhãn hiệu <span class="red">(*)</span></label>
-                    <input name="brand_name" type="text" class="span12" placeholder="Nhập tên nhãn hiệu" required
-                           value="<?php echo empty($this->params['brand_name']) ? $this->brand['brand_name'] : $this->params['brand_name'];?>"
-                    >
-                </span>
+                                    <div class="form-group">
+                                        <label for="inputError" class="col-xs-12 col-sm-3 col-md-3 control-label no-padding-right">Nguồn gốc - Xuất xứ</label>
+                                        <div class="col-xs-12 col-sm-5">
+                                            <span class="block input-icon input-icon-right">
+                                                <select class="select-picker width-100" data-live-search="true" name="country_id">
+                                                    <?php foreach ($this->countries['rows'] as $row): ?>
+                                                        <option value="<?php echo $row['country_id'];?>" <?php if($country_id == $row['country_id']):?> selected<?php endif;?>>
+                                                            <?php echo $row['country_name'];?>
+                                                        </option>
+                                                    <?php endforeach;?>
+                                                </select>
+                                            </span>
+                                        </div>
+                                    </div>
 
-                <?php if($this->countries):?>
-                    <span class="block input-icon input-icon-right">
-                    <label>Nguồn gốc - xuất xứ <span class="red">(*)</span></label>
-                    <select class="select-picker" data-live-search="true" name="country_id">
-                        <?php foreach ($this->countries['rows'] as $row): ?>
-                            <option value="<?php echo $row['country_id'];?>" <?php if($country_id == $row['country_id']):?> selected<?php endif;?>>
-                                <?php echo $row['country_name'];?>
-                            </option>
-                        <?php endforeach;?>
-                    </select>
-                </span>
-                <?php endif;?>
-
-                <span class="block input-icon input-icon-right" style="margin-top: 10px">
-                    <button class="btn btn-success" name="save"><i class="icon icon-save"></i> Lưu</button>
-                </span>
-            </div>
-        </form>
+                                    <hr>
+                                    <div class="center">
+                                        <button class="btn btn-success" type="submit">
+                                            <i class="ace-icon fa fa-save"></i>
+                                            Cập nhật
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div
+                </div><!-- /.widget-main -->
+            </div><!-- /.widget-body -->
+        </div>
     </div>
 </div>

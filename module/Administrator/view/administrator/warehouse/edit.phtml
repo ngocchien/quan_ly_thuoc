@@ -6,77 +6,187 @@
     $hsd = !empty($this->params['hsd']) ? $this->params['hsd']: date('d/m/Y',$this->warehouse['hsd']);
     $flag_notify = !empty($this->params['flag_notify']) ? $this->params['flag_notify']: $this->warehouse['flag_notify'];
     $production_batch = !empty($this->params['production_batch']) ? $this->params['production_batch']: $this->warehouse['production_batch'];
+    $unit_price = isset($this->params['unit_price']) ? $this->params['unit_price']: $this->warehouse['unit_price'];
+    $total_price = isset($this->params['total_price']) ? $this->params['total_price']: $this->warehouse['total_price'];
+    $discount = isset($this->params['discount']) ? $this->params['discount']: $this->warehouse['discount'];
+    $note = isset($this->params['note']) ? $this->params['note']: $this->warehouse['note'];
 ?>
 <div class="data-view" data-view="administrator/warehouse/edit">
-    <div class="cat-content">
-        <form name="form" class="form-group" method="post">
-            <div class="col-cate-left" style="margin-bottom: 40px">
-                <?php if(!empty($this->params['error'])):?>
-                    <h4 class="header red lighter bigger" style="margin-top: -15px; margin-bottom: 30px">
-                        <center>--------<b>ERROR</b>----------</br></center>
-                        <center><?php echo $this->params['error']?></center>
-                    </h4>
-                <?php endif;?>
-                <span class="block input-icon input-icon-right">
-                    <label>Chọn thuốc muốn nhập<span class="red">(*)</span></label>
-                    <select name="product_id" class="select-picker" data-live-search="true">
-                        <?php foreach ($this->products['rows'] as $row):?>
-                        <option value="<?php echo $row['product_id']?>" <?php if($row['product_id'] == $product_id) : ?> selected <?php endif;?>>
-                            <?php echo $row['product_name']?>
-                        </option>
-                        <?php endforeach;?>
-                    </select>
-                </span>
-                <span class="block input-icon input-icon-right">
-                    <label>Chọn đơn vị tính<span class="red">(*)</span></label>
-                    <select name="properties_id" class="select-picker" data-live-search="true">
-                        <?php foreach ($this->properties['rows'] as $row):?>
-                        <option value="<?php echo $row['id'];?>" <?php if($row['id'] == $properties_id) : ?> selected <?php endif;?>>
-                            <?php echo $row['properties_name']?>
-                        </option>
-                        <?php endforeach;?>
-                    </select>
-                </span>
+    <div class="col-xs-12">
+        <div class="widget-body">
+            <div class="widget-main">
+                <div id="fuelux-wizard-container" class="no-steps-container">
+                    <div class="step-content pos-rel">
+                        <div class="step-pane active" data-step="1">
+                            <h3 class="lighter block green">Cập nhật thông tin nhập kho</h3>
+                            <form class="form-horizontal" id="sample-form" method="post">
+                                <?php if(!empty($this->params['error'])):?>
+                                    <div class="alert alert-danger">
+                                        <button type="button" class="close" data-dismiss="alert">
+                                            <i class="ace-icon fa fa-times"></i>
+                                        </button>
+                                        <strong>
+                                            <i class="ace-icon fa fa-times"></i>
+                                            Oh snap!
+                                        </strong>
+                                        <?php foreach ($this->params['messages'] as $ms):?>
+                                            <p>- <?php echo $ms;?></p>
+                                        <?php endforeach;?>
+                                        <br>
+                                    </div>
+                                <?php endif;?>
+                                <?php if(!empty($_SESSION['update-warehouse-success'])):?>
+                                <div class="alert alert-block alert-success">
+                                    <button type="button" class="close" data-dismiss="alert">
+                                        <i class="ace-icon fa fa-times"></i>
+                                    </button>
+                                    <p>
+                                        Cập nhật thành công!
+                                    </p>
+                                </div>
+                                <?php
+                                    unset($_SESSION['update-warehouse-success']);
+                                    endif;
+                                ?>
+                                <?php if(!empty($_SESSION['create-warehouse-success'])):?>
+                                    <div class="alert alert-block alert-success">
+                                        <button type="button" class="close" data-dismiss="alert">
+                                            <i class="ace-icon fa fa-times"></i>
+                                        </button>
+                                        <p>
+                                            Nhập hàng thành công!
+                                        </p>
+                                    </div>
+                                    <?php
+                                    unset($_SESSION['create-warehouse-success']);
+                                endif;
+                                ?>
+                                <?php if(!empty($this->products['rows'])):?>
+                                    <div class="form-group">
+                                        <label for="inputError" class="col-xs-12 col-sm-3 col-md-3 control-label no-padding-right">Chọn thuốc muốn nhập</label>
+                                        <div class="col-xs-12 col-sm-5">
+                                            <span class="block input-icon input-icon-right">
+                                                <select name="product_id" class="select-picker width-100" data-live-search="true">
+                                                    <?php foreach ($this->products['rows'] as $row):?>
+                                                        <option value="<?php echo $row['product_id']?>" <?php if($row['product_id'] == $product_id) : ?> selected <?php endif;?>>
+                                                            <?php echo $row['product_name']?>
+                                                        </option>
+                                                    <?php endforeach;?>
+                                                </select>
+                                            </span>
+                                        </div>
+                                    </div>
+                                <?php endif;?>
+                                <?php if(!empty($this->properties['rows'])):?>
+                                    <div class="form-group">
+                                        <label for="inputError" class="col-xs-12 col-sm-3 col-md-3 control-label no-padding-right">Chọn đơn vị tính</label>
+                                        <div class="col-xs-12 col-sm-5">
+                                            <span class="block input-icon input-icon-right">
+                                                <select name="properties_id" class="select-picker width-100" data-live-search="true">
+                                                    <?php foreach ($this->properties['rows'] as $row):?>
+                                                        <option value="<?php echo $row['id'];?>" <?php if($row['id'] == $properties_id) : ?> selected <?php endif;?>>
+                                                            <?php echo $row['properties_name']?>
+                                                        </option>
+                                                    <?php endforeach;?>
+                                                </select>
+                                            </span>
+                                        </div>
+                                    </div>
+                                <?php endif;?>
+                                <div class="form-group">
+                                    <label for="inputWarning" class="col-xs-12 col-sm-3 control-label no-padding-right">Ngày sản xuất <span class="red"> (*)</span></label>
+                                    <div class="col-xs-12 col-sm-5">
+                                        <span class="block input-icon input-icon-right">
+                                            <input class="width-100 datetimepicker" type="text" name="nsx" value="<?php echo $nsx;?>">
+                                        </span>
+                                    </div>
+                                </div>
 
-                <span class="block input-icon input-icon-right">
-                    <label>Số lượng nhập<span class="red">(*)</span></label>
-                     <input name="quantity" type="number" class="span12" placeholder="Nhập số lượng" required
-                            value="<?php echo $quantity;?>"
-                     >
-                </span>
+                                <div class="form-group">
+                                    <label for="inputWarning" class="col-xs-12 col-sm-3 control-label no-padding-right">Hạn sử dụng <span class="red"> (*)</span></label>
+                                    <div class="col-xs-12 col-sm-5">
+                                            <span class="block input-icon input-icon-right">
+                                                <input class="width-100 datetimepicker" type="text" name="hsd" value="<?php echo $hsd;?>">
+                                            </span>
+                                    </div>
+                                </div>
 
-                <span class="block input-icon input-icon-right">
-                    <label>Ngày sản xuất<span class="red">(*)</span></label>
-                     <input name="nsx" type="text" class="span12 datetimepicker" placeholder="Nhập ngày sản xuất" required
-                            value="<?php echo $nsx;?>"
-                     >
-                </span>
+                                <div class="form-group">
+                                    <label for="inputWarning" class="col-xs-12 col-sm-3 control-label no-padding-right">Số lô sản xuất <span class="red"> (*)</span></label>
+                                    <div class="col-xs-12 col-sm-5">
+                                            <span class="block input-icon input-icon-right">
+                                                <input placeholder="Nhập số lô sản xuất" class="width-100" type="text" name="production_batch" value="<?php echo $production_batch?>">
+                                            </span>
+                                    </div>
+                                </div>
 
-                <span class="block input-icon input-icon-right">
-                    <label>Hạn sử dụng<span class="red">(*)</span></label>
-                     <input name="hsd" type="text" class="span12 datetimepicker" placeholder="Nhập ngày hết hạn" required
-                            value="<?php echo $hsd;?>"
-                     >
-                </span>
+                                <div class="form-group">
+                                    <label for="inputWarning" class="col-xs-12 col-sm-3 control-label no-padding-right">Bật thông báo sắp hết hạn sử dụng trước bao nhiêu ngày <span class="red"> (*)</span></label>
+                                    <div class="col-xs-12 col-sm-5">
+                                            <span class="block input-icon input-icon-right">
+                                                <input placeholder="Bật thông báo sắp hết hạn sử dụng trước bao nhiêu ngày" class="width-100 price-mask" type="text" name="flag_notify" value="<?php echo $flag_notify;?>">
+                                            </span>
+                                    </div>
+                                </div>
 
-                <span class="block input-icon input-icon-right">
-                    <label>Số lô<span class="red">(*)</span></label>
-                     <input name="production_batch" type="text" class="span12" placeholder="Nhập số lô sản xuất" required
-                            value="<?php echo $production_batch;?>"
-                     >
-                </span>
+                                <div class="form-group">
+                                    <label for="inputWarning" class="col-xs-12 col-sm-3 control-label no-padding-right">Số lượng <span class="red"> (*)</span></label>
+                                    <div class="col-xs-12 col-sm-5">
+                                            <span class="block input-icon input-icon-right">
+                                                <input placeholder="Nhập số lượng" class="width-100 price-mask" type="text" name="quantity" value="<?php echo $quantity;?>">
+                                            </span>
+                                    </div>
+                                </div>
 
-                <span class="block input-icon input-icon-right">
-                    <label>Bật thông báo sắp hết hạn sử dụng trước bao nhiêu ngày?<span class="red">(*)</span></label>
-                     <input name="flag_notify" type="number" class="span12" placeholder="Nhập ngày bắt đầu cảnh báo trước khi hết hạn" required
-                            value="<?php echo $flag_notify?>"
-                     >
-                </span>
+                                <div class="form-group">
+                                    <label for="inputWarning" class="col-xs-12 col-sm-3 control-label no-padding-right">Giá mua vào trên mỗi đơn vị (VNĐ)<span class="red"> (*)</span></label>
+                                    <div class="col-xs-12 col-sm-5">
+                                        <span class="block input-icon input-icon-right">
+                                            <input class="width-100 price-mask" type="text" name="unit_price" value="<?php echo $unit_price;?>">
+                                        </span>
+                                    </div>
+                                </div>
 
-                <span class="block input-icon input-icon-right" style="margin-top: 10px">
-                    <button class="button-item"><i class="icon icon-save"></i> Cập nhật</button>
-                </span>
-            </div>
-        </form>
+                                <div class="form-group">
+                                    <label for="inputWarning" class="col-xs-12 col-sm-3 control-label no-padding-right">Chiết khấu % (nếu có)</label>
+                                    <div class="col-xs-12 col-sm-5">
+                                            <span class="block input-icon input-icon-right">
+                                                <input class="width-100 price-mask" type="text" name="discount" maxlength="3" value="<?php echo $discount;?>">
+                                            </span>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="inputWarning" class="col-xs-12 col-sm-3 control-label no-padding-right">Tổng tiền phải trả VNĐ<span class="red"> (*)</span></label>
+                                    <div class="col-xs-12 col-sm-5">
+                                            <span class="block input-icon input-icon-right">
+                                                <input class="width-100 price-mask" type="text" readonly name="total_price" value="<?php echo $total_price;?>">
+                                            </span>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="inputWarning" class="col-xs-12 col-sm-3 control-label no-padding-right">Ghi chú thêm</label>
+                                    <div class="col-xs-12 col-sm-7">
+                                            <span class="block input-icon input-icon-right">
+                                                <textarea name="note" class="ckeditor" rows="10" cols="20" name="editor"><?php
+                                                    echo $note; ?></textarea>
+                                            </span>
+                                    </div>
+                                </div>
+
+                                <hr>
+                                <div class="center">
+                                    <button class="btn btn-success" type="submit">
+                                        <i class="ace-icon fa fa-save"></i>
+                                        Nhập kho
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div
+            </div><!-- /.widget-main -->
+        </div><!-- /.widget-body -->
     </div>
 </div>

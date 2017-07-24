@@ -59,6 +59,7 @@
   "administrator:warehouse:create" : "Nhập thuốc",
   "administrator:warehouse:edit" : "Chỉnh sửa",
   "administrator:warehouse:expire" : "Danh sách thuốc sắp hết hạn",
+  "administrator:warehouse:expired" : "Danh sách thuốc hết hạn",
   "administrator:warehouse:delete" : "Xóa nhập thuốc",
   "administrator:invoice:index" : "Danh sách đơn thuốc",
   "administrator:invoice" : "Đơn thuốc",

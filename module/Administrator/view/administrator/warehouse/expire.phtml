@@ -1,65 +1,56 @@
 <div data-view="administrator/warehouse/expire">
-    <div class="col-item">
-        <form method="get">
-            <div class="rows" style="border-bottom: none; border-top: 1px solid #ddd">
-                <div class="search-product">
-                    <div class="search-title">
-                        <div class="search-title-block">
-                            <input class="search-product-title" type="text" name="search" placeholder="Tìm kiếm theo tên" value="<?php echo !empty($this->params['search']) ? $this->params['search'] : ''?>" placeholder="Tìm kiếm theo tên">
-                            <button class="search-products" type="submit">
-                                <i class="icon-search"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <table style="margin-bottom: 0" class="table table-striped table-bordered table-hover">
-                <thead>
-                <tr>
-                    <th class="center"><span class="icon icon-list-alt"></span> Tên thuốc</th>
-                    <th class="center"><span class="icon icon-barcode"></span> Đơn vị tính </th>
-                    <th class="center">Số lượng</th>
-                    <th class="center"><span class="icon icon-calendar"></span> Ngày nhập</th>
-                    <th class="center"><span class="icon icon-user"></span>Người nhập</th>
-                    <th class="center"><span class="icon icon-calendar"></span> NSX</th>
-                    <th class="center"><span class="icon icon-calendar"></span> HSD</th>
-                    <th class="center"><span class="icon icon-barcode"></span> Số lô SX</th>
-                    <th class="center"><span class="icon icon-spin"></span> Thông báo</th>
-                    <th class="center"><span class="icon icon-gears"></span> Tùy chỉnh</th>
-                </tr>
-                </thead>
-                <tbody>
-                <?php if(!empty($this->warehouses['rows'])):
-                    foreach ($this->warehouses['rows'] as $row):
-                    ?>
+    <div class="col-xs-12">
+        <table id="simple-table" class="table  table-bordered table-hover">
+            <thead>
+            <tr>
+                <th class="center"><span class="fa fa-list-alt"></span> Tên thuốc</th>
+                <th class="center"><span class="fa fa-barcode"></span> Đơn vị tính </th>
+                <th class="center"> Số lượng nhập</th>
+<!--                <th class="center"> Số lượng đã bán</th>-->
+                <th class="center"> Tồn kho</th>
+                <th class="center"><span class="fa fa-calendar"></span> Ngày nhập</th>
+                <th class="center"><span class="fa fa-calendar"></span> NSX</th>
+                <th class="center"><span class="fa fa-calendar"></span> HSD</th>
+                <th class="center"><span class="fa fa-barcode"></span> Số lô</th>
+                <th class="center"><span class="fa fa-spin"></span> Thông báo</th>
+                <th class="center"><span class="fa icon-gears"></span> Tùy chỉnh</th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php if(!empty($this->warehouses)):
+                foreach ($this->warehouses['rows'] as $row):?>
                     <tr>
                         <td><a><b><?php echo !empty($this->products[$row['product_id']]) ? $this->products[$row['product_id']]['product_name'] : ''?></b></a></td>
                         <td class="center"><b><?php echo !empty($this->properties[$row['properties_id']]) ? $this->properties[$row['properties_id']]['properties_name'] : ''?></b></td>
-                        <td class="center"><?php echo $row['quantity'];?></td>
-                        <td class="center"><?php echo date('d-m-Y',$row['created_date']);?></td>
-                        <td class="center"><?php echo !empty($this->users[$row['user_created']]) ? $this->users[$row['user_created']]['full_name'] : ''?></td>
+                        <td class="center"><?php echo number_format($row['quantity']);?></td>
+                        <td class="center"><?php echo number_format($row['stock']);?></td>
+<!--                        <td class="center">--><?php //echo number_format($row['unit_price']);?><!--</td>-->
+<!--                        <td class="center">--><?php //echo $row['discount'];?><!--</td>-->
+<!--                        <td class="center">--><?php //echo number_format($row['total_price']);?><!--</td>-->
+                        <td class="center"><b class="red"><?php echo date('d-m-Y',$row['created_date']);?></b></td>
+                        <!--                        <td class="center">--><?php //echo !empty($this->users[$row['user_created']]) ? $this->users[$row['user_created']]['full_name'] : ''?><!--</td>-->
                         <td class="center"><?php echo date('d-m-Y',$row['nsx']);?></td>
                         <td class="center"><b class="red"><?php echo date('d-m-Y',$row['hsd']);?></b></td>
                         <td class="center"><?php echo empty($row['production_batch']) ? '' : $row['production_batch'];?></td>
                         <td class="center"><?php echo $row['flag_notify'];?></td>
                         <td class="center">
-                            <a data-toggle="tooltip" title="Ngừng nhận thông báo" class="btn btn-small btn-primary remove" rel="<?php echo $row['warehouse_id']?>">
-                                <i class="icon icon-remove"></i>
-                            </a>
-<!--                            <a data-toggle="tooltip" title="Đã bán hết" class="btn btn-small btn-primary">-->
-<!--                                <i class="icon icon-trash"></i>-->
-<!--                            </a>-->
+                            <div class="hidden-sm hidden-xs btn-group">
+                                <a data-toggle="tooltip" title="Ngừng nhận thông báo" class="btn btn-xs btn-danger remove" rel="<?php echo $row['warehouse_id']?>">
+                                    <i class="ace-icon fa fa-remove bigger-120"></i>
+                                </a>
+                            </div>
                         </td>
                     </tr>
-                <?php endforeach; else:?>
-                    <tr>
-                        <td colspan="9" class="text-center">
-                            Không có thuốc nào sắp hết hạn cả
-                        </td>
-                    </tr>
-                <?php endif;?>
-                </tbody>
-            </table>
-        </form>
+                <?php endforeach; endif;?>
+            </tbody>
+        </table>
+        <?php
+        $params = $this->params;
+        $params['controller'] = $params['strController'];
+        $paging = $this->pagingText($params);
+        if(!empty($paging)){
+            echo $paging;
+        }
+        ?>
     </div>
 </div>
