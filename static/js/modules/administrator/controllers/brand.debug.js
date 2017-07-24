@@ -42,8 +42,9 @@ Controller.define('administrator/brand', function () {
                                 });
                             }
                         })
-                    })
-
+                    }).on('change','.limit-query',function () {
+                        window.location = $(this).val();
+                    });
                 }
             },
             create: {
