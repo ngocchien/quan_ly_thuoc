@@ -48,9 +48,9 @@
                         <td><a><b><?php echo !empty($this->products[$row['product_id']]) ? $this->products[$row['product_id']]['product_name'] : ''?></b></a></td>
                         <td class="center"><b><?php echo !empty($this->properties[$row['properties_id']]) ? $this->properties[$row['properties_id']]['properties_name'] : ''?></b></td>
                         <td class="center"><?php echo number_format($row['quantity']);?></td>
-                        <td class="center"><?php echo number_format($row['unit_price']);?></td>
-                        <td class="center"><?php echo $row['discount'];?></td>
-                        <td class="center"><?php echo number_format($row['total_price']);?></td>
+                        <td class="center"><?php echo empty($row['unit_price']) ? 0 : number_format($row['unit_price']);?></td>
+                        <td class="center"><?php echo empty($row['discount']) ? 0 : $row['discount'];?></td>
+                        <td class="center"><?php echo empty($row['total_price']) ? 0 : number_format($row['total_price']);?></td>
                         <td class="center"><b class="red"><?php echo date('d-m-Y',$row['created_date']);?></b></td>
 <!--                        <td class="center">--><?php //echo !empty($this->users[$row['user_created']]) ? $this->users[$row['user_created']]['full_name'] : ''?><!--</td>-->
                         <td class="center"><?php echo date('d-m-Y',$row['nsx']);?></td>

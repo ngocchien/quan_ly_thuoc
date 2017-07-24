@@ -43,8 +43,9 @@ Controller.define('administrator/properties', function () {
                                 });
                             }
                         })
-                    })
-
+                    }).on('change','.limit-query',function () {
+                        window.location = $(this).val();
+                    });
                 }
             },
             create: {

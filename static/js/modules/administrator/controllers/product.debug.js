@@ -48,6 +48,8 @@ Controller.define('administrator/product', function () {
                         };
                     self.on('click','.remove-all',function () {
                         removeAll();
+                    }).on('change','.limit-query',function () {
+                        window.location = $(this).val();
                     })
 
                 }

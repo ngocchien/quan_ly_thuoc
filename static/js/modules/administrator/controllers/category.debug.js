@@ -42,6 +42,8 @@ Controller.define('administrator/category', function () {
                                 });
                             }
                         })
+                    }).on('change','.limit-query',function () {
+                        window.location = $(this).val();
                     })
 
                 }
