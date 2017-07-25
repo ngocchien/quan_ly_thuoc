@@ -113,6 +113,7 @@ class ProductController extends MyController {
 	        $params = Business\Product::create($params);
 
 	        if(!empty($params['success'])){
+                $_SESSION['create-product-success'] = true;
                 return $this->redirect()->toRoute('administratorProduct',['action' => 'edit', 'id' => $params['product_id']]);
             }
         }
@@ -187,6 +188,7 @@ class ProductController extends MyController {
             $params['product_id'] = $id;
             $params = Business\Product::update($params);
             if(!empty($params['success'])){
+                $_SESSION['update-product-success'] = true;
                 return $this->redirect()->toRoute('administratorProduct', ['action' => 'edit', 'id' => $id]);
             }
         }

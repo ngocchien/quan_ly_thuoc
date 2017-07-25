@@ -24,6 +24,34 @@
                                             <br>
                                         </div>
                                     <?php endif;?>
+
+                                    <?php if(!empty($_SESSION['update-brand-success'])):?>
+                                        <div class="alert alert-block alert-success">
+                                            <button type="button" class="close" data-dismiss="alert">
+                                                <i class="ace-icon fa fa-times"></i>
+                                            </button>
+                                            <p>
+                                                Cập nhật thành công!
+                                            </p>
+                                        </div>
+                                        <?php
+                                        unset($_SESSION['update-brand-success']);
+                                    endif;
+                                    ?>
+                                    <?php if(!empty($_SESSION['create-brand-success'])):?>
+                                        <div class="alert alert-block alert-success">
+                                            <button type="button" class="close" data-dismiss="alert">
+                                                <i class="ace-icon fa fa-times"></i>
+                                            </button>
+                                            <p>
+                                                Thêm nhãn hiệu thành công!
+                                            </p>
+                                        </div>
+                                        <?php
+                                        unset($_SESSION['create-brand-success']);
+                                    endif;
+                                    ?>
+
                                     <div class="form-group">
                                         <label for="inputWarning" class="col-xs-12 col-sm-3 control-label no-padding-right">Tên nhãn hiệu</label>
                                         <div class="col-xs-12 col-sm-5">

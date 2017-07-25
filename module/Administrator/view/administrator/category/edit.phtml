@@ -21,6 +21,34 @@
                                             <br>
                                         </div>
                                     <?php endif;?>
+
+                                    <?php if(!empty($_SESSION['update-category-success'])):?>
+                                        <div class="alert alert-block alert-success">
+                                            <button type="button" class="close" data-dismiss="alert">
+                                                <i class="ace-icon fa fa-times"></i>
+                                            </button>
+                                            <p>
+                                                Cập nhật thành công!
+                                            </p>
+                                        </div>
+                                        <?php
+                                        unset($_SESSION['update-category-success']);
+                                    endif;
+                                    ?>
+                                    <?php if(!empty($_SESSION['create-category-success'])):?>
+                                        <div class="alert alert-block alert-success">
+                                            <button type="button" class="close" data-dismiss="alert">
+                                                <i class="ace-icon fa fa-times"></i>
+                                            </button>
+                                            <p>
+                                                Thêm danh mục thành công!
+                                            </p>
+                                        </div>
+                                        <?php
+                                        unset($_SESSION['create-category-success']);
+                                    endif;
+                                    ?>
+
                                     <div class="form-group">
                                         <label for="inputWarning" class="col-xs-12 col-sm-3 control-label no-padding-right">Tên danh mục</label>
                                         <div class="col-xs-12 col-sm-5">

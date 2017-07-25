@@ -56,6 +56,7 @@ class CategoryController extends MyController {
             $params = $this->params()->fromPost();
             $result = Business\Category::create($params);
             if(!empty($result['success'])){
+                $_SESSION['create-category-success'] = true;
                 return $this->redirect()->toRoute('administratorCategory',['action' => 'edit', 'id' => $result['cate_id']]);
             }
         }
@@ -93,6 +94,7 @@ class CategoryController extends MyController {
             $params['cate_id'] = $cate_id;
             $params = Business\Category::update($params);
             if(!empty($params['success'])){
+                $_SESSION['update-category-success'] = true;
                 return $this->redirect()->toRoute('administratorCategory',['action' => 'edit', 'id' => $cate_id]);
             }
         }

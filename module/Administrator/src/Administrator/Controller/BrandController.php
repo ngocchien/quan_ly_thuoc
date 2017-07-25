@@ -77,6 +77,7 @@ class BrandController extends MyController
             $params = $this->params()->fromPost();
             $params = Business\Brand::create($params);
             if (!empty($params['success'])) {
+                $_SESSION['create-brand-success'] = true;
                 return $this->redirect()->toRoute('administratorBrand', ['action' => 'edit', 'id' => $params['id']]);
             }
         }
@@ -121,6 +122,7 @@ class BrandController extends MyController
             $params['id'] = $id;
             $params = Business\Brand::update($params);
             if(!empty($params['success'])){
+                $_SESSION['update-brand-success'] = true;
                 return $this->redirect()->toRoute('administratorBrand', ['action' => 'edit', 'id' => $id]);
             }
         }

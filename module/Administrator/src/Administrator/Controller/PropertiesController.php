@@ -59,6 +59,7 @@ class PropertiesController extends MyController
             $params = $this->params()->fromPost();
             $result = Business\Properties::create($params);
             if (!empty($result['success'])) {
+                $_SESSION['create-properties-success'] = true;
                 return $this->redirect()->toRoute('administratorProperties', ['action' => 'edit', 'id' => $result['id']]);
             }
         }
@@ -95,6 +96,7 @@ class PropertiesController extends MyController
             $params['id'] = $id;
             $params = Business\Properties::update($params);
             if(!empty($params['success'])){
+                $_SESSION['update-properties-success'] = true;
                 return $this->redirect()->toRoute('administratorProperties', ['action' => 'edit', 'id' => $id]);
             }
         }

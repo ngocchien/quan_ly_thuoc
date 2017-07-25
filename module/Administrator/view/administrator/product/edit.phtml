@@ -35,6 +35,32 @@
                                             <br>
                                         </div>
                                     <?php endif;?>
+                                    <?php if(!empty($_SESSION['update-product-success'])):?>
+                                        <div class="alert alert-block alert-success">
+                                            <button type="button" class="close" data-dismiss="alert">
+                                                <i class="ace-icon fa fa-times"></i>
+                                            </button>
+                                            <p>
+                                                Cập nhật thành công!
+                                            </p>
+                                        </div>
+                                        <?php
+                                        unset($_SESSION['update-product-success']);
+                                    endif;
+                                    ?>
+                                    <?php if(!empty($_SESSION['create-product-success'])):?>
+                                        <div class="alert alert-block alert-success">
+                                            <button type="button" class="close" data-dismiss="alert">
+                                                <i class="ace-icon fa fa-times"></i>
+                                            </button>
+                                            <p>
+                                                Thêm thuốc mới thành công!
+                                            </p>
+                                        </div>
+                                        <?php
+                                        unset($_SESSION['create-product-success']);
+                                    endif;
+                                    ?>
                                     <div class="form-group">
                                         <label for="inputWarning" class="col-xs-12 col-sm-3 control-label no-padding-right">Tên thuốc <span class="red"> (*)</span></label>
                                         <div class="col-xs-12 col-sm-5">
@@ -108,7 +134,7 @@
                                         <label for="inputWarning" class="col-xs-12 col-sm-3 control-label no-padding-right">Giá bán</label>
                                         <div class="col-xs-12 col-sm-5">
                                             <span class="block input-icon input-icon-right">
-                                                <input class="width-100 price-mask" type="text" name="price width-100" value="<?php echo $price?>">
+                                                <input class="width-100 price-mask" name="price" type="text" name="price width-100" value="<?php echo $price?>">
                                             </span>
                                         </div>
                                     </div>

@@ -21,6 +21,33 @@
                                             <br>
                                         </div>
                                     <?php endif;?>
+                                    <?php if(!empty($_SESSION['update-properties-success'])):?>
+                                        <div class="alert alert-block alert-success">
+                                            <button type="button" class="close" data-dismiss="alert">
+                                                <i class="ace-icon fa fa-times"></i>
+                                            </button>
+                                            <p>
+                                                Cập nhật thành công!
+                                            </p>
+                                        </div>
+                                        <?php
+                                        unset($_SESSION['update-properties-success']);
+                                    endif;
+                                    ?>
+                                    <?php if(!empty($_SESSION['create-properties-success'])):?>
+                                        <div class="alert alert-block alert-success">
+                                            <button type="button" class="close" data-dismiss="alert">
+                                                <i class="ace-icon fa fa-times"></i>
+                                            </button>
+                                            <p>
+                                                Thêm thuộc tính thành công!
+                                            </p>
+                                        </div>
+                                        <?php
+                                        unset($_SESSION['create-properties-success']);
+                                    endif;
+                                    ?>
+
                                     <div class="form-group">
                                         <label for="inputWarning" class="col-xs-12 col-sm-3 control-label no-padding-right">Tên thuộc tính</label>
                                         <div class="col-xs-12 col-sm-5">
