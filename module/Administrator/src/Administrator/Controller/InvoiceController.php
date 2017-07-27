@@ -25,11 +25,7 @@ class InvoiceController extends MyController
 
         if ($this->request->isPost()) {
             $params = $this->params()->fromPost();
-            echo '<pre>';
-            print_r($params);
-            echo '</pre>';
-            die();
-            $result = Business\Banner::create($params);
+            $result = Business\Invoice::create($params);
             if (!empty($result['success'])) {
                 return $this->redirect()->toRoute('administratorMenu', ['action' => 'edit', 'id' => $result['menu_id']]);
             }

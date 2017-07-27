@@ -144,9 +144,9 @@ Controller.define('administrator/invoice', function () {
                         html += '<td class="text-center">'+first_dvt+'</td>';
                         html += '<td><input class="form-control input"></td>';
                         html += '<td class="text-right"><input class="form-control input price-mask quantity" name="quantity[]"></td>';
-                        html += '<td class="text-right"><input class="form-control input price-mask unit_price" readonly value="'+first_price+'"></td>';
+                        html += '<td class="text-right"><input class="form-control input price-mask unit_price" name="price[]" readonly value="'+first_price+'"></td>';
                         html += '<td class="text-right"><input class="form-control input price-mask discount" name="discount[]"></td>';
-                        html += '<td class="text-right"><input class="form-control input price-mask total_price" readonly value="0"></td>';
+                        html += '<td class="text-right"><input class="form-control input price-mask total_price" name="total_price[]" readonly value="0"></td>';
                         html += '<td class="text-center">';
                         html += '<div class="hidden-sm hidden-xs btn-group">';
                         html += '<a class="btn btn-xs btn-primary edit" data-toggle="tooltip"  style="display: none" title="Sửa">';

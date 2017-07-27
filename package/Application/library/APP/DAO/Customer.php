@@ -11,10 +11,10 @@ namespace APP\DAO;
 use Zend\Db\Sql\Sql;
 use Zend\Db\Sql\Expression;
 
-class InvoiceWarehouse extends AbstractDAO
+class Customer extends AbstractDAO
 {
-    const TABLE_NAME  = 'tbl_invoice_warehouse';
-    const PRIMARY_KEY = 'invoice_warehouse_id';
+    const TABLE_NAME  = 'tbl_customer';
+    const PRIMARY_KEY = 'customer_id';
 
     public static function create($params){
         try {
@@ -48,7 +48,7 @@ class InvoiceWarehouse extends AbstractDAO
             $params = array_merge([
                 'limit' => 10,
                 'offset' => 0,
-                'order' => 'invoice_warehouse_id DESC'
+                'order' => 'invoice_id DESC'
             ], $params);
 
             $adapter = self::getInstance();
@@ -146,10 +146,12 @@ class InvoiceWarehouse extends AbstractDAO
             }
             return true;
         } catch (\Exception $e) {
-            echo '<pre>';
-            print_r($e->getMessage(), $e->getCode());
-            echo '</pre>';
-            die();
+            if(APPLICATION_ENV != 'production'){
+                echo '<pre>';
+                print_r($e->getMessage(), $e->getCode());
+                echo '</pre>';
+                die();
+            }
             throw new \Exception($e->getMessage(), $e->getCode());
         }
     }
@@ -157,12 +159,12 @@ class InvoiceWarehouse extends AbstractDAO
     public static function buildWhere($params){
         $strWhere = '1=1';
 
-        if(!empty($params['invoice_id'])){
-            $strWhere .= ' AND invoice_id = '. $params['invoice_id'];
+        if(!empty($params['customer_id'])){
+            $strWhere .= ' AND customer_id = '. $params['customer_id'];
         }
 
-        if(!empty($params['not_invoice_id'])){
-            $strWhere .= ' AND invoice_id != '. $params['not_invoice_id'];
+        if(!empty($params['not_customer_id'])){
+            $strWhere .= ' AND customer_id != '. $params['not_customer_id'];
         }
 
         if(isset($params['status'])){
@@ -173,18 +175,9 @@ class InvoiceWarehouse extends AbstractDAO
             $strWhere .= ' AND status != '.$params['not_status'];
         }
 
-        if(!empty($params['in_invoice_id'])){
-            $strWhere .= ' AND invoice_id IN ('. implode(',',$params['in_invoice_id']).')';
-        }
-
         if(!empty($params['search'])){
             $params['search'] = trim(strip_tags($params['search']));
-            if(is_numeric($params['search'])){
-                $strWhere .= ' AND invoice_id = '.$params['search'];
-            }else{
-                $strWhere .= ' AND (banner_name like "%'.$params['search'].'%")';
-            }
-
+            $strWhere .= ' AND (full_name like "%'.$params['search'].'%" OR phone like "%'.$params['search'].'%")';
         }
 
         return $strWhere;
