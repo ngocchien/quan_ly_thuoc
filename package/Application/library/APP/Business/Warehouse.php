@@ -361,6 +361,7 @@ class Warehouse
         $params = array_merge([
             'gt_stock' => 0,
             'not_status' => Model\Warehouse::STATUS_REMOVE,
+            'gt_hsd' => time(),
             'limit' => 10000
         ], $params);
         $result = Model\Warehouse::get($params);
@@ -420,5 +421,21 @@ class Warehouse
         }
 
         return $result;
+    }
+
+    public static function getWarehouseForInvoice($params){
+        $condition = [
+            'not_status' => Model\Warehouse::STATUS_REMOVE,
+            'lt_stock' => 0,
+            'lt_hsd' => time(),
+            'limit' => 10000,
+            'offset' => 0
+        ];
+
+        if(!empty($params['warehouse_id_selected']) && is_array($params['warehouse_id_selected'])){
+            $condition['not_in_warehouse_id'] = $params['warehouse_id_selected'];
+        }
+        return Model\Warehouse::get($condition);
+
     }
 }

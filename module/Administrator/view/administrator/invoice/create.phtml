@@ -1,72 +1,156 @@
 <div class="data-view" data-view="administrator/invoice/create">
-    <div class="page-content">
-        <form name="form" class="form-search" method="post">
-            <div style="margin-bottom: 10px; border-radius: 0 !important;border: 1px solid #ddd;
-    border-collapse: separate;">
-                <div style=" width:400px; padding: 8px 20px 2px;margin: 0;">
-                    <span>
-                        Tên khách hàng
-                    </span>
+    <div class="col-xs-12">
+        <!-- PAGE CONTENT BEGINS -->
+        <div class="space-6"></div>
+
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="widget-box transparent">
+                    <div class="widget-header widget-header-large">
+                        <h3 class="widget-title grey lighter">
+                            <i class="ace-icon fa fa-leaf green"></i>
+                            Tạo đơn thuốc
+                        </h3>
+
+                        <div class="widget-toolbar no-border invoice-info">
+                            <span class="invoice-info-label">Mã:</span>
+                            <span class="red">#121212</span>
+
+                            <br>
+                            <span class="invoice-info-label">Ngày:</span>
+                            <span class="blue"><?php echo date('d/m/Y')?></span>
+                        </div>
+
+                        <div class="widget-toolbar hidden-480">
+                            <a href="#">
+                                <i class="ace-icon fa fa-print"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="widget-body">
+                        <div class="widget-main padding-24">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="row">
+                                        <div class="col-xs-11 label label-lg label-info arrowed-in arrowed-right">
+                                            <b>Thông tin khách hàng</b>
+                                        </div>
+                                    </div>
+
+                                    <div class="rows">
+                                        <div class="col-xs-3">
+                                            <i class="ace-icon fa fa-caret-right blue"></i>Tên
+                                        </div>
+                                        <div class="col-xs-9">
+                                            : Chiến Nguyễn
+                                        </div>
+                                        <div class="col-xs-3">
+                                            <i class="ace-icon fa fa-caret-right blue"></i>Số điện thoại
+                                        </div>
+                                        <div class="col-xs-9">
+                                            : 0973531618
+                                        </div>
+                                        <div class="col-xs-3">
+                                            <i class="ace-icon fa fa-caret-right blue"></i>Địa chỉ
+                                        </div>
+                                        <div class="col-xs-9">
+                                            : Đội 8
+                                        </div>
+                                    </div>
+                                </div><!-- /.col -->
+
+<!--                                <div class="col-sm-6">-->
+<!--                                    <div class="row">-->
+<!--                                        <div class="col-xs-11 label label-lg label-success arrowed-in arrowed-right">-->
+<!--                                            <b>Customer Info</b>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                    <div>-->
+<!--                                        <ul class="list-unstyled  spaced">-->
+<!--                                            <li>-->
+<!--                                                <i class="ace-icon fa fa-caret-right green"></i>Street, City-->
+<!--                                            </li>-->
+<!---->
+<!--                                            <li>-->
+<!--                                                <i class="ace-icon fa fa-caret-right green"></i>Zip Code-->
+<!--                                            </li>-->
+<!---->
+<!--                                            <li>-->
+<!--                                                <i class="ace-icon fa fa-caret-right green"></i>State, Country-->
+<!--                                            </li>-->
+<!---->
+<!--                                            <li class="divider"></li>-->
+<!---->
+<!--                                            <li>-->
+<!--                                                <i class="ace-icon fa fa-caret-right green"></i>-->
+<!--                                                Contact Info-->
+<!--                                            </li>-->
+<!--                                        </ul>-->
+<!--                                    </div>-->
+<!--                                </div><!-- /.col -->
+                            </div><!-- /.row -->
+
+                            <div class="space"></div>
+
+                            <form method="post">
+                            <div>
+                                <div class="pull-right" style="margin-bottom: 10px">
+                                    <a class="btn btn-xs btn-primary add-product">
+                                        <i class="ace-icon fa fa-plus-circle"></i>
+                                        Thêm
+                                    </a>
+                                </div>
+
+                                    <table class="table table-striped table-bordered">
+                                    <thead>
+                                    <tr>
+                                        <th class="center">STT</th>
+                                        <th class="center" width="200px">Thuốc</th>
+                                        <th class="center">ĐVT</th>
+                                        <th class="center">Mô tả</th>
+                                        <th class="center">Số lượng</th>
+                                        <th class="center">Giá bán (VNĐ)</th>
+                                        <th class="center">Giảm giá (%)</th>
+                                        <th class="center">Tổng tiền (VNĐ)</th>
+                                        <th class="center" width="50px">Chức năng</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+
+                                <div class="hr hr8 hr-double hr-dotted"></div>
+                                <div class="row">
+                                    <div class="col-sm-5 pull-right">
+                                        <h4 class="pull-right">
+                                            Tổng cộng :
+                                            <span class="red sum_total_price">0</span> VNĐ
+                                        </h4>
+                                    </div>
+                                    <div class="col-sm-7 pull-left"></div>
+                                </div>
+                            </div>
+                            <div class="center">
+                                <button type="submit" class="btn btn-xs btn-success">
+                                    <i class="ace-icon fa fa-save"></i> Xác nhận
+                                </button>
+                            </div>
+                            </form>
+
+<!--                            <div class="hr hr8 hr-double hr-dotted"></div>-->
+<!--                            <div class="space-6"></div>-->
+<!--                            <div class="well">-->
+<!--                                Cảm ơn bạn đã sử dụng dịch vụ của chúng tôi-->
+<!--                            </div>-->
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div>
-                <table style="margin-bottom: 0" class="table table-striped table-bordered table-hover">
-                <thead>
-                <tr class="">
-                    <th class="center"> STT</th>
-                    <th class="center"> Thuốc</th>
-                    <th class="center"> ĐVT </th>
-                    <th class="center"> Số lượng</th>
-                    <th class="center"> Đơn giá</th>
-                    <th class="center"> Thành tiền</th>
-                    <th class="center"> % CK</th>
-                    <th class="center"> Thực thu</th>
-                    <th class="center"> Lô</th>
-                    <th class="center"> Hạn dùng</th>
-                </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="center" >1</td>
-                        <td width="350px">
-                            <div>
-                                <select name="warehouse_id[]" class="select-picker" style="width: 300px" data-live-search="true">
-                                    <?php foreach ($this->warehouses['rows'] as $row):?>
-                                        <option data-toggle='tooltip' value="<?php echo $row['warehouse_id']?>" data-stock="<?php echo $row['stock']?>"
-                                                data-title="<?php echo $row['product_name']?> - Loại : <?php echo $row['properties_name']?> - Số lô : <?php echo $row['production_batch'];?> - Hiệu :<?php echo $row['brand_name']?> - Còn : <?php echo $row['stock']?> - NSX : <?php echo date('d-m-Y',$row['nsx'])?> - HSD : <?php echo date('d-m-Y',$row['hsd'])?>"
-                                        >
-                                            <?php echo $row['product_name']?> - Loại : <?php echo $row['properties_name']?> - Số lô : <?php echo $row['production_batch'];?> - Hiệu :<?php echo $row['brand_name']?> - Còn : <?php echo $row['stock']?>
-                                        </option>
-                                    <?php endforeach;?>
-                                </select>
-                            </div>
-                        </td>
-                        <td class="center">
-                            <select style="width: 80px">
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
-                                <option value="5">5</option>
-                            </select>
-                        </td>
-                        <td class="center"></td>
-                        <td class="center"></td>
-                        <td class="center"></td>
-                        <td class="center"></td>
-                        <td class="center"></td>
-                        <td class="center"></td>
-                        <td class="center"></td>
-                    </tr>
-                    <tr>
-                        <td class="center" colspan="5"><b>Tổng</b></td>
-                        <td class="center"></td>
-                        <td class="center"></td>
-                        <td class="center" colspan="3"></td>
-                    </tr>
-                </tbody>
-            </table>
-            </div>
-        </form>
+        </div>
+        <!-- PAGE CONTENT ENDS -->
     </div>
 </div>
+<script type="text/javascript">
+    Registry.set('WAREHOUSES', <?php echo json_encode($this->warehouses)?>);
+</script>

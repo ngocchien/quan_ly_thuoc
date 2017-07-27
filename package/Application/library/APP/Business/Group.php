@@ -8,9 +8,6 @@
 namespace APP\Business;
 
 use APP\Model;
-use Zend\Authentication\AuthenticationService;
-use Zend\Validator\EmailAddress;
-use Zend\Mvc\Controller\AbstractActionController;
 
 class Group
 {

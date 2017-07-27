@@ -53,7 +53,6 @@ class Warehouse extends AbstractDAO
             $adapter = self::getInstance();
             $sql = new Sql($adapter);
             $strWhere = self::buildWhere($params);
-
             $select = $sql->select()
                 ->from(self::TABLE_NAME)
                 ->order($params['order'])
@@ -161,6 +160,14 @@ class Warehouse extends AbstractDAO
             $strWhere .= ' AND warehouse_id = '. $params['warehouse_id'];
         }
 
+        if(!empty($params['in_warehouse_id'])){
+            $strWhere .= ' AND warehouse_id IN ('. implode(',',$params['in_warehouse_id']).')';
+        }
+
+        if(!empty($params['not_in_warehouse_id'])){
+            $strWhere .= ' AND warehouse_id NOT IN ('. implode(',',$params['not_in_warehouse_id']).')';
+        }
+
         if(!empty($params['not_warehouse_id'])){
             $strWhere .= ' AND warehouse_id != '. $params['not_warehouse_id'];
         }
@@ -194,12 +201,24 @@ class Warehouse extends AbstractDAO
             $strWhere .= ' AND stock > '.$params['lt_stock'];
         }
 
+        if(isset($params['gt_stock'])){
+            $strWhere .= ' AND stock > '.$params['gt_stock'];
+        }
+
 //        if(isset($params['expire'])){
 //            $strWhere .= ' AND expire = '.$params['expire'];
 //        }
 
         if(isset($params['hsd'])){
             $strWhere .= ' AND expire = '.$params['expire'];
+        }
+
+        if(isset($params['gt_hsd'])){
+            $strWhere .= ' AND hsd > '.$params['gt_hsd'];
+        }
+
+        if(isset($params['gte_hsd'])){
+            $strWhere .= ' AND hsd >= '.$params['gte_hsd'];
         }
 
         if(isset($params['expire'])){

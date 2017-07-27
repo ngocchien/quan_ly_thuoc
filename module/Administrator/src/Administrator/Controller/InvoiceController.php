@@ -11,6 +11,7 @@ namespace Administrator\Controller;
 use APP\Controller\MyController;
 use APP\Business;
 use APP\Model;
+use Zend\View\Model\ViewModel;
 
 class InvoiceController extends MyController
 {
@@ -24,6 +25,10 @@ class InvoiceController extends MyController
 
         if ($this->request->isPost()) {
             $params = $this->params()->fromPost();
+            echo '<pre>';
+            print_r($params);
+            echo '</pre>';
+            die();
             $result = Business\Banner::create($params);
             if (!empty($result['success'])) {
                 return $this->redirect()->toRoute('administratorMenu', ['action' => 'edit', 'id' => $result['menu_id']]);
@@ -45,5 +50,27 @@ class InvoiceController extends MyController
 
     public function deleteAction(){
 
+    }
+
+    public function loadWarehouseAction(){
+        try{
+            $params = array_merge($this->params()->fromRoute(),$this->params()->fromQuery());
+            $result = Business\Warehouse::getWarehouseForInvoice($params);
+            $viewModel = new ViewModel();
+            $viewModel->setVariables([
+                'warehouses' => $result,
+                'params' => $params
+            ]);
+            $viewModel->setTerminal(true);
+            return $viewModel;
+        }catch (\Exception $e){
+            if(APPLICATION_ENV != 'production'){
+                echo '<pre>';
+                print_r($e->getMessage());
+                echo '</pre>';
+                die();
+            }
+            throw new \Exception($e->getMessage(), $e->getCode());
+        }
     }
 }

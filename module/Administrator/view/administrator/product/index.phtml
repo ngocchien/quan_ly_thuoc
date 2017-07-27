@@ -1,64 +1,78 @@
 <div class="rows" data-view="administrator/product/index">
     <div class="col-xs-12">
-        <div class="col-sx-12" style="margin-bottom: 5px">
-            <a class="btn btn-xs btn-danger remove-all" href="javascript:;" style="margin-right: 5px">
-                <i class="fa fa-trash "></i> Xóa
-            </a>
-            <a class="btn btn-xs btn-success" href="<?php echo $this->Url('administratorProduct', ['action'=>'create'])?>">
-                <i class="ace-icon fa fa-plus">
-                    Thêm
-                </i>
-            </a>
-        </div>
-        <table id="simple-table" class="table  table-bordered table-hover">
-            <thead>
-                <tr>
-                    <th class="center"> # </th>
-                    <th class="center"><span class="fa fa-barcode"></span> ID</th>
-                    <th class="center"><span class="fa fa-list-alt"></span> Tên thuốc</th>
-                    <th class="center">Danh mục</th>
-                    <th class="center"><span class="fa fa-fire"></span> Nhãn hiệu</th>
-                    <th class="center"><span class="fa fa-location-arrow"></span>Xuất xứ</th>
-                    <th class="center">Giá gốc (VNĐ)</th>
-                    <th class="center"><span class="fa fa-dollar"></span> Giá bán (VNĐ)</th>
-                    <th class="center"><span class="fa fa-calendar"></span> Ngày tạo</th>
-                    <th class="center"><span class="fa fa-user"></span> Người tạo</th>
-                    <th class="center"><span class="fa fa-gears"></span> Tùy chỉnh</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php if(!empty($this->products)):
-                foreach ($this->products['rows'] as $row):
-                    ?>
+        <form method="get" class="form-search nav-search">
+            <div class="col-xs-12" style="margin-bottom: 5px">
+                <div class="col-xs-6">
+                    <a class="btn btn-xs btn-danger remove-all" href="javascript:;" style="margin-right: 5px">
+                        <i class="fa fa-trash "></i> Xóa
+                    </a>
+                    <a class="btn btn-xs btn-success" href="<?php echo $this->Url('administratorProduct', ['action'=>'create'])?>">
+                        <i class="ace-icon fa fa-plus">
+                            Thêm
+                        </i>
+                    </a>
+                </div>
+                <div class="col-xs-4 col-xs-offset-2">
+                    <span class="input-icon">
+                        <input type="text" name="search" placeholder="Tìm kiếm ..." class="nav-search-input" autocomplete="off"
+                            value="<?php echo (empty($this->params['search'])) ? '' : $this->params['search'];?>"
+                        >
+                    </span>
+                    <button type="submit" class="btn btn-xs btn-primary">
+                        <i class="ace-icon fa fa-search"></i> Tìm
+                    </button>
+                </div>
+            </div>
+            <table id="simple-table" class="table  table-bordered table-hover">
+                <thead>
                     <tr>
-                        <td class="center"><input type="checkbox" name="data-id" class="input" value="<?php echo $row['product_id']?>"></td>
-                        <td class="center"><b><?php echo $row['product_id'];?></b></td>
-                        <td><a href="<?php echo $this->Url('products', ['name'=>$row['product_slug']])?>" target="_blank"><b><?php echo $row['product_name'];?></b></a></td>
-                        <td class="center"><?php echo $this->categories[$row['cate_id']]['cate_name'];?></td>
-                        <td class="center"><?php echo empty($this->brands[$row['brand_id']]['brand_name']) ? 'Không xác định' : $this->brands[$row['brand_id']]['brand_name'];?></td>
-                        <td class="center"><?php echo empty($this->brands[$row['brand_id']]) || empty($this->countries[$this->brands[$row['brand_id']]['country_id']]['country_name']) ? 'Không xác định' : $this->countries[$this->brands[$row['brand_id']]['country_id']]['country_name'];?></td>
-                        <td class="center"><?php echo number_format($row['price_cost']);?></td>
-                        <td class="center"><b class="red"><?php echo number_format($row['price']);?></b></td>
-                        <td class="center"><?php echo date('Y-m-d',$row['created_date']);?></td>
-                        <td class="center"><?php echo $this->users[$row['user_created']]['full_name'];?></td>
-                        <td class="center">
-                            <div class="hidden-sm hidden-xs btn-group">
-                                <a class="btn btn-xs btn-info" data-toggle="tooltip" title="Cập nhật" href="<?php echo $this->Url('administratorProduct', ['action'=>'edit', 'id' => $row['product_id']])?>">
-                                    <i class="ace-icon fa fa-pencil bigger-120"></i>
-                                </a>
-                            </div>
-                        </td>
+                        <th class="center"> # </th>
+                        <th class="center"><span class="fa fa-barcode"></span> ID</th>
+                        <th class="center"><span class="fa fa-list-alt"></span> Tên thuốc</th>
+                        <th class="center">Danh mục</th>
+                        <th class="center"><span class="fa fa-fire"></span> Nhãn hiệu</th>
+                        <th class="center"><span class="fa fa-location-arrow"></span>Xuất xứ</th>
+                        <th class="center">Giá gốc (VNĐ)</th>
+                        <th class="center"><span class="fa fa-dollar"></span> Giá bán (VNĐ)</th>
+                        <th class="center"><span class="fa fa-calendar"></span> Ngày tạo</th>
+                        <th class="center"><span class="fa fa-user"></span> Người tạo</th>
+                        <th class="center"><span class="fa fa-gears"></span> Tùy chỉnh</th>
                     </tr>
-                <?php endforeach; endif;?>
-            </tbody>
-        </table>
-        <?php
-        $params = $this->params;
-        $params['controller'] = $params['strController'];
-        $paging = $this->pagingText($params);
-        if(!empty($paging)){
-            echo $paging;
-        }
-        ?>
+                </thead>
+                <tbody>
+                    <?php if(!empty($this->products)):
+                    foreach ($this->products['rows'] as $row):
+                        ?>
+                        <tr>
+                            <td class="center"><input type="checkbox" name="data-id" class="input" value="<?php echo $row['product_id']?>"></td>
+                            <td class="center"><b><?php echo $row['product_id'];?></b></td>
+                            <td><a href="<?php echo $this->Url('products', ['name'=>$row['product_slug']])?>" target="_blank"><b><?php echo $row['product_name'];?></b></a></td>
+                            <td class="center"><?php echo $this->categories[$row['cate_id']]['cate_name'];?></td>
+                            <td class="center"><?php echo empty($this->brands[$row['brand_id']]['brand_name']) ? 'Không xác định' : $this->brands[$row['brand_id']]['brand_name'];?></td>
+                            <td class="center"><?php echo empty($this->brands[$row['brand_id']]) || empty($this->countries[$this->brands[$row['brand_id']]['country_id']]['country_name']) ? 'Không xác định' : $this->countries[$this->brands[$row['brand_id']]['country_id']]['country_name'];?></td>
+                            <td class="center"><?php echo number_format($row['price_cost']);?></td>
+                            <td class="center"><b class="red"><?php echo number_format($row['price']);?></b></td>
+                            <td class="center"><?php echo date('Y-m-d',$row['created_date']);?></td>
+                            <td class="center"><?php echo $this->users[$row['user_created']]['full_name'];?></td>
+                            <td class="center">
+                                <div class="hidden-sm hidden-xs btn-group">
+                                    <a class="btn btn-xs btn-info" data-toggle="tooltip" title="Cập nhật" href="<?php echo $this->Url('administratorProduct', ['action'=>'edit', 'id' => $row['product_id']])?>">
+                                        <i class="ace-icon fa fa-pencil bigger-120"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    <?php endforeach; endif;?>
+                </tbody>
+            </table>
+            <?php
+            $params = $this->params;
+            $params['controller'] = $params['strController'];
+            $paging = $this->pagingText($params);
+            if(!empty($paging)){
+                echo $paging;
+            }
+            ?>
+        </form>
     </div>
 </div>
