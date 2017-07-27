@@ -89,6 +89,10 @@ class WarehouseController extends MyController
 
         if ($this->request->isPost()) {
             $params = $this->params()->fromPost();
+            echo '<pre>';
+            print_r($params);
+            echo '</pre>';
+            die();
             $params = Business\Warehouse::create($params);
             if (!empty($params['success'])) {
                 $_SESSION['create-warehouse-success'] = true;
