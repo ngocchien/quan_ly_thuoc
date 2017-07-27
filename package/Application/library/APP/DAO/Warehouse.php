@@ -9,6 +9,7 @@
 namespace APP\DAO;
 use Zend\Db\Sql\Sql;
 use Zend\Db\Sql\Expression;
+use APP\Model;
 
 class Warehouse extends AbstractDAO
 {
@@ -186,10 +187,16 @@ class Warehouse extends AbstractDAO
 
         if(!empty($params['search'])){
             $params['search'] = trim(strip_tags($params['search']));
-            if(is_numeric($params['search'])){
-                $strWhere .= ' AND warehouse_id = '.$params['search'];
-            }else{
-                $strWhere .= ' AND (banner_name like "%'.$params['search'].'%")';
+            $result = Model\Product::get([
+                'limit' => 10000,
+                'search' => $params['search']
+            ]);
+            if(!empty($result['rows'])){
+                $arr_product_id = [];
+                foreach ($result['rows'] as $row){
+                    $arr_product_id[] = $row['product_id'];
+                }
+                $strWhere .= ' AND product_id IN ('. implode(',',$arr_product_id).')';
             }
         }
 

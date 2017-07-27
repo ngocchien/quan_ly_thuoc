@@ -70,7 +70,7 @@ return [
             'administratorCategory' => array(
                 'type' => Segment::class,
                 'options' => array(
-                    'route' => '/admin/category[/:action][/id/:id][/page/:page][/limit/:limit]',
+                    'route' => '/admin/category[/:action][/id/:id][/page/:page][/limit/:limit][?search=:search]',
                     'constraints' => array(
                         'id' => '[0-9]+',
                         'page' => '[0-9]+'
@@ -119,7 +119,7 @@ return [
             'administratorProduct' => array(
                 'type' => Segment::class,
                 'options' => array(
-                    'route' => '/admin/product[/:action][/id/:id][/page/:page][/limit/:limit]',
+                    'route' => '/admin/product[/:action][/id/:id][/page/:page][/limit/:limit][?search=:search]',
                     'constraints' => array(
                         'id' => '[0-9]+',
                     ),
@@ -208,7 +208,7 @@ return [
                 'type' => Segment::class,
                 'options' => array(
                     'module' => 'administrator',
-                    'route' => '/admin/brand[/:action][/id/:id][/page/:page][/limit/:limit]',
+                    'route' => '/admin/brand[/:action][/id/:id][/page/:page][/limit/:limit][?search=:search]',
                     'constraints' => array(
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id' => '[0-9]+',
@@ -226,7 +226,7 @@ return [
                 'type' => Segment::class,
                 'options' => array(
                     'module' => 'administrator',
-                    'route' => '/admin/properties[/:action][/id/:id][/page/:page][/limit/:limit]',
+                    'route' => '/admin/properties[/:action][/id/:id][/page/:page][/limit/:limit][?search=:search]',
                     'constraints' => array(
                         'action' => '[a-zA-Z0-9_-]*',
                         'id' => '[0-9]+',
@@ -244,7 +244,7 @@ return [
                 'type' => Segment::class,
                 'options' => array(
                     'module' => 'administrator',
-                    'route' => '/admin/warehouse[/:action][/id/:id][/page/:page][/limit/:limit]',
+                    'route' => '/admin/warehouse[/:action][/id/:id][/page/:page][/limit/:limit][?search=:search]',
                     'constraints' => array(
                         'action' => '[a-zA-Z0-9_-]*',
                         'id' => '[0-9]+',
@@ -262,7 +262,7 @@ return [
                 'type' => Segment::class,
                 'options' => array(
                     'module' => 'administrator',
-                    'route' => '/admin/invoice[/:action][/id/:id][/page/:page][/limit/:limit]',
+                    'route' => '/admin/invoice[/:action][/id/:id][/page/:page][/limit/:limit][?search=:search]',
                     'constraints' => array(
                         'action' => '[a-zA-Z0-9_-]*',
                         'id' => '[0-9]+',

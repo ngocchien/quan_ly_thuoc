@@ -198,11 +198,7 @@ class Product extends AbstractDAO
 
         if(!empty($params['search'])){
             $params['search'] = trim(strip_tags($params['search']));
-            if(is_numeric($params['search'])){
-                $strWhere .= ' AND product_id = '.$params['search'];
-            }else{
-                $strWhere .= ' AND (product_name like "%'.$params['search'].'%")';
-            }
+            $strWhere .= ' AND (product_name like "%'.$params['search'].'%")';
         }
 
         if(!empty($params['in_product_id'])){

@@ -1,15 +1,28 @@
 <div class="rows" data-view="administrator/warehouse/index">
     <div class="col-xs-12">
-        <div class="col-sx-12" style="margin-bottom: 5px">
-            <a class="btn btn-xs btn-danger remove-all" href="javascript:;" style="margin-right: 5px">
-                <i class="fa fa-trash "></i> Xóa
-            </a>
-            <a class="btn btn-xs btn-success" href="<?php echo $this->Url('administratorWarehouse', ['action'=>'create'])?>">
-                <i class="ace-icon fa fa-plus">
-                    Thêm
-                </i>
-            </a>
-        </div>
+        <form method="get" class="form-search">
+            <div class="col-xs-12" style="margin-bottom: 10px">
+                <div class="col-xs-6">
+                    <a class="btn btn-xs btn-danger remove-all" href="javascript:;" style="margin-right: 5px">
+                        <i class="fa fa-trash "></i> Xóa
+                    </a>
+                    <a class="btn btn-xs btn-success" href="<?php echo $this->Url('administratorProduct', ['action'=>'create'])?>">
+                        <i class="ace-icon fa fa-plus">
+                            Thêm
+                        </i>
+                    </a>
+                </div>
+                <div class="col-xs-4 col-xs-offset-2">
+                    <span class="input-icon">
+                        <input type="text" name="search" placeholder="Tìm kiếm ..." class="nav-search-input" autocomplete="off"
+                               value="<?php echo (empty($this->params['search'])) ? '' : $this->params['search'];?>"
+                        >
+                    </span>
+                    <button type="submit" class="btn btn-xs btn-primary">
+                        <i class="ace-icon fa fa-search"></i> Tìm
+                    </button>
+                </div>
+            </div>
         <table id="simple-table" class="table  table-bordered table-hover">
             <thead>
             <tr>
@@ -85,5 +98,6 @@
             echo $paging;
         }
         ?>
+        </form>
     </div>
 </div>

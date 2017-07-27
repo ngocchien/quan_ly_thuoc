@@ -191,11 +191,7 @@ class Category extends AbstractDAO
 
         if(!empty($params['search'])){
             $params['search'] = trim(strip_tags($params['search']));
-            if(is_numeric($params['search'])){
-                $strWhere .= ' AND cate_id = '.$params['search'];
-            }else{
-                $strWhere .= ' AND (cate_name like "%'.$params['search'].'%")';
-            }
+            $strWhere .= ' AND (cate_name like "%'.$params['search'].'%")';
         }
 
         if(isset($params['not_like_full_sort'])){

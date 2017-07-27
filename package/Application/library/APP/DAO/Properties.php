@@ -159,12 +159,7 @@ class Properties extends AbstractDAO
 
         if(!empty($params['search'])){
             $params['search'] = trim(strip_tags($params['search']));
-            if(is_numeric($params['search'])){
-                $strWhere .= ' AND id = '.$params['search'];
-            }else{
-                $strWhere .= ' AND (properties_name like "%'.$params['search'].'%")';
-            }
-
+            $strWhere .= ' AND (properties_name like "%'.$params['search'].'%")';
         }
 
         return $strWhere;
