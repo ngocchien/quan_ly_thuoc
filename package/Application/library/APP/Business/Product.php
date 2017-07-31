@@ -44,8 +44,8 @@ class Product
         $cate_id = $params['cate_id'];
         $brand_id = $params['brand_id'];
         $product_code = $params['product_code'];
-        $price = $params['price'];
-        $price_cost = $params['price_cost'];
+        $price = empty($params['price']) ? 0 : $params['price'];
+        $price_cost = empty($params['price_cost']) ? 0 : $params['price_cost'];
         $status = 1;
         $images = empty($params['fid']) ? '': implode(',',$params['fid']);
         $meta_title = empty($params['meta_title']) ? : $params['meta_title'];
@@ -131,8 +131,8 @@ class Product
         $description = $params['description'];
         $cate_id = $params['cate_id'];
         $product_code = $params['product_code'];
-        $price = $params['price'];
-        $price_cost = $params['price_cost'];
+        $price = empty($params['price']) ? 0 : $params['price'];
+        $price_cost = empty($params['price_cost']) ? 0 : $params['price_cost'];
         $status = 1;
         $images = empty($params['fid']) ? '': implode(',',$params['fid']);
         $meta_title = empty($params['meta_title']) ? : $params['meta_title'];
@@ -238,8 +238,8 @@ class Product
     }
 
 	public static function getTags($params){
-		$search = isset($params['search']) ? $params['search'] : '';
-		$selected_id = isset($params['selected_id']) ? $params['selected_id'] : array();
+//		$search = isset($params['search']) ? $params['search'] : '';
+//		$selected_id = isset($params['selected_id']) ? $params['selected_id'] : array();
 
 		/*$data = Model\ElasticSearch::search(array(
 			'object_name' => 'tags',
@@ -250,21 +250,21 @@ class Product
 		));*/
 
 		//transform
-		$result = array();
-		if(isset($data['rows']) && !empty($data['rows'])){
-			foreach($data['rows'] as $row){
-				if(isset($row['tag_id'])){
-					$result[] = array(
-						'id' => $row['tag_id'],
-						'name' => $row['tag_name']
-					);
-				}
-			}
-		}
-
-		return array(
-			'rows' => $result,
-			'total' => isset($data['total']) ? $data['total'] : 0
-		);
+//		$result = array();
+//		if(isset($data['rows']) && !empty($data['rows'])){
+//			foreach($data['rows'] as $row){
+//				if(isset($row['tag_id'])){
+//					$result[] = array(
+//						'id' => $row['tag_id'],
+//						'name' => $row['tag_name']
+//					);
+//				}
+//			}
+//		}
+//
+//		return array(
+//			'rows' => $result,
+//			'total' => isset($data['total']) ? $data['total'] : 0
+//		);
 	}
 }

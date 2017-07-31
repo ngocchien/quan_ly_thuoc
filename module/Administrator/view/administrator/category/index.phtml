@@ -26,7 +26,7 @@
                 <th class="center"><span class="fa fa-list"> ID</th>
                 <th class="center"><span class="fa fa-list-alt"></span> Tên</th>
                 <th class="center"><span class="fa fa-calendar"></span> Ngày tạo</th>
-                <th class="center"><span class="fa fa-user"></span> Người tạo</th>
+<!--                <th class="center"><span class="fa fa-user"></span> Người tạo</th>-->
                 <th class="center"><span class="fa fa-gears"></span> Tùy chỉnh</th>
             </tr>
             </thead>
@@ -55,7 +55,7 @@
                             ?>
                         </td>
                         <td class="center"><?php echo date('Y-m-d', $category['created_date']);?></td>
-                        <td class="center"><?php echo empty($this->users[$category['user_created']]) ? '' : $this->users[$category['user_created']]['full_name']?></td>
+<!--                        <td class="center">--><?php //echo empty($this->users[$category['user_created']]) ? '' : $this->users[$category['user_created']]['full_name']?><!--</td>-->
                         <td class="center">
                             <div class="hidden-sm hidden-xs btn-group">
                                 <a class="btn btn-xs btn-info" data-toggle="tooltip" title="Cập nhật" href="<?php echo $this->Url('administratorCategory', ['action'=>'edit', 'id' => $category['cate_id']])?>"><i class="ace-icon fa fa-pencil bigger-120"></i></a>

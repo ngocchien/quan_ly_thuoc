@@ -26,8 +26,8 @@
                     <th class="center"><span class="fa fa-list"> ID</th>
                     <th class="center"><span class="fa fa-list-alt"></span> Tên</th>
                     <th class="center"><span class="fa fa-calendar"></span> Ngày tạo</th>
-                    <th class="center"><span class="fa fa-user"></span> Người tạo</th>
-                    <th class="center"><span class="fa fa-gears"></span> Tùy chỉnh</th>
+<!--                    <th class="center"><span class="fa fa-user"></span> Người tạo</th>-->
+                    <th class="center" width="100"><span class="fa fa-gears"></span> Tùy chỉnh</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -48,7 +48,7 @@
                                 ?>
                             </td>
                             <td class="center"><?php echo date('Y-m-d', $rows['created_date']);?></td>
-                            <td class="center"><?php echo empty($this->users[$rows['user_created']]) ? '' : $this->users[$rows['user_created']]['full_name']?></td>
+<!--                            <td class="center">--><?php //echo empty($this->users[$rows['user_created']]) ? '' : $this->users[$rows['user_created']]['full_name']?><!--</td>-->
                             <td class="center">
                                 <div class="hidden-sm hidden-xs btn-group">
                                     <a class="btn btn-xs btn-info" data-toggle="tooltip" title="Cập nhật" href="<?php echo $this->Url('administratorProperties', ['action'=>'edit', 'id' =>$rows['id']])?>">
