@@ -75,9 +75,9 @@ $action = ACTION;
         module_url: '<?php echo STATIC_URL; ?>/js/modules',
         library_url: '<?php echo STATIC_URL; ?>/js/libs',
         model_url: '<?php echo STATIC_URL; ?>/js/models',
-        debug: 'true',
-        cache: false,
-        version : 123
+        debug: <?php echo APPLICATION_ENV == 'development' ? 'true' : 'false' ?>,
+        cache: <?php echo APPLICATION_ENV == 'development' ? 'false' : 'true' ?>,
+        version : '<?php echo APPLICATION_ENV == 'production' ? STATIC_VERSION : 'v1'; ?>'
     });
     Registry.set('SITE_URL', '<?php echo SITE_URL; ?>');
     Registry.set('STATIC_URL', '<?php echo STATIC_URL; ?>');
