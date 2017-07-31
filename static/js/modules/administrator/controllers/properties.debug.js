@@ -2,11 +2,12 @@
  * Created by chiennn on 27/06/2017.
  */
 
+
 Controller.define('administrator/properties', function () {
     var xhr = null;
     return {
         model: {
-            delete: function (params) {
+            deleteProperties: function (params) {
                 return $.ajax({
                     type: 'post',
                     url: Registry.get('SITE_URL') + 'admin/properties/delete',
@@ -31,8 +32,7 @@ Controller.define('administrator/properties', function () {
                         }
                         bootbox.confirm('Bạn có chắc chắn muốn thuộc tính này không ????', function (e) {
                             if (e) {
-                                console.log(id);re
-                                self.model.delete({id: id}).then(function (rs) {
+                                self.model.deleteProperties({id: id}).then(function (rs) {
                                     if (rs.st == 1) {
                                         bootbox.alert(rs.ms, function () {
                                             window.location = window.location.href;

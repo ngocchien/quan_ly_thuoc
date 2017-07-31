@@ -2,6 +2,7 @@
  * Created by chiennn on 10/06/2017.
  */
 
+
 Controller.define('administrator/product', function () {
     // var xhr =null;
     return {

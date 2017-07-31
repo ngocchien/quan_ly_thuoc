@@ -6,7 +6,7 @@ Controller.define('administrator/invoice', function () {
     // var xhr =null;
     return {
         model: {
-            delete: function (params) {
+            deleteInvoice: function (params) {
                 return $.ajax({
                     type: 'post',
                     url: Registry.get('SITE_URL') + 'admin/invoice/delete',

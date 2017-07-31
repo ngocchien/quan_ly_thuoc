@@ -2,11 +2,12 @@
  * Created by chiennn on 18/06/2017.
  */
 
+
 Controller.define('administrator/category', function () {
     // var xhr =null;
     return {
         model: {
-            delete: function (params) {
+            deleteCate : function (params) {
                 return $.ajax({
                     type: 'post',
                     url: Registry.get('SITE_URL') + 'admin/category/delete',
@@ -31,7 +32,7 @@ Controller.define('administrator/category', function () {
                         }
                         bootbox.confirm('Bạn có chắc chắn muốn xóa danh mục này không ????', function (e) {
                             if (e) {
-                                self.model.delete({cate_id : id}).then(function (rs) {
+                                self.model.deleteCate({cate_id : id}).then(function (rs) {
                                     if(rs.st == 1){
                                         bootbox.alert(rs.ms,function () {
                                             window.location = window.location.href;

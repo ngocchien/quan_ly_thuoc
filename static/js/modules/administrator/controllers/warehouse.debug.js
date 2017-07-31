@@ -2,11 +2,12 @@
  * Created by chiennn on 07/07/2017.
  */
 
+
 Controller.define('administrator/warehouse', function () {
     // var xhr =null;
     return {
         model: {
-            deleteProduct: function (params) {
+            deleteWarehouse: function (params) {
                 return $.ajax({
                     type: 'post',
                     url: Registry.get('SITE_URL') + 'admin/warehouse/delete',
@@ -50,7 +51,7 @@ Controller.define('administrator/warehouse', function () {
                                     self.find('input[name=data-id]:checked').each(function () {
                                         arr_id.push($(this).val())
                                     });
-                                    self.model.deleteProduct({arr_product_id : arr_id}).then(function (rs){
+                                    self.model.deleteWarehouse({arr_product_id : arr_id}).then(function (rs){
                                         if(rs.st == 1){
                                             bootbox.alert(rs.ms,function () {
                                                 window.location = window.location.href;

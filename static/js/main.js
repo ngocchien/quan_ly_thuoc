@@ -8,7 +8,8 @@
             css_url: location.host,
             mod_concat: false,
             debug: false,
-            cache: true
+            cache: true,
+            version : 'v1'
         },
         undef = "undefined";
 
@@ -385,7 +386,7 @@
 
                 if (typeof model !== 'function'){
                     var er = Error('Model must be a function!');
-				}
+                }
 
                 models[name] = model;
             },
@@ -393,7 +394,7 @@
 
                 if (!(name in models)){
                     var er = Error('Model ' + name + ' has not been defined!');
-				}
+                }
 
                 return models[name].apply({}, params || {});
             }
@@ -410,41 +411,41 @@
             (function (global) {
                 var _Bootloader = global.Bootloader,
 
-                // constants for the valid keys of the options object
+                    // constants for the valid keys of the options object
                     _UseLocalXHR = "UseLocalXHR",
                     _AlwaysPreserveOrder = "AlwaysPreserveOrder",
                     _AllowDuplicates = "AllowDuplicates",
                     _CacheBust = "CacheBust",
-                /*!START_DEBUG*/
+                    /*!START_DEBUG*/
                     _Debug = "Debug",
-                /*!END_DEBUG*/
+                    /*!END_DEBUG*/
                     _BasePath = "BasePath",
 
-                // stateless variables used across all Bootloader instances
+                    // stateless variables used across all Bootloader instances
                     root_page = /^[^?#]*\//.exec(location.href)[0],
                     root_domain = /^\w+\:\/\/\/?[^\/]+/.exec(root_page)[0],
                     append_to = document.head || document.getElementsByTagName("head"),
 
-                // inferences... ick, but still necessary
+                    // inferences... ick, but still necessary
                     opera_or_gecko = (global.opera && Object.prototype.toString.call(global.opera) == "[object Opera]") || ("MozAppearance" in document.documentElement.style),
 
-                /*!START_DEBUG*/
-                // console.log() and console.error() wrappers
+                    /*!START_DEBUG*/
+                    // console.log() and console.error() wrappers
                     log_msg = function () {
 
                     },
                     log_error = log_msg,
-                /*!END_DEBUG*/
+                    /*!END_DEBUG*/
 
-                // feature sniffs (yay!)
+                    // feature sniffs (yay!)
                     test_script_elem = document.createElement("script"),
                     explicit_preloading = typeof test_script_elem.preload == "boolean",
-                // http://wiki.whatwg.org/wiki/Script_Execution_Control#Proposal_1_.28Nicholas_Zakas.29
+                    // http://wiki.whatwg.org/wiki/Script_Execution_Control#Proposal_1_.28Nicholas_Zakas.29
                     real_preloading = explicit_preloading || (test_script_elem.readyState && test_script_elem.readyState == "uninitialized"),
-                // will a script preload with `src` set before DOM append?
+                    // will a script preload with `src` set before DOM append?
                     script_ordered_async = !real_preloading && test_script_elem.async === true,
-                // http://wiki.whatwg.org/wiki/Dynamic_Script_Execution_Order
-                // XHR preloading (same-domain) and cache-preloading (remote-domain) are the fallbacks (for some browsers)
+                    // http://wiki.whatwg.org/wiki/Dynamic_Script_Execution_Order
+                    // XHR preloading (same-domain) and cache-preloading (remote-domain) are the fallbacks (for some browsers)
                     xhr_or_cache_preloading = !real_preloading && !script_ordered_async && !opera_or_gecko;
 
                 /*!START_DEBUG*/
@@ -513,7 +514,7 @@
                 function request_script(chain_opts, script_obj, registry_item, onload, preload_this_script) {
                     // setTimeout() "yielding" prevents some weird race/crash conditions in older browsers
                     setTimeout(function () {
-                        var script, src = script_obj.real_src,
+                        var script, src = script_obj.real_src + '?' + Configs.version,
                             xhr;
 
                         // don't proceed until `append_to` is ready to append to

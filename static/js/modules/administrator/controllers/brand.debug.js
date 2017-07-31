@@ -2,11 +2,12 @@
  * Created by chiennn on 27/06/2017.
  */
 
+
 Controller.define('administrator/brand', function () {
     var xhr = null;
     return {
         model: {
-            delete: function (params) {
+            deleteBrand: function (params) {
                 return $.ajax({
                     type: 'post',
                     url: Registry.get('SITE_URL') + 'admin/brand/delete',
@@ -31,7 +32,7 @@ Controller.define('administrator/brand', function () {
                         }
                         bootbox.confirm('Bạn có chắc chắn muốn xóa nhãn hiệu này không ????', function (e) {
                             if (e) {
-                                self.model.delete({brand_id: id}).then(function (rs) {
+                                self.model.deleteBrand({brand_id: id}).then(function (rs) {
                                     if (rs.st == 1) {
                                         bootbox.alert(rs.ms, function () {
                                             window.location = window.location.href;

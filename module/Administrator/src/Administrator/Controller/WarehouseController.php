@@ -98,11 +98,13 @@ class WarehouseController extends MyController
 
         //list properties
         $properties = Business\Properties::getList([
-            'not_status' => Model\Properties::PROPERTIES_STATUS_REMOVE
+            'not_status' => Model\Properties::PROPERTIES_STATUS_REMOVE,
+            'limit' => 10000
         ]);
 
         $products = Business\Product::get([
-            'not_status' => Model\Product::PRODUCT_STATUS_REMOVE
+            'not_status' => Model\Product::PRODUCT_STATUS_REMOVE,
+            'limit' => 10000
         ]);
 
         return [
@@ -147,11 +149,13 @@ class WarehouseController extends MyController
 
             //list properties
             $properties = Business\Properties::getList([
-                'not_status' => Model\Properties::PROPERTIES_STATUS_REMOVE
+                'not_status' => Model\Properties::PROPERTIES_STATUS_REMOVE,
+                'limit' => 10000
             ]);
 
             $products = Business\Product::get([
-                'not_status' => Model\Product::PRODUCT_STATUS_REMOVE
+                'not_status' => Model\Product::PRODUCT_STATUS_REMOVE,
+                'limit' => 10000
             ]);
 
             return [
