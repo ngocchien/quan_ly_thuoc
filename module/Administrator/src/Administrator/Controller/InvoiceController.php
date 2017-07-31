@@ -32,7 +32,9 @@ class InvoiceController extends MyController
         }
 
         //get list product stock in ware house
-        $warehouses = Business\Warehouse::getProductStockInWarehouse([]);
+        $warehouses = Business\Warehouse::getProductStockInWarehouse([
+            'limit' => 10000
+        ]);
 
         return [
             'params' => $params,

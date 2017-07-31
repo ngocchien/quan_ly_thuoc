@@ -33,7 +33,7 @@ class WarehouseController extends MyController
         if(!empty($user_id)){
             $result = Model\User::getUser([
                 'in_user_id' => array_values($user_id),
-                'limit' => 100,
+                'limit' => count($user_id),
                 'offset' => 0
             ]);
 
@@ -47,7 +47,7 @@ class WarehouseController extends MyController
         if(!empty($properties_id)){
             $result = Model\Properties::get([
                 'in_id' => array_values($properties_id),
-                'limit' => 100,
+                'limit' => count($properties_id),
                 'offset' => 0
             ]);
 
@@ -60,8 +60,8 @@ class WarehouseController extends MyController
 
         if(!empty($product_id)){
             $result = Model\Product::get([
-                'in_id' => array_values($product_id),
-                'limit' => 100,
+                'in_product_id' => array_values($product_id),
+                'limit' => count($product_id),
                 'offset' => 0
             ]);
 
