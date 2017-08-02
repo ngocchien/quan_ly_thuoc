@@ -37,27 +37,66 @@
                                             <b>Thông tin khách hàng</b>
                                         </div>
                                     </div>
-
                                     <div class="rows">
-                                        <div class="col-xs-3">
-                                            <i class="ace-icon fa fa-caret-right blue"></i>Tên
-                                        </div>
-                                        <div class="col-xs-9">
+                                        <div class="col-xs-12 input-register-customer" style="margin-top: 10px; display: <?php if(!empty($this->customer)):?>none<?php endif;?>">
+                                            <div class="col-sm-2">
+                                                Nhập khách hàng
+                                            </div>
                                             <div class="col-sm-8 col-md-7">
-                                                <input id="tags" type="text" class="form-control ui-autocomplete-input" autocomplete="off">
+                                                <input id="tags" type="text" class="form-control ui-autocomplete-input search-customer" autocomplete="off">
+                                                <span class="error red error-no-choose-customer" style="display: none">Vui lòng chọn khách hàng</span>
+                                            </div>
+                                            <div class="col-sm-2">
+                                                <a class="btn btn-xs btn-primary add-customer">
+                                                    <i class="ace-icon fa fa-plus-circle"></i>
+                                                    Thêm
+                                                </a>
                                             </div>
                                         </div>
-                                        <div class="col-xs-3">
-                                            <i class="ace-icon fa fa-caret-right blue"></i>Số điện thoại
-                                        </div>
-                                        <div class="col-xs-9">
-                                            : 0973531618
-                                        </div>
-                                        <div class="col-xs-3">
-                                            <i class="ace-icon fa fa-caret-right blue"></i>Địa chỉ
-                                        </div>
-                                        <div class="col-xs-9">
-                                            : Đội 8
+                                        <div class="col-xs-12 info-customer-invoice" style="margin-top: 10px;font-size: 15px; display: <?php if(empty($this->customer)):?>none<?php endif;?>">
+                                            <div class="rows">
+                                                <div class="col-xs-3">
+                                                    <i class="ace-icon fa fa-caret-right blue"></i>Tên khách hàng
+                                                </div>
+                                                <div class="col-xs-1">
+                                                    :
+                                                </div>
+                                                <div class="col-xs-6">
+                                                    <span class="info-full-name"><?php echo empty($this->customer) ? '' : $this->customer['full_name'];?></span>
+                                                </div>
+                                                <div class="col-xs-2">
+                                                    <a class="btn btn-xs btn-warning edit-customer" title="Cập nhật thông tin khách hàng">
+                                                        <i class="ace-icon fa fa-pencil"></i>
+                                                    </a>
+                                                    <a class="btn btn-xs btn-success change-another-customer" title="Chọn khách hàng khác">
+                                                        <i class="ace-icon fa fa-refresh"></i>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            <div class="clearfix"></div>
+                                            <div class="rows">
+                                                <div class="col-xs-3">
+                                                    <i class="ace-icon fa fa-caret-right blue"></i>Số điện thoại
+                                                </div>
+                                                <div class="col-xs-1">
+                                                    :
+                                                </div>
+                                                <div class="col-xs-8">
+                                                    <span class="info-phone"><?php echo empty($this->customer) ? '' : $this->customer['phone'];?></span>
+                                                </div>
+                                            </div>
+                                            <div class="clearfix"></div>
+                                            <div class="rows">
+                                                <div class="col-xs-3">
+                                                    <i class="ace-icon fa fa-caret-right blue"></i>Địa chỉ
+                                                </div>
+                                                <div class="col-xs-1">
+                                                    :
+                                                </div>
+                                                <div class="col-xs-8">
+                                                     <span class="info-address"><?php echo empty($this->customer) ? '' : $this->customer['address'];?></span>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div><!-- /.col -->
@@ -94,31 +133,97 @@
                             </div><!-- /.row -->
 
                             <div class="space"></div>
-
+                            <?php if(!empty($this->params['error'])):?>
+                                <div class="alert alert-danger">
+                                    <button type="button" class="close" data-dismiss="alert">
+                                        <i class="ace-icon fa fa-times"></i>
+                                    </button>
+                                    <strong>
+                                        <i class="ace-icon fa fa-times"></i>
+                                        Oh snap!
+                                    </strong>
+                                    <?php foreach ($this->params['messages'] as $ms):?>
+                                        <p>- <?php echo $ms;?></p>
+                                    <?php endforeach;?>
+                                    <br>
+                                </div>
+                            <?php endif;?>
                             <form method="post">
                             <div>
+                                <input type="hidden" name="customer_id" value="<?php echo empty($this->params['customer_id']) ? '' : $this->params['customer_id']?>">
                                 <div class="pull-right" style="margin-bottom: 10px">
+                                    <span class="error red error-no-choose-warehouse" style="display: none">Vui lòng chọn thuốc muốn bán</span>
                                     <a class="btn btn-xs btn-primary add-product">
                                         <i class="ace-icon fa fa-plus-circle"></i>
                                         Thêm
                                     </a>
                                 </div>
-
                                     <table class="table table-striped table-bordered">
                                     <thead>
                                     <tr>
                                         <th class="center">STT</th>
-                                        <th class="center" width="200px">Thuốc</th>
-                                        <th class="center">ĐVT</th>
+                                        <th class="center" width="350">Thuốc</th>
+                                        <th class="center" width="50">ĐVT</th>
                                         <th class="center">Mô tả</th>
-                                        <th class="center">Số lượng</th>
-                                        <th class="center">Giá bán (VNĐ)</th>
-                                        <th class="center">Giảm giá (%)</th>
-                                        <th class="center">Tổng tiền (VNĐ)</th>
+                                        <th class="center" width="75">Số lượng</th>
+                                        <th class="center" width="105">Giá bán (VNĐ)</th>
+                                        <th class="center" width="65">CK (%)</th>
+                                        <th class="center" width="120">Tổng tiền (VNĐ)</th>
                                         <th class="center" width="50px">Chức năng</th>
                                     </tr>
                                     </thead>
                                     <tbody>
+                                    <?php if(!empty($this->params['warehouse_id'])):
+                                            foreach ($this->params['warehouse_id'] as $key => $warehouse_id):
+                                                $dvt = '';
+                                                $selected_unit_price = 0;
+                                            ?>
+                                                <tr>
+                                                    <td class="text-center stt"><?php echo $key+1;?></td>
+                                                    <td class="text-center">
+                                                        <select name="warehouse_id[]" class="form-control warehouse_id select-picker" data-live-search="true">
+                                                            <?php foreach ($this->warehouses['rows'] as $row):
+                                                                    $selected = '';
+                                                                    if($warehouse_id == $row['warehouse_id']){
+                                                                        $selected_unit_price = $row['unit_price'];
+                                                                        $selected = 'selected';
+                                                                        $dvt = $row['properties_name'];
+                                                                    }
+                                                                ?>
+                                                                <option value="<?php echo $row['warehouse_id']?>" data-price="<?php echo $row['unit_price']?>" data-properties="<?php echo $row['properties_name']?>" <?php echo $selected;?>>
+                                                                    <?php echo $row['product_name'] . ' - Số Lô :' .$row['production_batch'] . ' - HSD :' .$row['hsd'] . ' - Tồn :' .$row['stock']?>
+                                                                </option>
+                                                            <?php endforeach;?>
+                                                        </select>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <?php echo $dvt;?>
+                                                    </td>
+                                                    <td>
+                                                        <textarea width="100%" cols="30" name="note[]"><?php echo $this->params['note'][$key]?></textarea>
+                                                    </td>
+                                                    <td lass="text-right">
+                                                        <input class="form-control input price-mask quantity" name="quantity[]" value="<?php echo $this->params['quantity'][$key]?>">
+                                                        <span class="error error-no-choose-quantity red" style="display: none">Nhập SL</span>
+                                                    </td>
+                                                    <td class="text-right">
+                                                        <input class="form-control input price-mask unit_price" name="price[]" readonly value="<?php echo $selected_unit_price;?>">
+                                                    </td>
+                                                    <td class="text-right">
+                                                        <input class="form-control input price-mask discount" name="discount[]" value="<?php echo $this->params['discount'][$key]?>">
+                                                    </td>
+                                                    <td class="text-right">
+                                                        <input class="form-control input price-mask total_price" name="total_price[]" readonly value="<?php echo $this->params['total_price'][$key]?>">
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <div class="hidden-sm hidden-xs btn-group">
+                                                            <a class="btn btn-xs btn-danger remove-item" data-toggle="tooltip" title="Xóa">
+                                                                <i class="ace-icon fa fa-trash bigger-120"></i>
+                                                            </a>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                    <?php endforeach; endif;?>
                                     </tbody>
                                 </table>
 
@@ -127,7 +232,8 @@
                                     <div class="col-sm-5 pull-right">
                                         <h4 class="pull-right">
                                             Tổng cộng :
-                                            <span class="red sum_total_price">0</span> VNĐ
+                                            <span class="red sum_total_price"><?php echo empty($this->params['sum_total_price']) ? 0 : number_format($this->params['sum_total_price'])?></span> VNĐ
+                                            <input type="hidden" name="sum_total_price" value="<?php echo empty($this->params['sum_total_price']) ? 0 : $this->params['sum_total_price']?>">
                                         </h4>
                                     </div>
                                     <div class="col-sm-7 pull-left"></div>
@@ -151,6 +257,40 @@
             </div>
         </div>
         <!-- PAGE CONTENT ENDS -->
+    </div>
+    <div class="modal fade" id="modal-register-customer" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="exampleModalLabel">Thêm khách hàng</h4>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="recipient-name" class="control-label">Tên:  <span class="error-customer-name red"> </span></label>
+                            <input type="text" name="full_name" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="message-text" class="control-label">Số điện thoại:</label>
+                            <input type="text" name="customer_phone" class="form-control" id="recipient-name">
+                        </div>
+                        <div class="form-group">
+                            <label for="message-text" class="control-label">Địa chỉ:</label>
+                            <input type="text" name="customer_address" class="form-control" id="recipient-name">
+                        </div>
+                        <div class="form-group">
+                            <label for="message-text" class="control-label">Ghi chú:</label>
+                            <textarea class="form-control" name="customer_note"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="register-customer">Tạo</button>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 <script type="text/javascript">

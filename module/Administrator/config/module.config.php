@@ -276,6 +276,24 @@ return [
                     ),
                 ),
             ),
+            'administratorCustomer' => array(
+                'type' => Segment::class,
+                'options' => array(
+                    'module' => 'administrator',
+                    'route' => '/admin/customer[/:action][/id/:id][/page/:page][/limit/:limit][?search=:search]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z0-9_-]*',
+                        'id' => '[0-9]+',
+                    ),
+                    'defaults' => array(
+                        'module' => 'administrator',
+                        'controller' => 'Administrator\Controller\Customer',
+                        'action'        => 'index',
+                        'strController' => 'customer',
+                        'route' => 'administratorCustomer'
+                    ),
+                ),
+            ),
         ],
     ],
     'console' => array(
@@ -311,7 +329,8 @@ return [
             'Administrator\Controller\UploadsRest' => 'Administrator\Controller\UploadsRestController',
             'Administrator\Controller\Console' => 'Administrator\Controller\ConsoleController',
             'Administrator\Controller\Warehouse' => 'Administrator\Controller\WarehouseController',
-            'Administrator\Controller\Invoice' => 'Administrator\Controller\InvoiceController'
+            'Administrator\Controller\Invoice' => 'Administrator\Controller\InvoiceController',
+            'Administrator\Controller\Customer' => 'Administrator\Controller\CustomerController'
         )
     ],
     'module_layouts' => array(

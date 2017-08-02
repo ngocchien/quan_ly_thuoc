@@ -9,11 +9,11 @@
 namespace APP\Business;
 
 use APP\Model;
+use APP\Utils;
 
 class Invoice
 {
     public static function create($params){
-
         $error = false;
         $arr_warehouse_id = [];
         if(empty($params['warehouse_id'])){
@@ -24,15 +24,29 @@ class Invoice
         }
 
         $arr_quantity = [];
+        $params['quantity'] = array_unique($params['quantity']);
         if(empty($params['quantity'])){
             $error = true;
             $params['messages'][] = 'Vui lòng nhập đủ số lượng ở tất cả cả các thuốc!';
         }else{
             if(count($arr_warehouse_id) != count($params['quantity'])){
+                $error = true;
                 $params['messages'][] = 'Vui lòng nhập đủ số lượng ở tất cả cả các thuốc!';
             }else{
                 $arr_quantity = $params['quantity'];
+                foreach ($arr_quantity as $item){
+                    if(!$item){
+                        $error = true;
+                        $params['messages'][] = 'Vui lòng nhập đủ số lượng ở tất cả cả các thuốc!';
+                        break;
+                    }
+                }
             }
+        }
+
+        if(empty($params['customer_id'])){
+            $error = true;
+            $params['messages'][] = 'Vui lòng chọn khách hàng!';
         }
 
         if($error){
@@ -46,8 +60,39 @@ class Invoice
         $customer_id = empty($params['customer_id']) ? '' : (int) $params['customer_id'];
         $sum_total_price = empty($params['sum_total_price']) ? 0 : (int)$params['sum_total_price'];
 
-        //add to table Invoice
+        //check quantity stock in warehouse
+        $warehouses = Model\Warehouse::get([
+            'in_warehouse_id' => $arr_warehouse_id
+        ]);
 
+        if(!$warehouses['total']){
+            $params['error'] = true;
+            $params['messages'][] = 'Chọn thuốc không hợp lệ!';
+            return $params;
+        }
+
+        $arr_not_available = [];
+        foreach ($warehouses['rows'] as $row){
+            $key = array_search($row['warehouse_id'], $arr_warehouse_id);
+            if($arr_quantity[$key] > $row['stock']){
+                $arr_not_available = [$row['product_id']];
+            }
+        }
+
+        if(!empty($arr_not_available)){
+            $result = Model\Product::get([
+                'in_product_id' => $arr_not_available,
+                'limit' => 1000
+            ]);
+
+            foreach ($result['rows'] as $row){
+                $params['messages'][] = 'Số lượng thuốc :'. $row['product_name']. ' còn lại trong kho không đáp ứng đủ!';
+            }
+            $params['error'] = true;
+            return $params;
+        }
+
+        //add to table Invoice
         $invoice_id = Model\Invoice::create([
             'user_created' => USER_ID,
             'created_date' => time(),
@@ -63,12 +108,18 @@ class Invoice
             return $params;
         }
 
+        $data_log = [];
+        $data_log['Params'] = $params;
+        $data_log['Invoice Id'] = $invoice_id;
+
         //insert to invoice warehouse
         $is_process = true;
+        $arr_invoice_warehouse = [];
         for ($i=0;$i<=100; $i++){
             if(empty($arr_warehouse_id[$i])){
                 break;
             }
+
             $id_detail = Model\InvoiceWarehouse::create([
                 'invoice_id' => $invoice_id,
                 'warehouse_id' => $arr_warehouse_id[$i],
@@ -89,6 +140,8 @@ class Invoice
                 $is_process = false;
                 break;
             }
+
+            $arr_invoice_warehouse[] = $id_detail;
         }
 
         if(!$is_process){
@@ -96,6 +149,29 @@ class Invoice
             $params['messages'] = 'Xảy ra lỗi trong quá trình xử lý! Vui lòng thử lại sau giây lát!';
             return $params;
         }
+
+        $data_log['Invoice Warehouse Id'] = $arr_invoice_warehouse;
+
+        //update stock in warehouse
+        $log_stock = [];
+        foreach ($warehouses['rows'] as $row){
+            $key = array_search($row['warehouse_id'], $arr_warehouse_id);
+            Model\Warehouse::update([
+                'stock' => $row['stock'] - $arr_quantity[$key],
+                'user_updated' => USER_ID,
+                'updated_date' => time()
+            ], $row['warehouse_id']);
+
+            $log_stock[] = [
+                'warehouse_id' => $row['warehouse_id'],
+                'from_stock' => $row['stock'],
+                'input_quantity' => $arr_quantity[$key],
+                'to_stock' => $row['stock'] - $arr_quantity[$key]
+            ];
+        }
+
+        $data_log['Log_Stock'] = $log_stock;
+        Utils::writeLog('Create_Invoice_Success_Action' , $data_log);
 
         return [
             'success' => true,

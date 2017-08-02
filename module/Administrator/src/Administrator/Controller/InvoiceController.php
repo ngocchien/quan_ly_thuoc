@@ -25,9 +25,9 @@ class InvoiceController extends MyController
 
         if ($this->request->isPost()) {
             $params = $this->params()->fromPost();
-            $result = Business\Invoice::create($params);
-            if (!empty($result['success'])) {
-                return $this->redirect()->toRoute('administratorMenu', ['action' => 'edit', 'id' => $result['menu_id']]);
+            $params = Business\Invoice::create($params);
+            if (!empty($params['success'])) {
+                return $this->redirect()->toRoute('administratorMenu', ['action' => 'edit', 'id' => $params['menu_id']]);
             }
         }
 
@@ -36,9 +36,18 @@ class InvoiceController extends MyController
             'limit' => 10000
         ]);
 
+        $customer = [];
+        if(!empty($params['customer_id'])){
+            $result = Model\Customer::get([
+                'customer_id' => $params['customer_id']
+            ]);
+            $customer = $result['rows'][0];
+        }
+
         return [
             'params' => $params,
-            'warehouses' => $warehouses
+            'warehouses' => $warehouses,
+            'customer' => $customer
         ];
     }
 
@@ -70,5 +79,13 @@ class InvoiceController extends MyController
             }
             throw new \Exception($e->getMessage(), $e->getCode());
         }
+    }
+
+    public function loadCustomerAction(){
+        $params = array_merge($this->params()->fromRoute(), $this->params()->fromQuery());
+        $params['not_status'] = Model\Customer::STATUS_REMOVE;
+        $params['limit'] = 1000;
+        $result = Business\Customer::getList($params);
+        return $this->getResponse()->setContent(json_encode(['st'=> 1, 'data' => $result]));
     }
 }

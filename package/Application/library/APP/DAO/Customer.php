@@ -13,7 +13,7 @@ use Zend\Db\Sql\Expression;
 
 class Customer extends AbstractDAO
 {
-    const TABLE_NAME  = 'tbl_customer';
+    const TABLE_NAME  = 'tbl_customers';
     const PRIMARY_KEY = 'customer_id';
 
     public static function create($params){
@@ -48,7 +48,7 @@ class Customer extends AbstractDAO
             $params = array_merge([
                 'limit' => 10,
                 'offset' => 0,
-                'order' => 'invoice_id DESC'
+                'order' => 'customer_id DESC'
             ], $params);
 
             $adapter = self::getInstance();
@@ -173,6 +173,14 @@ class Customer extends AbstractDAO
 
         if(isset($params['not_status'])){
             $strWhere .= ' AND status != '.$params['not_status'];
+        }
+
+        if(!empty($params['full_name'])){
+            $strWhere .= ' AND full_name = "'.$params['full_name'].'"';
+        }
+
+        if(!empty($params['phone'])){
+            $strWhere .= ' AND phone = "'.$params['phone'].'"';
         }
 
         if(!empty($params['search'])){

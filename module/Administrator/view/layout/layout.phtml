@@ -19,7 +19,7 @@ $action = ACTION;
     <!-- ace styles -->
     <link rel="stylesheet" href="<?php echo STATIC_URL; ?>assets/css/ace.min.css" class="ace-main-stylesheet"
           id="main-ace-style"/>
-
+<!--    <link rel="stylesheet" href="--><?php //echo STATIC_URL; ?><!--/css/main.css">-->
     <!-- ace settings handler -->
     <script src="<?php echo STATIC_URL; ?>assets/js/ace-extra.min.js"></script>
     <script src="<?php echo STATIC_URL; ?>assets/js/jquery-2.1.4.min.js"></script>
@@ -37,7 +37,7 @@ $action = ACTION;
     </script>
     <?php echo $this->render('administrator/left_menu'); ?>
     <div class="main-content">
-        <div class="main-content-inner" STYLE="margin-bottom:100px">
+        <div class="main-content-inner" style="margin-bottom:100px">
             <div class="breadcrumbs ace-save-state" id="breadcrumbs">
                 <ul class="breadcrumb">
                     <li>
@@ -61,10 +61,12 @@ $action = ACTION;
 <!--<script type="application/javascript" src="--><?php //echo STATIC_URL; ?><!--js/libs/editor/ckeditor.js" charset="utf-8"></script>-->
 
 <script src="<?php echo STATIC_URL; ?>assets/js/bootstrap.min.js"></script>
+<script src="<?php echo STATIC_URL; ?>assets/js/jquery-ui.min.js"></script>
 <script src="<?php echo STATIC_URL; ?>assets/js/jquery-ui.custom.min.js"></script>
 <script src="<?php echo STATIC_URL; ?>assets/js/jquery.ui.touch-punch.min.js"></script>
 <script src="<?php echo STATIC_URL; ?>assets/js/ace-elements.min.js"></script>
 <script src="<?php echo STATIC_URL; ?>assets/js/ace.min.js"></script>
+
 
 <script type="application/javascript">
     MVC.setup({

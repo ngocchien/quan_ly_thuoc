@@ -10,90 +10,49 @@ namespace APP\Business;
 
 use APP\Model;
 
-class Warehouse
+class Customer
 {
     public static function create($params)
     {
         $error = false;
-
-        $nsx = '';
-        if(empty($params['nsx'])){
+        if(empty($params['full_name'])){
             $error = true;
-            $params['messages'][] = 'Ngày sản xuất không được bỏ trống!';
-        }else{
-            list($day,$month,$year) = explode('/', $params['nsx']);
-            $nsx = mktime(0, 0, 0, $month, $day, $year);
-            if($nsx > time()){
-                $error = true;
-                $params['messages'][] = 'Nhập ngày sản xuất không hợp lệ!';
-            }
-        }
-
-        $hsd = '';
-        if(empty($params['hsd'])){
-            $error = true;
-            $params['messages'][] = 'Hạn sử dụng không được bỏ trống!';
-        }else{
-            list($day,$month,$year) = explode('/', $params['hsd']);
-            $hsd = mktime(23, 59, 59, $month, $day, $year);
-            if($hsd < time()){
-                $error = true;
-                $params['messages'][] = 'Nhập hạn sử dụng không hợp lệ!';
-            }
-        }
-
-        if(empty($params['quantity'])){
-            $error = true;
-            $params['messages'][] = 'Số lượng không được bỏ trống!';
-        }elseif ($params['quantity'] <= 0){
-            $error = true;
-            $params['messages'][] = 'Nhập số lượng không hợp lệ! Số lượng phải > 0!';
-        }
-
-        if(empty($params['flag_notify'])){
-            $error = true;
-            $params['messages'][] = 'Ngày bật thông báo hết hạn không được bỏ trống!';
-        }elseif($params['flag_notify'] <= 0){
-            $error = true;
-            $params['messages'][] = 'Ngày bật thông báo hết hạn không hợp lệ! Ngày bật thông báo hết hạn phải > 0';
-        }
-
-        if(!isset($params['production_batch'])){
-            $error = true;
-            $params['messages'][] = 'Số lô sản xuất không được bỏ trống!';
+            $params['messages'][] = 'Tên khách hàng không được bỏ trống!';
         }
 
         if($error){
             $params['error'] = true;
             return $params;
         }
-        $product_id = (int) $params['product_id'];
-        $status = 1;
-        $quantity = (int) $params['quantity'];
-        $flag_notify = (int) $params['flag_notify'];
-        $properties_id = $params['properties_id'];
-        $production_batch = empty($params['production_batch']) ? '' : $params['production_batch'];
-        $unit_price = isset($params['unit_price']) ? (int) $params['unit_price'] : 0 ;
-        $total_price = isset($params['total_price']) ? (int) ($params['total_price']) : 0;
-        $discount = isset($params['discount']) ? (float) ($params['discount']) : 0;
-        $note = isset($params['note']) ? ($params['note']) : null;
 
-        $id = Model\Warehouse::create([
+        $full_name = trim(strip_tags($params['full_name']));
+        $address = empty($params['customer_address']) ? '' : $params['customer_address'];
+        $phone = empty($params['phone']) ? '' : $params['phone'];
+        $note = empty($params['note']) ? '' : $params['note'];
+        $status = Model\Customer::STATUS_ACTIVE;
+
+        //check exits
+        $result = Model\Customer::get([
+            'full_name' => $full_name,
+            'address' => $address,
+            'phone' => $phone,
+            'not_status' => Model\Customer::STATUS_REMOVE
+        ]);
+
+        if($result['total']){
+            $params['error'] = true;
+            $params['messages'][] = 'Khách hàng đã tồn tại trong hệ thống! Vui lòng kiểm tra lại';
+            return $params;
+        }
+
+        $id = Model\Customer::create([
             'user_created' => USER_ID,
             'created_date' => time(),
-            'nsx' => $nsx,
             'status' => $status,
-            'hsd' => $hsd,
-            'product_id' => $product_id,
-            'quantity' => $quantity,
-            'flag_notify' => $flag_notify,
-            'properties_id' => $properties_id,
-            'production_batch' => $production_batch,
-            'unit_price' => $unit_price,
-            'total_price' => $total_price,
-            'discount' => $discount,
             'note' => $note,
-            'stock' => $quantity
+            'full_name' => $full_name,
+            'phone' => $phone,
+            'address' => $address
         ]);
 
         if (!$id) {
@@ -115,8 +74,8 @@ class Warehouse
         $offset = $limit * ($page - 1);
         $params['offset'] = $offset;
         $params['limit'] = $limit;
-        $params['order'] = 'warehouse_id DESC';
-        $result = Model\Warehouse::get($params);
+        $params['order'] = 'customer_id DESC';
+        $result = Model\Customer::get($params);
         return $result;
     }
 
@@ -417,8 +376,6 @@ class Warehouse
                 $row['product_name'] = $products_format[$row['product_id']]['product_name'];
                 $row['properties_name'] = $properties_format[$row['properties_id']]['properties_name'];
                 $row['brand_name'] = empty($products_format[$row['product_id']]['brand_id']) ? '' : $brand_format[$products_format[$row['product_id']]['brand_id']]['brand_name'];
-                $row['created_date'] = date('d/m/Y', $row['created_date']);
-                $row['hsd'] = date('d/m/Y', $row['hsd']);
             }
         }
 
