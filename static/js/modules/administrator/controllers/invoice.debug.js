@@ -94,9 +94,11 @@ Controller.define('administrator/invoice', function () {
                 },
                 execute: function () {
                     var self = this,
+                        previous = {},
                         warehouses = Registry.get('WAREHOUSES'),
                         reload_select_picker = function () {
-                            self.find('.select-picker').selectpicker({});
+                            self.find('.select-picker').selectpicker('destroy');
+                            self.find('.select-picker').selectpicker();
                         },
                         reload_element = function () {
                             self.find('.select-picker').selectpicker({});
@@ -140,16 +142,20 @@ Controller.define('administrator/invoice', function () {
                             var first_dvt = '';
                             var first_price = 0;
                             var flag = false;
+                            var current_val = 0;
                             $.each(warehouses.rows,function (k,item) {
-                                if($.inArray(item.warehouse_id,warehouse_id_selected) == -1){
-                                    var name_show = item.product_name + ' - Số Lô :' + item.production_batch + ' - HSD : ' + item.hsd + ' - Tồn :' +item.stock;
-                                    html_select += '<option value="'+item.warehouse_id+'" data-price="'+item.unit_price+'" data-properties="'+item.properties_name+'">';
-                                    html_select += name_show;
-                                    html_select += '</option>';
+                                if($.inArray(item.warehouse_id,warehouse_id_selected) != -1){
+                                    return;
                                 }
+                                var name_show = item.product_name + ' - Số Lô :' + item.production_batch + ' - HSD : ' + item.hsd + ' - Tồn :' +item.stock;
+                                html_select += '<option value="'+item.warehouse_id+'" data-price="'+item.unit_price+'" data-properties="'+item.properties_name+'">';
+                                html_select += name_show;
+                                html_select += '</option>';
+
                                 if(flag == false){
                                     first_dvt = item.properties_name;
                                     first_price = +item.unit_price;
+                                    current_val = item.warehouse_id;
                                 }
                                 flag = true;
                             });
@@ -175,12 +181,14 @@ Controller.define('administrator/invoice', function () {
                             html += '<a class="btn btn-xs btn-success save" data-toggle="tooltip" style="display: none" title="Xác nhận">';
                             html += '<i class="ace-icon fa fa-check bigger-120"></i>';
                             html += '</a>';
-                            html += '<a class="btn btn-xs btn-danger remove-item" data-toggle="tooltip" title="Xóa">';
+                            html += '<a class="btn btn-xs btn-danger remove-item" title="Xóa">';
                             html += '<i class="ace-icon fa fa-trash bigger-120"></i>';
                             html += '</a>';
                             html += '</td>';
                             self.find('tbody').append(html);
-                            reload_element();
+                            previous = {};
+                            reloadSelect(total_choose,current_val)
+                            //reload_element();
                         },
                         addFormRegister = function () {
                             self.find('.error-customer-name').text('');
@@ -272,6 +280,23 @@ Controller.define('administrator/invoice', function () {
                                 })
                             }
                             return valid;
+                        },
+                        reloadSelect = function (stt, val) {
+                            $.each(self.find('select.warehouse_id'),function (k, item) {
+                                if(stt != 0 && k == stt-1){
+                                    return;
+                                }
+                                $(this).find('option[value='+val+']').remove();
+                                if(!$.isEmptyObject(previous)){
+                                    var option = '<option value='+previous.warehouse_id+' data-price='+previous.price+' data-properties='+previous.properties_name+'>';
+                                    option += previous.name_show;
+                                    option += '</option>';
+                                    $(this).append(option);
+                                }
+                            });
+                            previous = {};
+                            reload_select_picker();
+                            reload_element();
                         };
                     self.on('click','.add-product', loadWarehouse)
                         .on('click','.edit',function () {})
@@ -286,12 +311,29 @@ Controller.define('administrator/invoice', function () {
                             reload_sum_total_price();
                         })
                         .on('click', '.remove-item', function () {
+                            var current_option = $(this).closest('tr').find('option:selected');
+                            previous.price = $(current_option).data('price');
+                            previous.warehouse_id = $(current_option).val();
+                            previous.properties_name = $(current_option).data('properties');
+                            previous.name_show = $(current_option).text();
                             $(this).closest('tr').remove();
                             reloadSTT();
+                            reloadSelect(0,0);
                             reload_sum_total_price();
                         })
                         .on('change','select.warehouse_id',function () {
-                            console.log($(this).data(''));
+                            var stt = +$(this).closest('tr').find('.stt').text(),
+                                val = $(this).val();
+                            var quantity = +$(this).closest('tr').find('.quantity').val(),
+                                unit_price = +$(this).find('option:selected').data('price'),
+                                discount = +$(this).closest('tr').find('.discount').val();
+                            var price_discount = unit_price*quantity*discount/100,
+                                amount_price = unit_price*quantity;
+                            var total_price = amount_price-price_discount;
+                            $(this).closest('tr').find('.unit_price').val(unit_price);
+                            $(this).closest('tr').find('.total_price').val(total_price);
+                            reload_sum_total_price();
+                            reloadSelect(stt, val);
                         })
                         .on('click', '.add-customer',addFormRegister)
                         .on('click', '#register-customer',registerCustomer)
@@ -316,7 +358,14 @@ Controller.define('administrator/invoice', function () {
                                 $(this).autocomplete( "search", "" );
                             });
                         })
-                        .on('click', 'button[type=submit]', validateForm);
+                        .on('click', 'button[type=submit]', validateForm)
+                        .on('show.bs.select', 'select.warehouse_id', function () {
+                            var current_option = $(this).find('option:selected');
+                                previous.price = $(current_option).data('price');
+                                previous.warehouse_id = $(current_option).val();
+                                previous.properties_name = $(current_option).data('properties');
+                                previous.name_show = $(current_option).text();
+                        });
                         if(self.find('tbody tr').length < 1){
                             loadWarehouse();
                         }else{

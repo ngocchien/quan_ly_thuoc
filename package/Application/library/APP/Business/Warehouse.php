@@ -377,7 +377,7 @@ class Warehouse
             $products = Model\Product::get([
                 'in_product_id' => array_values($arr_product_id),
                 'columns' => [
-                    'product_id' , 'product_name' , 'brand_id'
+                    'product_id' , 'product_name' , 'brand_id', 'price'
                 ],
                 'limit' => 10000
             ]);
@@ -415,6 +415,7 @@ class Warehouse
 
             foreach ($result['rows'] as &$row){
                 $row['product_name'] = $products_format[$row['product_id']]['product_name'];
+                $row['unit_price'] = $products_format[$row['product_id']]['price'];
                 $row['properties_name'] = $properties_format[$row['properties_id']]['properties_name'];
                 $row['brand_name'] = empty($products_format[$row['product_id']]['brand_id']) ? '' : $brand_format[$products_format[$row['product_id']]['brand_id']]['brand_name'];
                 $row['created_date'] = date('d/m/Y', $row['created_date']);
