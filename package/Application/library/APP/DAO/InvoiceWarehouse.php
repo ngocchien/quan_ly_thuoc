@@ -115,10 +115,12 @@ class InvoiceWarehouse extends AbstractDAO
             }
             return true;
         } catch (\Exception $e) {
-            echo '<pre>';
-            print_r($e->getMessage(), $e->getCode());
-            echo '</pre>';
-            die();
+            if(APPLICATION_ENV != 'production'){
+                echo '<pre>';
+                print_r($e->getMessage(), $e->getCode());
+                echo '</pre>';
+                die();
+            }
             throw new \Exception($e->getMessage(), $e->getCode());
         }
     }
@@ -146,10 +148,12 @@ class InvoiceWarehouse extends AbstractDAO
             }
             return true;
         } catch (\Exception $e) {
-            echo '<pre>';
-            print_r($e->getMessage(), $e->getCode());
-            echo '</pre>';
-            die();
+            if(APPLICATION_ENV != 'production'){
+                echo '<pre>';
+                print_r($e->getMessage(), $e->getCode());
+                echo '</pre>';
+                die();
+            }
             throw new \Exception($e->getMessage(), $e->getCode());
         }
     }
@@ -184,7 +188,6 @@ class InvoiceWarehouse extends AbstractDAO
             }else{
                 $strWhere .= ' AND (banner_name like "%'.$params['search'].'%")';
             }
-
         }
 
         return $strWhere;

@@ -18,6 +18,36 @@ if (!empty($permission)) {
         try{ace.settings.loadState('sidebar')}catch(e){}
     </script>
     <ul class="nav nav-list" style="top: 0px;">
+        <?php if (IS_ADMIN || in_array('invoice', $per_controller)) : ?>
+            <li class="<?php if ($controller == 'invoice') : ?>active open<?php endif; ?>">
+                <a href="#" class="dropdown-toggle">
+                    <i class="menu-icon fa fa-plus"></i>
+                    <span class="menu-text"> Đơn thuốc </span>
+                    <b class="arrow fa fa-angle-down"></b>
+                </a>
+                <b class="arrow"></b>
+                <ul class="submenu">
+                    <?php if (IS_ADMIN || in_array('create', $per_controller_action['invoice'])): ?>
+                        <li <?php echo $controller == 'invoice' && $action == 'create' ? 'class="active"' : ''; ?>>
+                            <a href="<?php echo $this->Url('administratorInvoice', ['action'=>'create']);?>">
+                                <i class="menu-icon fa fa-angle-double-right"></i>
+                                Tạo mới
+                            </a>
+                            <b class="arrow"></b>
+                        </li>
+                    <?php endif; ?>
+                    <?php if (IS_ADMIN || in_array('index', $per_controller_action['invoice'])): ?>
+                        <li <?php echo $controller == 'invoice' && $action == 'index' ? 'class="active"' : ''; ?> >
+                            <a href="<?php echo $this->Url('administratorInvoice')?>">
+                                <i class="menu-icon fa fa-angle-double-right"></i>
+                                Danh sách
+                            </a>
+                            <b class="arrow"></b>
+                        </li>
+                    <?php endif; ?>
+                </ul>
+            </li>
+        <?php endif; ?>
         <?php if (IS_ADMIN || in_array('category', $per_controller)) : ?>
             <li class="<?php if ($controller == 'category') : ?>active open<?php endif; ?>">
                 <a href="#" class="dropdown-toggle">

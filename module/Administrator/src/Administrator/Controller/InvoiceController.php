@@ -17,7 +17,16 @@ class InvoiceController extends MyController
 {
     public function indexAction()
     {
+        $params = array_merge($this->params()->fromRoute(), $this->params()->fromQuery());
+        //get list user
+        $params['not_status'] = Model\Invoice::STATUS_REMOVE;
+        $invoices = Business\Invoice::get($params);
+        $params['total'] = $invoices['total'];
 
+        return [
+            'params' => $params,
+            'invoices' => $invoices
+        ];
     }
 
     public function createAction(){
@@ -27,7 +36,8 @@ class InvoiceController extends MyController
             $params = $this->params()->fromPost();
             $params = Business\Invoice::create($params);
             if (!empty($params['success'])) {
-                return $this->redirect()->toRoute('administratorMenu', ['action' => 'edit', 'id' => $params['menu_id']]);
+                $_SESSION['create-invoice-success'] = true;
+                return $this->redirect()->toRoute('administratorInvoice', ['action' => 'edit', 'id' => $params['menu_id']]);
             }
         }
 
@@ -51,8 +61,63 @@ class InvoiceController extends MyController
         ];
     }
 
-    public function updateAction(){
+    public function editAction(){
+        $params = array_merge($this->params()->fromRoute(), $this->params()->fromQuery());
+        $id = $params['id'];
+        if(empty($id)){
+            return $this->redirect()->toRoute('administrator');
+        }
 
+        //check invoice
+        $result = Business\Invoice::get([
+            'invoice_id' => $id,
+            'not_status' => Model\Invoice::STATUS_REMOVE
+        ]);
+
+        if(empty($result['rows'])){
+            return $this->redirect()->toRoute('administrator');
+        }
+
+        $invoice = $result['rows'][0];
+
+        if($this->request->isPost()){
+            $params = $this->params()->fromPost();
+            $params['product_id'] = $id;
+            $params = Business\Product::update($params);
+            if(!empty($params['success'])){
+                $_SESSION['update-invoice-success'] = true;
+                return $this->redirect()->toRoute('administratorInvoice', ['action' => 'edit', 'id' => $id]);
+            }
+        }
+
+        //invoice detail
+        $invoiceWarehouse = Model\InvoiceWarehouse::get([
+            'invoice_id' => $id,
+            'not_status' => Model\InvoiceWarehouse::STATUS_REMOVE,
+            'limit' => 1000
+        ]);
+
+        //get list product stock in ware house
+        $warehouses = Business\Warehouse::getProductStockInWarehouse([
+            'limit' => 10000
+        ]);
+
+        $customer_id = empty($params['customer_id']) ? $invoice['customer_id'] : $params['customer_id'];
+        $customer = [];
+        if(!empty($customer_id)){
+            $result = Model\Customer::get([
+                'customer_id' => $customer_id
+            ]);
+            $customer = $result['rows'][0];
+        }
+
+        return [
+            'params' => $params,
+            'warehouses' => $warehouses,
+            'customer' => $customer,
+            'invoiceWarehouse' => $invoiceWarehouse,
+            'invoice' => $invoice
+        ];
     }
 
     public function deleteAction(){
@@ -87,5 +152,23 @@ class InvoiceController extends MyController
         $params['limit'] = 1000;
         $result = Business\Customer::getList($params);
         return $this->getResponse()->setContent(json_encode(['st'=> 1, 'data' => $result]));
+    }
+
+    public function printInvoiceAction(){
+        $params = $this->params()->fromRoute();
+        $id = $params['id'];
+        if(empty($id)){
+            return $this->redirect()->toRoute('administrator');
+        }
+
+        //check invoice
+        $result = Business\Invoice::get([
+            'invoice_id' => $id,
+            'not_status' => Model\Invoice::STATUS_REMOVE
+        ]);
+
+        if(empty($result['rows'])){
+            return $this->redirect()->toRoute('administrator');
+        }
     }
 }

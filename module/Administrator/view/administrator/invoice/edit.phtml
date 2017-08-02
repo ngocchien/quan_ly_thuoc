@@ -2,32 +2,27 @@
     <div class="col-xs-12">
         <!-- PAGE CONTENT BEGINS -->
         <div class="space-6"></div>
-
         <div class="row">
             <div class="col-sm-12">
                 <div class="widget-box transparent">
                     <div class="widget-header widget-header-large">
                         <h3 class="widget-title grey lighter">
                             <i class="ace-icon fa fa-leaf green"></i>
-                            Tạo đơn thuốc
+                            Cập nhật đơn thuốc
                         </h3>
-
                         <div class="widget-toolbar no-border invoice-info">
-<!--                            <span class="invoice-info-label">Mã:</span>-->
-<!--                            <span class="red">#121212</span>-->
-
+                            <span class="invoice-info-label">Mã:</span>
+                            <span class="red">#<?php echo INVOICE_CODE.sprintf("%04d", $this->invoice['invoice_id']);?></span>
                             <br>
-                            <span class="invoice-info-label">Ngày:</span>
-                            <span class="blue"><?php echo date('d/m/Y')?></span>
+                            <span class="invoice-info-label">Ngày tạo:</span>
+                            <span class="blue"><?php echo date('d/m/Y', $this->invoice['created_date'])?></span>
                         </div>
-
-<!--                        <div class="widget-toolbar hidden-480">-->
-<!--                            <a href="#">-->
-<!--                                <i class="ace-icon fa fa-print"></i>-->
-<!--                            </a>-->
-<!--                        </div>-->
+                        <div class="widget-toolbar hidden-480">
+                            <a href="#">
+                                <i class="ace-icon fa fa-print"></i>
+                            </a>
+                        </div>
                     </div>
-
                     <div class="widget-body">
                         <div class="widget-main padding-24">
                             <div class="row">
@@ -131,7 +126,6 @@
 <!--                                    </div>-->
 <!--                                </div><!-- /.col -->
                             </div><!-- /.row -->
-
                             <div class="space"></div>
                             <?php if(!empty($this->params['error'])):?>
                                 <div class="alert alert-danger">
@@ -148,9 +142,35 @@
                                     <br>
                                 </div>
                             <?php endif;?>
+                            <?php if(!empty($_SESSION['update-invoice-success'])):?>
+                                <div class="alert alert-block alert-success">
+                                    <button type="button" class="close" data-dismiss="alert">
+                                        <i class="ace-icon fa fa-times"></i>
+                                    </button>
+                                    <p>
+                                        Cập nhật thành công!
+                                    </p>
+                                </div>
+                                <?php
+                                unset($_SESSION['update-invoice-success']);
+                            endif;
+                            ?>
+                            <?php if(!empty($_SESSION['create-invoice-success'])):?>
+                                <div class="alert alert-block alert-success">
+                                    <button type="button" class="close" data-dismiss="alert">
+                                        <i class="ace-icon fa fa-times"></i>
+                                    </button>
+                                    <p>
+                                        Nhập hàng thành công!
+                                    </p>
+                                </div>
+                                <?php
+                                unset($_SESSION['create-invoice-success']);
+                            endif;
+                            ?>
                             <form method="post">
                             <div>
-                                <input type="hidden" name="customer_id" value="<?php echo empty($this->params['customer_id']) ? '' : $this->params['customer_id']?>">
+                                <input type="hidden" name="customer_id" value="<?php echo $this->customer['customer_id'];?>">
                                 <div class="pull-right" style="margin-bottom: 10px">
                                     <span class="error red error-no-choose-warehouse" style="display: none">Vui lòng chọn thuốc muốn bán</span>
                                     <a class="btn btn-xs btn-primary add-product">
@@ -173,6 +193,57 @@
                                     </tr>
                                     </thead>
                                     <tbody>
+                                    <?php if(!empty($this->invoiceWarehouse)):
+                                        foreach ($this->invoiceWarehouse['rows'] as $key => $invoice_warehouse):
+                                            $dvt = '';
+                                            $selected_unit_price = 0;
+                                            ?>
+                                            <tr>
+                                                <td class="text-center stt"><?php echo $key+1;?></td>
+                                                <td class="text-center">
+                                                    <select name="warehouse_id[]" class="form-control warehouse_id select-picker" data-live-search="true">
+                                                        <?php foreach ($this->warehouses['rows'] as $row):
+                                                            $selected = '';
+                                                            if($invoice_warehouse['warehouse_id'] == $row['warehouse_id']){
+                                                                $selected_unit_price = $row['unit_price'];
+                                                                $selected = 'selected';
+                                                                $dvt = $row['properties_name'];
+                                                            }
+                                                            ?>
+                                                            <option value="<?php echo $row['warehouse_id']?>" data-price="<?php echo $row['unit_price']?>" data-properties="<?php echo $row['properties_name']?>" <?php echo $selected;?>>
+                                                                <?php echo $row['product_name'] . ' - Số Lô :' .$row['production_batch'] . ' - HSD :' .$row['hsd'] . ' - Tồn :' .$row['stock']?>
+                                                            </option>
+                                                        <?php endforeach;?>
+                                                    </select>
+                                                </td>
+                                                <td class="text-center">
+                                                    <?php echo $dvt;?>
+                                                </td>
+                                                <td>
+                                                    <textarea width="100%" cols="30" name="note[]"><?php echo $invoice_warehouse['note']?></textarea>
+                                                </td>
+                                                <td lass="text-right">
+                                                    <input class="form-control input price-mask quantity" name="quantity[]" value="<?php echo $invoice_warehouse['quantity']?>">
+                                                    <span class="error error-no-choose-quantity red" style="display: none">Nhập SL</span>
+                                                </td>
+                                                <td class="text-right">
+                                                    <input class="form-control input price-mask unit_price" name="price[]" readonly value="<?php echo $invoice_warehouse['price'];?>">
+                                                </td>
+                                                <td class="text-right">
+                                                    <input class="form-control input price-mask discount" name="discount[]" value="<?php echo $invoice_warehouse['discount']?>">
+                                                </td>
+                                                <td class="text-right">
+                                                    <input class="form-control input price-mask total_price" name="total_price[]" readonly value="<?php echo $invoice_warehouse['total_price']?>">
+                                                </td>
+                                                <td class="text-center">
+                                                    <div class="hidden-sm hidden-xs btn-group">
+                                                        <a class="btn btn-xs btn-danger remove-item" data-toggle="tooltip" title="Xóa">
+                                                            <i class="ace-icon fa fa-trash bigger-120"></i>
+                                                        </a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        <?php endforeach; endif;?>
                                     <?php if(!empty($this->params['warehouse_id'])):
                                             foreach ($this->params['warehouse_id'] as $key => $warehouse_id):
                                                 $dvt = '';
@@ -232,8 +303,8 @@
                                     <div class="col-sm-5 pull-right">
                                         <h4 class="pull-right">
                                             Tổng cộng :
-                                            <span class="red sum_total_price"><?php echo empty($this->params['sum_total_price']) ? 0 : number_format($this->params['sum_total_price'])?></span> VNĐ
-                                            <input type="hidden" name="sum_total_price" value="<?php echo empty($this->params['sum_total_price']) ? 0 : $this->params['sum_total_price']?>">
+                                            <span class="red sum_total_price"><?php echo empty($this->params['sum_total_price']) ? number_format($this->invoice['total_price']) : number_format($this->params['sum_total_price'])?></span> VNĐ
+                                            <input type="hidden" name="sum_total_price" value="<?php echo empty($this->params['sum_total_price']) ? $this->invoice['total_price'] : $this->params['sum_total_price']?>">
                                         </h4>
                                     </div>
                                     <div class="col-sm-7 pull-left"></div>
@@ -241,7 +312,7 @@
                             </div>
                             <div class="center">
                                 <button type="submit" class="btn btn-xs btn-success">
-                                    <i class="ace-icon fa fa-save"></i> Xác nhận
+                                    <i class="ace-icon fa fa-save"></i> Cập nhật
                                 </button>
                             </div>
                             </form>

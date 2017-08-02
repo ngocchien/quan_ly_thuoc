@@ -183,6 +183,10 @@ class Customer extends AbstractDAO
             $strWhere .= ' AND phone = "'.$params['phone'].'"';
         }
 
+        if(!empty($params['in_customer_id'])){
+            $strWhere .= ' AND customer_id IN ('. implode(',',$params['in_customer_id']).')';
+        }
+
         if(!empty($params['search'])){
             $params['search'] = trim(strip_tags($params['search']));
             $strWhere .= ' AND (full_name like "%'.$params['search'].'%" OR phone like "%'.$params['search'].'%")';

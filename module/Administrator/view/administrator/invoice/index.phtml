@@ -1,0 +1,110 @@
+<div class="rows" data-view="administrator/invoice/index">
+    <div class="col-xs-12">
+        <form method="get" class="form-search">
+            <div class="col-xs-12" style="margin-bottom: 10px">
+                <div class="col-xs-6">
+                    <a class="btn btn-xs btn-danger remove-all" href="javascript:;" style="margin-right: 5px">
+                        <i class="fa fa-trash "></i> Xóa
+                    </a>
+                    <a class="btn btn-xs btn-success" href="<?php echo $this->Url('administratorInvoice', ['action'=>'create'])?>">
+                        <i class="ace-icon fa fa-plus">
+                            Tạo mới
+                        </i>
+                    </a>
+                </div>
+                <div class="col-xs-4 col-xs-offset-2">
+                    <span class="input-icon">
+                        <input type="text" name="search" placeholder="Tìm kiếm ..." class="nav-search-input" autocomplete="off"
+                               value="<?php echo (empty($this->params['search'])) ? '' : $this->params['search'];?>"
+                        >
+                    </span>
+                    <button type="submit" class="btn btn-xs btn-primary">
+                        <i class="ace-icon fa fa-search"></i> Tìm
+                    </button>
+                </div>
+            </div>
+            <table id="simple-table" class="table  table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th class="center"> # </th>
+                    <th class="center" width="80px"><span class="fa fa-list-alt"></span> Mã Đơn</th>
+                    <th class="center"><span class="fa fa-credit-card"> Thông tin khách hàng</th>
+                    <th class="center" width="120px"><span class="fa fa-dollar"> Tổng tiền (vnđ)</th>
+                    <th class="center" width="100px"><span class="fa fa-calendar"></span> Ngày bán</th>
+                    <th class="center" width="100px"><span class="fa fa-gears"></span> Tùy chỉnh</th>
+                </tr>
+                </thead>
+                <tbody>
+                <?php if(!empty($this->invoices)):
+                    foreach ($this->invoices['rows'] as $row):
+                        ?>
+                        <tr>
+                            <td class="center" width="20px"><input type="checkbox" name="data-id" class="input" value="<?php echo $row['invoice_id']?>"></td>
+                            <td class="center"><a href="javascript:;"><b><?php echo INVOICE_CODE.sprintf("%04d", $row['invoice_id']);?></b></a></td>
+                            <td>
+                                <div class="col-xs-6">
+                                    <div class="rows">
+                                        <div class="col-xs-3">
+                                            <b>- Tên</b>
+                                        </div>
+                                        <div class="col-xs-1">
+                                            :
+                                        </div>
+                                        <div class="col-xs-8">
+                                            <a href="javascript:;"><?php echo $row['customer_info']['full_name']?></a>
+                                        </div>
+                                    </div>
+                                    <div class="rows">
+                                        <div class="col-xs-3">
+                                            <b>- SĐT</b>
+                                        </div>
+                                        <div class="col-xs-1">
+                                            :
+                                        </div>
+                                        <div class="col-xs-8">
+                                            <?php echo empty($row['customer_info']['phone']) ? 'Không xác định' : $row['customer_info']['phone']?>
+                                        </div>
+                                    </div>
+                                    <div class="rows">
+                                        <div class="col-xs-3">
+                                            <b>- Địa chỉ</b>
+                                        </div>
+                                        <div class="col-xs-1">
+                                            :
+                                        </div>
+                                        <div class="col-xs-8">
+                                            <?php echo empty($row['customer_info']['address']) ? 'Không xác định' : $row['customer_info']['address']?>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="text-right"><?php echo number_format($row['total_price']);?></td>
+                            <td class="text-right"><?php echo date('d/m/Y', $row['created_date']);?></td>
+                            <td class="center">
+                                <div class="hidden-sm hidden-xs btn-group">
+                                    <a class="btn btn-xs btn-success print" data-toggle="tooltip" title="In đơn" rel="<?php echo $row['invoice_id']?>">
+                                        <i class="ace-icon fa fa-print"></i>
+                                    </a>
+                                    <a class="btn btn-xs btn-info" data-toggle="tooltip" title="Cập nhật" href="<?php echo $this->Url('administratorInvoice', ['action'=>'edit', 'id' =>$row['invoice_id']])?>">
+                                        <i class="ace-icon fa fa-pencil bigger-120"></i>
+                                    </a>
+                                    <a class="btn btn-xs btn-danger delete" data-toggle="tooltip" title="Xóa" rel="<?php echo $row['invoice_id']?>">
+                                        <i class="ace-icon fa fa-trash bigger-120"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    <?php endforeach; endif;?>
+                </tbody>
+            </table>
+            <?php
+            $params = $this->params;
+            $params['controller'] = $params['strController'];
+            $paging = $this->pagingText($params);
+            if(!empty($paging)){
+                echo $paging;
+            }
+            ?>
+        </form>
+    </div>
+</div>

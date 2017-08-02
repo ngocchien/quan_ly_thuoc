@@ -375,15 +375,244 @@ Controller.define('administrator/invoice', function () {
             },
             edit : {
                 require: {
-                    scripts: ['bootstrap-datepicker.js', 'bootstrap-select.js'],
+                    scripts: ['bootstrap-datepicker.js', 'bootstrap-select.js', 'bootstrap-inputmask.js'],
                     stylesheets: ['datepicker.css', 'bootstrap-select.css']
                 },
                 execute: function () {
-                    var self = this;
-                    self.find('.datetimepicker').datepicker({
-                        format: 'dd/mm/yyyy'
-                    });
-                    self.find('.select-picker').selectpicker();
+                    var self = this,
+                        previous = {},
+                        warehouses = Registry.get('WAREHOUSES'),
+                        reload_select_picker = function () {
+                            self.find('.select-picker').selectpicker('destroy');
+                            self.find('.select-picker').selectpicker();
+                        },
+                        reload_element = function () {
+                            self.find('.select-picker').selectpicker({});
+                            self.find(".price-mask").inputmask({
+                                alias: 'decimal',
+                                radixPoint: '.',
+                                groupSeparator: ',',
+                                autoGroup: true,
+                                rightAlign: true,
+                                autoUnmask: true,
+                                removeMaskOnSubmit: true,
+                                digits: 0
+                            });
+                            self.find('[data-toggle="tooltip"]').tooltip();
+                        },
+                        reload_sum_total_price = function () {
+                            var sum_total_price = 0;
+                            if(self.find('.total_price').length > 0){
+                                $.each(self.find('.total_price'),function () {
+                                    sum_total_price += +$(this).val();
+                                })
+                            }
+                            self.find('.sum_total_price').text(self.model.formatNumber(sum_total_price));
+                            self.find('input[name=sum_total_price]').val(sum_total_price);
+                        },
+                        reloadSTT = function () {
+                            if(self.find('tbody tr').length > 0){
+                                $.each(self.find('tbody tr'),function (k,item) {
+                                    $(item).find('.stt').text(k+1);
+                                });
+                            }
+                        },
+                        loadWarehouse = function () {
+                            var warehouse_id_selected = [];
+                            if(self.find('select.warehouse_id').length > 0){
+                                self.find('select.warehouse_id').each(function (k,v) {
+                                    warehouse_id_selected.push(+$(this).val());
+                                });
+                            }
+                            var html_select = '<select name="warehouse_id[]" class="form-control warehouse_id select-picker" data-live-search="true">';
+                            var first_dvt = '';
+                            var first_price = 0;
+                            var flag = false;
+                            var current_val = 0;
+                            $.each(warehouses.rows,function (k,item) {
+                                if($.inArray(item.warehouse_id,warehouse_id_selected) != -1){
+                                    return;
+                                }
+                                var name_show = item.product_name + ' - Số Lô :' + item.production_batch + ' - HSD : ' + item.hsd + ' - Tồn :' +item.stock;
+                                html_select += '<option value="'+item.warehouse_id+'" data-price="'+item.unit_price+'" data-properties="'+item.properties_name+'">';
+                                html_select += name_show;
+                                html_select += '</option>';
+
+                                if(flag == false){
+                                    first_dvt = item.properties_name;
+                                    first_price = +item.unit_price;
+                                    current_val = item.warehouse_id;
+                                }
+                                flag = true;
+                            });
+                            var total_choose = self.find('table tbody tr').length + 1;
+                            html_select += '</select>';
+                            var html = '<tr>';
+                            html += '<td class="text-center stt">'+total_choose+'</td>';
+                            html += '<td class="text-center">'+html_select+'</td>';
+                            html += '<td class="text-center">'+first_dvt+'</td>';
+                            html += '<td><textarea width="100%" cols="30" name="note[]"></textarea></td>';
+                            html += '<td class="text-right">' +
+                                '<input class="form-control input price-mask quantity" name="quantity[]">' +
+                                '<span class="error error-no-choose-quantity red" style="display: none">Nhập SL</span>'+
+                                '</td>';
+                            html += '<td class="text-right"><input class="form-control input price-mask unit_price" name="price[]" readonly value="'+first_price+'"></td>';
+                            html += '<td class="text-right"><input class="form-control input price-mask discount" name="discount[]"></td>';
+                            html += '<td class="text-right"><input class="form-control input price-mask total_price" name="total_price[]" readonly value="0"></td>';
+                            html += '<td class="text-center">';
+                            html += '<div class="hidden-sm hidden-xs btn-group">';
+                            html += '<a class="btn btn-xs btn-primary edit" data-toggle="tooltip"  style="display: none" title="Sửa">';
+                            html += '<i class="ace-icon fa fa-pencil bigger-120"></i>';
+                            html += '</a>';
+                            html += '<a class="btn btn-xs btn-success save" data-toggle="tooltip" style="display: none" title="Xác nhận">';
+                            html += '<i class="ace-icon fa fa-check bigger-120"></i>';
+                            html += '</a>';
+                            html += '<a class="btn btn-xs btn-danger remove-item" title="Xóa">';
+                            html += '<i class="ace-icon fa fa-trash bigger-120"></i>';
+                            html += '</a>';
+                            html += '</td>';
+                            self.find('tbody').append(html);
+                            previous = {};
+                            reloadSelect(total_choose,current_val)
+                            //reload_element();
+                        },
+                        addFormRegister = function () {
+                            self.find('.error-customer-name').text('');
+                            var customer_name = self.find('.search-customer').val();
+                            self.find('input[name=full_name]').val(customer_name);
+                            self.find('#modal-register-customer').modal('show');
+                        },
+                        registerCustomer = function () {
+                            self.find('.error-customer-name').text('');
+                            var full_name = self.find('input[name=full_name]').val(),
+                                customer_phone = self.find('input[name=customer_phone]').val(),
+                                customer_address = self.find('input[name=customer_address]').val(),
+                                customer_note = self.find('input[name=customer_note]').val();
+                            if (!full_name){
+                                self.find('.error-customer-name').text('Tên khách hàng không được bỏ trống!!!');
+                                return false;
+                            }
+                            var params = {
+                                full_name: full_name,
+                                customer_phone : customer_phone,
+                                customer_address : customer_address,
+                                customer_note : customer_note
+                            };
+                            self.model.addCustomer(params).then(function (rs){
+                                if(rs.st == 1){
+                                    self.find('input[name=customer_id]').val(rs.data.customer_id);
+                                    self.find('.info-full-name').text(full_name);
+                                    self.find('.info-phone').text(customer_phone);
+                                    self.find('.info-address').text(customer_address);
+                                    self.find('.input-register-customer').hide();
+                                    self.find('.info-customer-invoice').show();
+                                    self.find('#modal-register-customer').modal('hide');
+                                    bootbox.alert(rs.ms);
+                                }else{
+                                    bootbox.alert(rs.ms);
+                                }
+                            });
+                        },
+                        changeAnotherCustomer = function () {
+                            self.find('input[name=customer_id]').val();
+                            self.find('.info-customer-invoice').hide();
+                            self.find('.input-register-customer').show();
+                        },
+                        loadCustomer = function () {
+                            var dataCustomers = [];
+                            var search = self.find('#tags').val();
+                            self.model.loadCustomer({search:search}).then(function (rs) {
+                                if(rs.st == -1){
+                                    return dataCustomers;
+                                }
+                                $.each(rs.data.rows, function (k,v) {
+                                    var value = v.full_name,
+                                        label = v.full_name;
+                                    if(v.phone){
+                                        label += ' - '.v.phone;
+                                    }
+                                    if(v.phone){
+                                        label += ' - '.v.address;
+                                    }
+                                    dataCustomers.push({
+                                        'value' : value,
+                                        'label' : label,
+                                        'customer_id' : v.customer_id,
+                                        'phone' : v.phone,
+                                        'address' : v.address,
+                                        'note' : v.note,
+                                        'full_name' : v.full_name
+                                    });
+                                });
+                            });
+                            return dataCustomers;
+                        },
+                        validateForm = function () {
+                            self.find('.error').hide();
+                            var valid = true;
+                            if(!self.find('input[name=customer_id]').val()){
+                                self.find('.error-no-choose-customer').show();
+                                valid = false;
+                            }
+                            if(self.find('tbody tr').length < 1){
+                                self.find('.error-no-choose-warehouse').show();
+                                valid = false;
+                            }else{
+                                $.each(self.find('.quantity'), function () {
+                                    if(!$(this).val()){
+                                        valid = false;
+                                        $(this).closest('td').find('.error-no-choose-quantity').show();
+                                    }
+                                })
+                            }
+                            return valid;
+                        },
+                        reloadSelect = function (stt, val) {
+                            $.each(self.find('select.warehouse_id'),function (k, item) {
+                                if(stt != 0 && k == stt-1){
+                                    return;
+                                }
+                                $(this).find('option[value='+val+']').remove();
+                                if(!$.isEmptyObject(previous)){
+                                    var option = '<option value='+previous.warehouse_id+' data-price='+previous.price+' data-properties='+previous.properties_name+'>';
+                                    option += previous.name_show;
+                                    option += '</option>';
+                                    $(this).append(option);
+                                }
+                            });
+                            previous = {};
+                            reload_select_picker();
+                            reload_element();
+                        };
+                    self.on('keyup','.quantity, .discount',function () {
+                            var quantity = +$(this).closest('tr').find('.quantity').val(),
+                                unit_price = +$(this).closest('tr').find('.unit_price').val(),
+                                discount = +$(this).closest('tr').find('.discount').val();
+                            var price_discount = unit_price*quantity*discount/100,
+                                amount_price = unit_price*quantity;
+                            var total_price = amount_price-price_discount;
+                            $(this).closest('tr').find('.total_price').val(total_price);
+                            reload_sum_total_price();
+                        })
+                        .on('change','select.warehouse_id',function () {
+                            var stt = +$(this).closest('tr').find('.stt').text(),
+                                val = $(this).val();
+                            var quantity = +$(this).closest('tr').find('.quantity').val(),
+                                unit_price = +$(this).find('option:selected').data('price'),
+                                discount = +$(this).closest('tr').find('.discount').val();
+                            var price_discount = unit_price*quantity*discount/100,
+                                amount_price = unit_price*quantity;
+                            var total_price = amount_price-price_discount;
+                            $(this).closest('tr').find('.unit_price').val(unit_price);
+                            $(this).closest('tr').find('.total_price').val(total_price);
+                            reload_sum_total_price();
+                            reloadSelect(stt, val);
+                        });
+                    if(self.find('tbody tr').length < 1){
+                        loadWarehouse();
+                    }else{
+                        reload_element();
+                    }
                 }
             },
             expire: {

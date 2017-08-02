@@ -178,4 +178,35 @@ class Invoice
             'id' => $invoice_id
         ];
     }
+
+    public static function get($params){
+        $limit = empty($params['limit']) ? 10 : (int)$params['limit'];
+        $page = empty($params['page']) ? 1 : (int)$params['page'];
+        $offset = $limit * ($page - 1);
+        $params['offset'] = $offset;
+        $params['limit'] = $limit;
+        $result = Model\Invoice::get($params);
+
+        if(!empty($result['rows'])){
+            $arr_customer_id = [];
+            foreach ($result['rows'] as $row){
+                $arr_customer_id[] = $row['customer_id'];
+            }
+
+            $result_customer = Model\Customer::get([
+                'in_customer_id' => array_values($arr_customer_id),
+                'limit' => 10000
+            ]);
+
+            $arr_customer_format = [];
+            foreach ($result_customer['rows'] as $row){
+                $arr_customer_format[$row['customer_id']] = $row;
+            }
+
+            foreach ($result['rows'] as &$row){
+                $row['customer_info'] = $arr_customer_format[$row['customer_id']];
+            }
+        }
+        return $result;
+    }
 }
