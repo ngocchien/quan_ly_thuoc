@@ -82,6 +82,10 @@ class InvoiceController extends MyController
 
         if($this->request->isPost()){
             $params = $this->params()->fromPost();
+            echo '<pre>';
+            print_r('Chưa validate! Chức năng đang xây dựng! chưa thực hiện được thao tác update!');
+            echo '</pre>';
+            die();
             $params['product_id'] = $id;
             $params = Business\Product::update($params);
             if(!empty($params['success'])){
