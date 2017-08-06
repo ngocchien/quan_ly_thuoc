@@ -28,9 +28,12 @@
                                             <div class="col-xs-12 col-sm-5">
                                             <span class="block input-icon input-icon-right">
                                                 <select name="product_id" class="select-picker width-100" data-live-search="true">
-                                                    <?php foreach($this->products['rows'] as $row):?>
+                                                    <?php foreach($this->products['rows'] as $row):
+
+                                                        $info = '<b>'.$row['product_name'] .'</b> -- Nhãn hiệu : '. $this->brands[$row['brand_id']]['brand_name'];
+                                                        ?>
                                                         <option value="<?php echo $row['product_id'] ?>">
-                                                            <?php echo $row['product_name']?>
+                                                            <?php echo $info;?>
                                                         </option>
                                                     <?php endforeach;?>
                                                 </select>
@@ -130,7 +133,7 @@
                                         <label for="inputWarning" class="col-xs-12 col-sm-3 control-label no-padding-right">Ghi chú thêm</label>
                                         <div class="col-xs-12 col-sm-7">
                                             <span class="block input-icon input-icon-right">
-                                                <textarea name="note" class="ckeditor" rows="10" cols="20" name="editor"><?php
+                                                <textarea name="note" class="ckeditor" rows="3" cols="20" name="editor"><?php
                                                     echo !empty($this->params['note']) ? $this->params['note'] : '' ?></textarea>
                                             </span>
                                         </div>

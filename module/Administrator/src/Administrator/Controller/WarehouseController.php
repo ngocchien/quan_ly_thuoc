@@ -107,10 +107,23 @@ class WarehouseController extends MyController
             'limit' => 10000
         ]);
 
+        $brands = [];
+        $result = Model\Brand::get([
+            'limit' => 10000,
+//            'not_status' => Model\Brand::BRAND_STATUS_REMOVE
+        ]);
+
+        if(!empty($result['rows'])){
+            foreach ($result['rows'] as $row){
+                $brands[$row['brand_id']] = $row;
+            }
+        }
+
         return [
             'params' => $params,
             'properties' => $properties,
-            'products' => $products
+            'products' => $products,
+            'brands' => $brands
         ];
     }
 
