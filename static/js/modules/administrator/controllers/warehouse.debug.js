@@ -90,6 +90,8 @@ Controller.define('administrator/warehouse', function () {
                         });
                         self.find('input[name=total_price]').val(total_price);
                     };
+                        CKEDITOR.config.height= '100px';
+
                         self.find(".price-mask").inputmask({
                             alias: 'decimal',
                             radixPoint: '.',

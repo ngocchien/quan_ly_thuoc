@@ -37,7 +37,7 @@ CKEDITOR.editorConfig = function( config ) {
     // Simplify the dialog windows.
     config.removeDialogTabs = 'image:advanced;link:advanced';
 
-    config.height = '500px';
+    // config.height = '500px';
     config.language = 'vi';
     config.uiColor = '#f9f9f9';
 };
