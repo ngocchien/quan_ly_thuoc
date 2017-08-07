@@ -35,7 +35,7 @@ $action = ACTION;
         } catch (e) {
         }
     </script>
-    <?php echo $this->render('administrator/left_menu'); ?>
+    <?php echo \My\Minifier\HtmlMin::minify($this->render('administrator/left_menu')); ?>
     <div class="main-content">
         <div class="main-content-inner" style="margin-bottom:100px">
             <div class="breadcrumbs ace-save-state" id="breadcrumbs">
@@ -48,11 +48,11 @@ $action = ACTION;
                 </ul>
             </div>
             <div class="page-content">
-                <?php echo $this->layout()->content; ?>
+                <?php echo \My\Minifier\HtmlMin::minify($this->layout()->content); ?>
             </div><!-- /.page-content -->
         </div>
     </div><!-- /.main-content -->
-    <?php echo $this->render('administrator/footer'); ?>
+    <?php echo \My\Minifier\HtmlMin::minify($this->render('administrator/footer')); ?>
 </div><!-- /.main-container -->
 
 

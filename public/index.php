@@ -66,6 +66,7 @@ try{
         'Zend\Loader\StandardAutoloader' => array(
             'namespaces' => array(
                 'APP' => __DIR__ . '/../package/Application/library/APP',
+                'My' => __DIR__ . '/../library/My',
             ),
         )
     ));
