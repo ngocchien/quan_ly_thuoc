@@ -61,7 +61,7 @@
                     <tr <?php if($is_bell):?>class="label-yellow"<?php endif;?>>
                         <td class="center"><input type="checkbox" name="data-id" class="input" value="<?php echo $row['warehouse_id']?>"></td>
                         <td><a href="javascript:;"><b><?php echo !empty($this->products[$row['product_id']]) ? $this->products[$row['product_id']]['product_name'] : ''?></b></a></td>
-                        <td><a href="javascript:;"><b><?php echo empty($this->brands[$brand_id]) ? '' : $this->brands[$brand_id]['brand_name']?></b></a></td>
+                        <td class="center"><a href="javascript:;"><b><?php echo empty($this->brands[$brand_id]) ? '' : $this->brands[$brand_id]['brand_name']?></b></a></td>
                         <td class="center"><b><?php echo !empty($this->properties[$row['properties_id']]) ? $this->properties[$row['properties_id']]['properties_name'] : ''?></b></td>
                         <td class="text-right"><?php echo number_format($row['quantity']);?></td>
                         <td class="text-right"><?php echo empty($row['unit_price']) ? 0 : number_format($row['unit_price']);?></td>
