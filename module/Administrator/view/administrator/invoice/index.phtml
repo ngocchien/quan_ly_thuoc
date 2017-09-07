@@ -29,7 +29,8 @@
                     <th class="center"> # </th>
                     <th class="center" width="80px"><span class="fa fa-list-alt"></span> Mã Đơn</th>
                     <th class="center"><span class="fa fa-credit-card"> Thông tin khách hàng</th>
-                    <th class="center" width="120px"><span class="fa fa-dollar"> Tổng tiền (vnđ)</th>
+                    <th class="center" width="200px"><span class="fa fa-user"> Người kê đơn</th>
+                    <th class="center" width="90px"><span class="fa fa-dollar"> Tổng tiền</th>
                     <th class="center" width="100px"><span class="fa fa-calendar"></span> Ngày bán</th>
                     <th class="center" width="100px"><span class="fa fa-gears"></span> Tùy chỉnh</th>
                 </tr>
@@ -42,42 +43,10 @@
                             <td class="center" width="20px"><input type="checkbox" name="data-id" class="input" value="<?php echo $row['invoice_id']?>"></td>
                             <td class="center"><a href="javascript:;"><b><?php echo INVOICE_CODE.sprintf("%04d", $row['invoice_id']);?></b></a></td>
                             <td>
-                                <div class="col-xs-6">
-                                    <div class="rows">
-                                        <div class="col-xs-3">
-                                            <b>- Tên</b>
-                                        </div>
-                                        <div class="col-xs-1">
-                                            :
-                                        </div>
-                                        <div class="col-xs-8">
-                                            <a href="javascript:;"><?php echo $row['customer_info']['full_name']?></a>
-                                        </div>
-                                    </div>
-                                    <div class="rows">
-                                        <div class="col-xs-3">
-                                            <b>- SĐT</b>
-                                        </div>
-                                        <div class="col-xs-1">
-                                            :
-                                        </div>
-                                        <div class="col-xs-8">
-                                            <?php echo empty($row['customer_info']['phone']) ? 'Không xác định' : $row['customer_info']['phone']?>
-                                        </div>
-                                    </div>
-                                    <div class="rows">
-                                        <div class="col-xs-3">
-                                            <b>- Địa chỉ</b>
-                                        </div>
-                                        <div class="col-xs-1">
-                                            :
-                                        </div>
-                                        <div class="col-xs-8">
-                                            <?php echo empty($row['customer_info']['address']) ? 'Không xác định' : $row['customer_info']['address']?>
-                                        </div>
-                                    </div>
-                                </div>
+                                <a href="javascript:;"><?php echo $row['customer_info']['full_name']?></a>
+                                <a href="javascript:;" title="Xem thông tin khách hàng" class="view-info-customer" data-customer='<?php echo json_encode($row['customer_info'])?>'><i class="ace-icon fa fa-eye green"></i></a>
                             </td>
+                            <td class="text-center"><?php echo empty($this->users[$row['user_created']]) ? '' : $this->users[$row['user_created']]['full_name'];?></td>
                             <td class="text-right"><?php echo number_format($row['total_price']);?></td>
                             <td class="text-right"><?php echo date('d/m/Y', $row['created_date']);?></td>
                             <td class="center">

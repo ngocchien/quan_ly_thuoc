@@ -4,6 +4,7 @@
 
 Controller.define('administrator/invoice', function () {
     // var xhr =null;
+    var INVOICE_ID = +Registry.get('INVOICE_ID');
     return {
         model: {
             deleteInvoice: function (params) {
@@ -83,8 +84,35 @@ Controller.define('administrator/invoice', function () {
                         };
                     self.on('click', '.remove-all', function () {
                         removeAll();
-                    })
-
+                    }).on('click', '.view-info-customer', function () {
+                        var customer_info = $(this).data('customer');
+                        var html ='<div class="form-group">' +
+                            '<label for="recipient-name" class="control-label">Tên:</label>'+
+                            '<input type="text" class="form-control" value="'+customer_info.full_name+'" '+
+                            '</div>'+
+                            '<div class="form-group">'+
+                            '<label for="message-text" class="control-label">Số điện thoại:</label>'+
+                            '<input type="text" class="form-control" value="'+customer_info.phone+'" '+
+                            '</div>'+
+                            '<div class="form-group">'+
+                            '<label for="message-text" class="control-label">Địa chỉ:</label>'+
+                            '<input type="text" class="form-control" value="'+customer_info.address+'" '+
+                            '</div>'+
+                            '<div class="form-group">'+
+                            '<label for="message-text" class="control-label">Ghi chú:</label>' +
+                            '<textarea class="form-control" name="customer_note"></textarea>' +
+                            '</div>';
+                        var dialog = bootbox.dialog({
+                            title: 'Thông tin khách hàng',
+                            message : html,
+                            buttons: {
+                                ok: {
+                                    label: "OK",
+                                    className: 'btn-success'
+                                }
+                            }
+                        });
+                    });
                 }
             },
             create: {
@@ -169,6 +197,7 @@ Controller.define('administrator/invoice', function () {
                             html += '<td class="text-right">' +
                                 '<input class="form-control input price-mask quantity" name="quantity[]">' +
                                 '<span class="error error-no-choose-quantity red" style="display: none">Nhập SL</span>' +
+                                '<span class="error error-quantity-not-enough red" style="display: none">Tồn không đủ</span>' +
                                 '</td>';
                             html += '<td class="text-right"><input class="form-control input price-mask unit_price" name="price[]" readonly value="' + first_price + '"></td>';
                             html += '<td class="text-right"><input class="form-control input price-mask discount" name="discount[]"></td>';
@@ -231,6 +260,11 @@ Controller.define('administrator/invoice', function () {
                             self.find('input[name=customer_id]').val();
                             self.find('.info-customer-invoice').hide();
                             self.find('.input-register-customer').show();
+                        },
+                        cancelChangeAnotherCustomer = function () {
+                            self.find('input[name=customer_id]').val();
+                            self.find('.input-register-customer').hide();
+                            self.find('.info-customer-invoice').show();
                         },
                         loadCustomer = function () {
                             var dataCustomers = [];
@@ -302,8 +336,34 @@ Controller.define('administrator/invoice', function () {
                         .on('click', '.edit', function () {
                         })
                         .on('keyup', '.quantity, .discount', function () {
+                            //validate quantity
+                            var warehouse = Registry.get('WAREHOUSES');
+                            var warehouse_id = $(this).closest('tr').find('select.warehouse_id').val();
+
+                            var quantity_old_choose = +$(this).closest('tr').find('.old_quantity').val();
+                            if(isNaN(quantity_old_choose)){
+                                quantity_old_choose = 0;
+                            }
                             var quantity = +$(this).closest('tr').find('.quantity').val(),
-                                unit_price = +$(this).closest('tr').find('.unit_price').val(),
+                                flag = false;
+
+                            if(quantity){
+                                $(this).closest('tr').find('.error-no-choose-quantity').hide();
+                            }
+
+                            $.each(warehouse.rows, function (k,v) {
+                                if(v.warehouse_id == warehouse_id && (v.stock+quantity_old_choose) >= quantity ){
+                                    flag = true;
+                                }
+                            });
+
+                            if(!flag){
+                                $(this).closest('tr').find('.error-quantity-not-enough').show();
+                            }else{
+                                $(this).closest('tr').find('.error-quantity-not-enough').hide();
+                            }
+
+                            var unit_price = +$(this).closest('tr').find('.unit_price').val(),
                                 discount = +$(this).closest('tr').find('.discount').val();
                             var price_discount = unit_price * quantity * discount / 100,
                                 amount_price = unit_price * quantity;
@@ -366,7 +426,7 @@ Controller.define('administrator/invoice', function () {
                             previous.warehouse_id = $(current_option).val();
                             previous.properties_name = $(current_option).data('properties');
                             previous.name_show = $(current_option).text();
-                        });
+                        }).on('click','.cancel-choose-customer', cancelChangeAnotherCustomer);
                     if (self.find('tbody tr').length < 1) {
                         loadWarehouse();
                     } else {
@@ -586,6 +646,7 @@ Controller.define('administrator/invoice', function () {
                             reload_element();
                         };
                     self.on('keyup', '.quantity, .discount', function () {
+                        //validate quantity
                         var quantity = +$(this).closest('tr').find('.quantity').val(),
                             unit_price = +$(this).closest('tr').find('.unit_price').val(),
                             discount = +$(this).closest('tr').find('.discount').val();
@@ -594,8 +655,7 @@ Controller.define('administrator/invoice', function () {
                         var total_price = amount_price - price_discount;
                         $(this).closest('tr').find('.total_price').val(total_price);
                         reload_sum_total_price();
-                    })
-                        .on('change', 'select.warehouse_id', function () {
+                    }).on('change', 'select.warehouse_id', function () {
                             var stt = +$(this).closest('tr').find('.stt').text(),
                                 val = $(this).val();
                             var quantity = +$(this).closest('tr').find('.quantity').val(),
@@ -608,7 +668,9 @@ Controller.define('administrator/invoice', function () {
                             $(this).closest('tr').find('.total_price').val(total_price);
                             reload_sum_total_price();
                             reloadSelect(stt, val);
-                        });
+                    }).on('click','.cancel-customer', function () {
+                        console.log(111111);
+                    });
                     if (self.find('tbody tr').length < 1) {
                         loadWarehouse();
                     } else {

@@ -21,11 +21,32 @@ class InvoiceController extends MyController
         //get list user
         $params['not_status'] = Model\Invoice::STATUS_REMOVE;
         $invoices = Business\Invoice::get($params);
+
+        $arr_user = [];
+        if($invoices['total']){
+            $arr_user_id = [];
+            foreach ($invoices['rows'] as $row){
+                $arr_user_id[] = $row['user_created'];
+            }
+
+            $result = Model\User::getUser([
+                'in_user_id' => $arr_user_id,
+                'limit' => 1000
+            ]);
+
+            if($result['total']){
+                foreach ($result['rows'] as $row){
+                    $arr_user[$row['user_id']] = $row;
+                }
+            }
+        }
+
         $params['total'] = $invoices['total'];
 
         return [
             'params' => $params,
-            'invoices' => $invoices
+            'invoices' => $invoices,
+            'users' => $arr_user
         ];
     }
 

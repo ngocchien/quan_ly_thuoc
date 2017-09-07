@@ -41,10 +41,13 @@
                                                 <input id="tags" type="text" class="form-control ui-autocomplete-input search-customer" autocomplete="off">
                                                 <span class="error red error-no-choose-customer" style="display: none">Vui lòng chọn khách hàng</span>
                                             </div>
-                                            <div class="col-sm-2">
+                                            <div class="col-sm-3">
                                                 <a class="btn btn-xs btn-primary add-customer">
                                                     <i class="ace-icon fa fa-plus-circle"></i>
                                                     Thêm
+                                                </a>
+                                                <a class="btn btn-xs btn-danger cancel-choose-customer" title="Hủy">
+                                                    <i class="ace-icon fa fa-remove"></i>
                                                 </a>
                                             </div>
                                         </div>
@@ -223,8 +226,10 @@
 <!--                                                    <textarea width="100%" cols="30" name="note[]">--><?php //echo $invoice_warehouse['note']?><!--</textarea>-->
 <!--                                                </td>-->
                                                 <td lass="text-right">
+                                                    <input type="hidden" class="old_quantity" value="<?php echo $invoice_warehouse['quantity']?>">
                                                     <input class="form-control input price-mask quantity" name="quantity[]" value="<?php echo $invoice_warehouse['quantity']?>">
                                                     <span class="error error-no-choose-quantity red" style="display: none">Nhập SL</span>
+                                                    <span class="error error-quantity-not-enough red" style="display: none">Tồn không đủ</span>
                                                 </td>
                                                 <td class="text-right">
                                                     <input class="form-control input price-mask unit_price" name="price[]" readonly value="<?php echo $invoice_warehouse['price'];?>">
@@ -270,12 +275,14 @@
                                                     <td class="text-center">
                                                         <?php echo $dvt;?>
                                                     </td>
-                                                    <td>
-                                                        <textarea width="100%" cols="30" name="note[]"><?php echo $this->params['note'][$key]?></textarea>
-                                                    </td>
+<!--                                                    <td>-->
+<!--                                                        <textarea width="100%" cols="30" name="note[]">--><?php //echo $this->params['note'][$key]?><!--</textarea>-->
+<!--                                                    </td>-->
                                                     <td lass="text-right">
                                                         <input class="form-control input price-mask quantity" name="quantity[]" value="<?php echo $this->params['quantity'][$key]?>">
+                                                        <input type="hidden" class="old_quantity" value="<?php echo $this->params['quantity'][$key]?>">
                                                         <span class="error error-no-choose-quantity red" style="display: none">Nhập SL</span>
+                                                        <span class="error error-quantity-not-enough red" style="display: none">Tồn không đủ</span>
                                                     </td>
                                                     <td class="text-right">
                                                         <input class="form-control input price-mask unit_price" name="price[]" readonly value="<?php echo $selected_unit_price;?>">
@@ -366,4 +373,5 @@
 </div>
 <script type="text/javascript">
     Registry.set('WAREHOUSES', <?php echo json_encode($this->warehouses)?>);
+    Registry.set('INVOICE_ID', <?php echo $this->params['id']?>);
 </script>
