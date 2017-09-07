@@ -19,7 +19,7 @@ class WarehouseController extends MyController
         $params['not_status'] = Model\Warehouse::STATUS_REMOVE;
 
         //get list
-        $user_id = $users = $properties_id = $properties = $product_id = $products = [];
+        $user_id = $users = $properties_id = $properties = $product_id = $products = $brand_id = [];
         $warehouses = Business\Warehouse::getList($params);
 
         if (!empty($warehouses['rows'])) {
@@ -68,6 +68,23 @@ class WarehouseController extends MyController
             if(!empty($result['rows'])){
                 foreach ($result['rows'] as $row){
                     $products[$row['product_id']] = $row;
+                    if(!empty($row['brand_id'])){
+                        $brand_id[] = $row['brand_id'];
+                    }
+                }
+            }
+        }
+
+        $brands = [];
+        if(!empty($brand_id)){
+            $result = Model\Brand::get([
+                'in_brand_id' => array_values(array_unique($brand_id)),
+                'limit' => 10000
+            ]);
+
+            if($result['total']){
+                foreach ($result['rows'] as $row){
+                    $brands[$row['brand_id']] = $row;
                 }
             }
         }
@@ -80,6 +97,7 @@ class WarehouseController extends MyController
             'users' => $users,
             'properties' => $properties,
             'products' => $products,
+            'brands' => $brands,
             'limit_query' => Model\Common::getListLimitQuery()
         ];
     }

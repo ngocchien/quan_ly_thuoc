@@ -16,37 +16,41 @@
  * most users, however, feel free to configure autoloading however you'd like.
  */
 
-// Composer autoloading
-if (file_exists(ZEND_FRAMEWORK_PATH . '/vendor/autoload.php')) {
-    $loader = include ZEND_FRAMEWORK_PATH . '/vendor/autoload.php';
+if (file_exists('vendor/autoload.php')) {
+    include 'vendor/autoload.php';
 }
 
-if (class_exists('Zend\Loader\AutoloaderFactory')) {
-    return;
-}
-
-$zf2Path = false;
-if (getenv('ZF2_PATH')) {            // Support for ZF2_PATH environment variable
-    $zf2Path = getenv('ZF2_PATH');
-} elseif (get_cfg_var('zf2_path')) { // Support for zf2_path directive value
-    $zf2Path = get_cfg_var('zf2_path');
-}
-
-if ($zf2Path) {
-    if (isset($loader)) {
-        $loader->add('Zend', $zf2Path);
-        $loader->add('ZendXml', $zf2Path);
-    } else {
-        include $zf2Path . '/Zend/Loader/AutoloaderFactory.php';
-
-        Zend\Loader\AutoloaderFactory::factory(array(
-            'Zend\Loader\StandardAutoloader' => array(
-                'autoregister_zf' => true
-            )
-        ));
-    }
-}
-
-if (!class_exists('Zend\Loader\AutoloaderFactory')) {
-    throw new RuntimeException('Unable to load ZF2. define a ZF2_PATH environment variable.');
-}
+//// Composer autoloading
+//if (file_exists(ZEND_FRAMEWORK_PATH . '/vendor/autoload.php')) {
+//    $loader = include ZEND_FRAMEWORK_PATH . '/vendor/autoload.php';
+//}
+//
+//if (class_exists('Zend\Loader\AutoloaderFactory')) {
+//    return;
+//}
+//
+//$zf2Path = false;
+//if (getenv('ZF2_PATH')) {            // Support for ZF2_PATH environment variable
+//    $zf2Path = getenv('ZF2_PATH');
+//} elseif (get_cfg_var('zf2_path')) { // Support for zf2_path directive value
+//    $zf2Path = get_cfg_var('zf2_path');
+//}
+//
+//if ($zf2Path) {
+//    if (isset($loader)) {
+//        $loader->add('Zend', $zf2Path);
+//        $loader->add('ZendXml', $zf2Path);
+//    } else {
+//        include $zf2Path . '/Zend/Loader/AutoloaderFactory.php';
+//
+//        Zend\Loader\AutoloaderFactory::factory(array(
+//            'Zend\Loader\StandardAutoloader' => array(
+//                'autoregister_zf' => true
+//            )
+//        ));
+//    }
+//}
+//
+//if (!class_exists('Zend\Loader\AutoloaderFactory')) {
+//    throw new RuntimeException('Unable to load ZF2. define a ZF2_PATH environment variable.');
+//}

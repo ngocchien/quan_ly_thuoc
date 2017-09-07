@@ -31,6 +31,8 @@
     },
     "autoload": {
         "psr-4": {
+            "My\\": "library/My/",
+            "APP\\" : "package/Application/library/APP/",
             "Application\\": "module/Application/src/"
         }
     },

@@ -28,6 +28,7 @@
             <tr>
                 <th class="center"> # </th>
                 <th class="center"><span class="fa fa-list-alt"></span> Tên thuốc</th>
+                <th class="center"><span class="fa fa-cc-mastercard"></span> Hãng sản xuất</th>
                 <th class="center"><span class="fa fa-barcode"></span> ĐVT </th>
                 <th class="center"> SL</th>
                 <th class="center"> Đơn giá (vnđ)</th>
@@ -55,10 +56,12 @@
                     }elseif($row['hsd'] < time()){
                         $icon = 'ace-icon fa fa-bell-slash-o bigger-120';
                     }
+                    $brand_id = empty($this->products[$row['product_id']]['brand_id']) ? 0 : $this->products[$row['product_id']]['brand_id'];
                     ?>
-                    <tr>
+                    <tr <?php if($is_bell):?>class="label-yellow"<?php endif;?>>
                         <td class="center"><input type="checkbox" name="data-id" class="input" value="<?php echo $row['warehouse_id']?>"></td>
                         <td><a href="javascript:;"><b><?php echo !empty($this->products[$row['product_id']]) ? $this->products[$row['product_id']]['product_name'] : ''?></b></a></td>
+                        <td><a href="javascript:;"><b><?php echo empty($this->brands[$brand_id]) ? '' : $this->brands[$brand_id]['brand_name']?></b></a></td>
                         <td class="center"><b><?php echo !empty($this->properties[$row['properties_id']]) ? $this->properties[$row['properties_id']]['properties_name'] : ''?></b></td>
                         <td class="text-right"><?php echo number_format($row['quantity']);?></td>
                         <td class="text-right"><?php echo empty($row['unit_price']) ? 0 : number_format($row['unit_price']);?></td>
