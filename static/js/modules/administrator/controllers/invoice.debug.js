@@ -147,7 +147,7 @@ Controller.define('administrator/invoice', function () {
                                 if ($.inArray(item.warehouse_id, warehouse_id_selected) != -1) {
                                     return;
                                 }
-                                var name_show = item.product_name + ' - Số Lô :' + item.production_batch + ' - Hãng :' + item.brand_name + ' - HSD : ' + item.hsd + ' - Tồn :' + item.stock;
+                                var name_show = item.product_name + ' - Số Lô :' + item.production_batch + ' - Hãng : ' + item.brand_name + ' - HSD : ' + item.hsd + ' - Tồn :' + item.stock;
                                 html_select += '<option value="' + item.warehouse_id + '" data-price="' + item.unit_price + '" data-properties="' + item.properties_name + '">';
                                 html_select += name_show;
                                 html_select += '</option>';
