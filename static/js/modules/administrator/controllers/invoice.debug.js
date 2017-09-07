@@ -11,7 +11,7 @@ Controller.define('administrator/invoice', function () {
                     type: 'post',
                     url: Registry.get('SITE_URL') + 'admin/invoice/delete',
                     data: params,
-                    dataType : 'json'
+                    dataType: 'json'
                 });
             },
             loadWarehouse: function (params) {
@@ -19,10 +19,10 @@ Controller.define('administrator/invoice', function () {
                     type: 'GET',
                     url: Registry.get('SITE_URL') + 'admin/invoice/load-warehouse',
                     data: params,
-                    dataType : 'json'
+                    dataType: 'json'
                 });
             },
-            formatNumber : function (nStr){
+            formatNumber: function (nStr) {
                 nStr += '';
                 x = nStr.split('.');
                 x1 = x[0];
@@ -33,20 +33,20 @@ Controller.define('administrator/invoice', function () {
                 }
                 return x1 + x2;
             },
-            loadCustomer : function (params) {
+            loadCustomer: function (params) {
                 return $.ajax({
                     type: 'GET',
                     url: Registry.get('SITE_URL') + 'admin/invoice/load-customer',
                     data: params,
-                    dataType : 'json'
+                    dataType: 'json'
                 });
             },
-            addCustomer : function (params) {
+            addCustomer: function (params) {
                 return $.ajax({
                     type: 'POST',
                     url: Registry.get('SITE_URL') + 'admin/customer/add-customer',
                     data: params,
-                    dataType : 'json'
+                    dataType: 'json'
                 });
             }
         },
@@ -59,35 +59,35 @@ Controller.define('administrator/invoice', function () {
                 execute: function () {
                     var self = this,
                         removeAll = function () {
-                            if(self.find('input[name=data-id]:checked').length <= 0){
+                            if (self.find('input[name=data-id]:checked').length <= 0) {
                                 bootbox.alert('Vui lòng chọn sản phẩm muốn xóa!!!');
                                 return false;
                             }
                             bootbox.confirm('Bạn có chắc chắn muốn xóa các sản phẩm này không???', function (e) {
-                                if(e){
+                                if (e) {
                                     var arr_id = [];
                                     self.find('input[name=data-id]:checked').each(function () {
                                         arr_id.push($(this).val())
                                     });
-                                    self.model.deleteProduct({arr_product_id : arr_id}).then(function (rs){
-                                        if(rs.st == 1){
-                                            bootbox.alert(rs.ms,function () {
+                                    self.model.deleteProduct({arr_product_id: arr_id}).then(function (rs) {
+                                        if (rs.st == 1) {
+                                            bootbox.alert(rs.ms, function () {
                                                 window.location = window.location.href;
                                             })
-                                        }else{
+                                        } else {
                                             bootbox.alert(rs.ms)
                                         }
                                     });
                                 }
                             });
                         };
-                    self.on('click','.remove-all',function () {
+                    self.on('click', '.remove-all', function () {
                         removeAll();
                     })
 
                 }
             },
-            create : {
+            create: {
                 require: {
                     scripts: ['bootstrap-select.js', 'bootstrap-inputmask.js', 'bootbox/bootbox.js'],
                     stylesheets: ['bootstrap-select.css']
@@ -116,8 +116,8 @@ Controller.define('administrator/invoice', function () {
                         },
                         reload_sum_total_price = function () {
                             var sum_total_price = 0;
-                            if(self.find('.total_price').length > 0){
-                                $.each(self.find('.total_price'),function () {
+                            if (self.find('.total_price').length > 0) {
+                                $.each(self.find('.total_price'), function () {
                                     sum_total_price += +$(this).val();
                                 })
                             }
@@ -125,16 +125,16 @@ Controller.define('administrator/invoice', function () {
                             self.find('input[name=sum_total_price]').val(sum_total_price);
                         },
                         reloadSTT = function () {
-                            if(self.find('tbody tr').length > 0){
-                                $.each(self.find('tbody tr'),function (k,item) {
-                                    $(item).find('.stt').text(k+1);
+                            if (self.find('tbody tr').length > 0) {
+                                $.each(self.find('tbody tr'), function (k, item) {
+                                    $(item).find('.stt').text(k + 1);
                                 });
                             }
                         },
                         loadWarehouse = function () {
                             var warehouse_id_selected = [];
-                            if(self.find('select.warehouse_id').length > 0){
-                                self.find('select.warehouse_id').each(function (k,v) {
+                            if (self.find('select.warehouse_id').length > 0) {
+                                self.find('select.warehouse_id').each(function (k, v) {
                                     warehouse_id_selected.push(+$(this).val());
                                 });
                             }
@@ -143,16 +143,16 @@ Controller.define('administrator/invoice', function () {
                             var first_price = 0;
                             var flag = false;
                             var current_val = 0;
-                            $.each(warehouses.rows,function (k,item) {
-                                if($.inArray(item.warehouse_id,warehouse_id_selected) != -1){
+                            $.each(warehouses.rows, function (k, item) {
+                                if ($.inArray(item.warehouse_id, warehouse_id_selected) != -1) {
                                     return;
                                 }
-                                var name_show = item.product_name + ' - Số Lô :' + item.production_batch + ' - HSD : ' + item.hsd + ' - Tồn :' +item.stock;
-                                html_select += '<option value="'+item.warehouse_id+'" data-price="'+item.unit_price+'" data-properties="'+item.properties_name+'">';
+                                var name_show = item.product_name + ' - Số Lô :' + item.production_batch + ' - Hãng :' + item.brand_name + ' - HSD : ' + item.hsd + ' - Tồn :' + item.stock;
+                                html_select += '<option value="' + item.warehouse_id + '" data-price="' + item.unit_price + '" data-properties="' + item.properties_name + '">';
                                 html_select += name_show;
                                 html_select += '</option>';
 
-                                if(flag == false){
+                                if (flag == false) {
                                     first_dvt = item.properties_name;
                                     first_price = +item.unit_price;
                                     current_val = item.warehouse_id;
@@ -162,15 +162,15 @@ Controller.define('administrator/invoice', function () {
                             var total_choose = self.find('table tbody tr').length + 1;
                             html_select += '</select>';
                             var html = '<tr>';
-                            html += '<td class="text-center stt">'+total_choose+'</td>';
-                            html += '<td class="text-center">'+html_select+'</td>';
-                            html += '<td class="text-center">'+first_dvt+'</td>';
-                            html += '<td><textarea width="100%" cols="30" name="note[]"></textarea></td>';
+                            html += '<td class="text-center stt">' + total_choose + '</td>';
+                            html += '<td class="text-center">' + html_select + '</td>';
+                            html += '<td class="text-center">' + first_dvt + '</td>';
+                            // html += '<td><textarea width="100%" cols="30" name="note[]"></textarea></td>';
                             html += '<td class="text-right">' +
                                 '<input class="form-control input price-mask quantity" name="quantity[]">' +
-                                    '<span class="error error-no-choose-quantity red" style="display: none">Nhập SL</span>'+
+                                '<span class="error error-no-choose-quantity red" style="display: none">Nhập SL</span>' +
                                 '</td>';
-                            html += '<td class="text-right"><input class="form-control input price-mask unit_price" name="price[]" readonly value="'+first_price+'"></td>';
+                            html += '<td class="text-right"><input class="form-control input price-mask unit_price" name="price[]" readonly value="' + first_price + '"></td>';
                             html += '<td class="text-right"><input class="form-control input price-mask discount" name="discount[]"></td>';
                             html += '<td class="text-right"><input class="form-control input price-mask total_price" name="total_price[]" readonly value="0"></td>';
                             html += '<td class="text-center">';
@@ -187,7 +187,7 @@ Controller.define('administrator/invoice', function () {
                             html += '</td>';
                             self.find('tbody').append(html);
                             previous = {};
-                            reloadSelect(total_choose,current_val)
+                            reloadSelect(total_choose, current_val)
                             //reload_element();
                         },
                         addFormRegister = function () {
@@ -202,18 +202,18 @@ Controller.define('administrator/invoice', function () {
                                 customer_phone = self.find('input[name=customer_phone]').val(),
                                 customer_address = self.find('input[name=customer_address]').val(),
                                 customer_note = self.find('input[name=customer_note]').val();
-                            if (!full_name){
+                            if (!full_name) {
                                 self.find('.error-customer-name').text('Tên khách hàng không được bỏ trống!!!');
                                 return false;
                             }
                             var params = {
                                 full_name: full_name,
-                                customer_phone : customer_phone,
-                                customer_address : customer_address,
-                                customer_note : customer_note
+                                customer_phone: customer_phone,
+                                customer_address: customer_address,
+                                customer_note: customer_note
                             };
-                            self.model.addCustomer(params).then(function (rs){
-                                if(rs.st == 1){
+                            self.model.addCustomer(params).then(function (rs) {
+                                if (rs.st == 1) {
                                     self.find('input[name=customer_id]').val(rs.data.customer_id);
                                     self.find('.info-full-name').text(full_name);
                                     self.find('.info-phone').text(customer_phone);
@@ -222,7 +222,7 @@ Controller.define('administrator/invoice', function () {
                                     self.find('.info-customer-invoice').show();
                                     self.find('#modal-register-customer').modal('hide');
                                     bootbox.alert(rs.ms);
-                                }else{
+                                } else {
                                     bootbox.alert(rs.ms);
                                 }
                             });
@@ -235,27 +235,27 @@ Controller.define('administrator/invoice', function () {
                         loadCustomer = function () {
                             var dataCustomers = [];
                             var search = self.find('#tags').val();
-                            self.model.loadCustomer({search:search}).then(function (rs) {
-                                if(rs.st == -1){
+                            self.model.loadCustomer({search: search}).then(function (rs) {
+                                if (rs.st == -1) {
                                     return dataCustomers;
                                 }
-                                $.each(rs.data.rows, function (k,v) {
+                                $.each(rs.data.rows, function (k, v) {
                                     var value = v.full_name,
                                         label = v.full_name;
-                                        if(v.phone){
-                                            label += ' - '.v.phone;
-                                        }
-                                        if(v.phone){
-                                            label += ' - '.v.address;
-                                        }
+                                    if (v.phone) {
+                                        label += ' - '.v.phone;
+                                    }
+                                    if (v.phone) {
+                                        label += ' - '.v.address;
+                                    }
                                     dataCustomers.push({
-                                        'value' : value,
-                                        'label' : label,
-                                        'customer_id' : v.customer_id,
-                                        'phone' : v.phone,
-                                        'address' : v.address,
-                                        'note' : v.note,
-                                        'full_name' : v.full_name
+                                        'value': value,
+                                        'label': label,
+                                        'customer_id': v.customer_id,
+                                        'phone': v.phone,
+                                        'address': v.address,
+                                        'note': v.note,
+                                        'full_name': v.full_name
                                     });
                                 });
                             });
@@ -264,16 +264,16 @@ Controller.define('administrator/invoice', function () {
                         validateForm = function () {
                             self.find('.error').hide();
                             var valid = true;
-                            if(!self.find('input[name=customer_id]').val()){
+                            if (!self.find('input[name=customer_id]').val()) {
                                 self.find('.error-no-choose-customer').show();
                                 valid = false;
                             }
-                            if(self.find('tbody tr').length < 1){
+                            if (self.find('tbody tr').length < 1) {
                                 self.find('.error-no-choose-warehouse').show();
                                 valid = false;
-                            }else{
+                            } else {
                                 $.each(self.find('.quantity'), function () {
-                                    if(!$(this).val()){
+                                    if (!$(this).val()) {
                                         valid = false;
                                         $(this).closest('td').find('.error-no-choose-quantity').show();
                                     }
@@ -282,13 +282,13 @@ Controller.define('administrator/invoice', function () {
                             return valid;
                         },
                         reloadSelect = function (stt, val) {
-                            $.each(self.find('select.warehouse_id'),function (k, item) {
-                                if(stt != 0 && k == stt-1){
+                            $.each(self.find('select.warehouse_id'), function (k, item) {
+                                if (stt != 0 && k == stt - 1) {
                                     return;
                                 }
-                                $(this).find('option[value='+val+']').remove();
-                                if(!$.isEmptyObject(previous)){
-                                    var option = '<option value='+previous.warehouse_id+' data-price='+previous.price+' data-properties='+previous.properties_name+'>';
+                                $(this).find('option[value=' + val + ']').remove();
+                                if (!$.isEmptyObject(previous)) {
+                                    var option = '<option value=' + previous.warehouse_id + ' data-price=' + previous.price + ' data-properties=' + previous.properties_name + '>';
                                     option += previous.name_show;
                                     option += '</option>';
                                     $(this).append(option);
@@ -298,15 +298,16 @@ Controller.define('administrator/invoice', function () {
                             reload_select_picker();
                             reload_element();
                         };
-                    self.on('click','.add-product', loadWarehouse)
-                        .on('click','.edit',function () {})
-                        .on('keyup','.quantity, .discount',function () {
+                    self.on('click', '.add-product', loadWarehouse)
+                        .on('click', '.edit', function () {
+                        })
+                        .on('keyup', '.quantity, .discount', function () {
                             var quantity = +$(this).closest('tr').find('.quantity').val(),
                                 unit_price = +$(this).closest('tr').find('.unit_price').val(),
                                 discount = +$(this).closest('tr').find('.discount').val();
-                            var price_discount = unit_price*quantity*discount/100,
-                                amount_price = unit_price*quantity;
-                            var total_price = amount_price-price_discount;
+                            var price_discount = unit_price * quantity * discount / 100,
+                                amount_price = unit_price * quantity;
+                            var total_price = amount_price - price_discount;
                             $(this).closest('tr').find('.total_price').val(total_price);
                             reload_sum_total_price();
                         })
@@ -318,32 +319,32 @@ Controller.define('administrator/invoice', function () {
                             previous.name_show = $(current_option).text();
                             $(this).closest('tr').remove();
                             reloadSTT();
-                            reloadSelect(0,0);
+                            reloadSelect(0, 0);
                             reload_sum_total_price();
                         })
-                        .on('change','select.warehouse_id',function () {
+                        .on('change', 'select.warehouse_id', function () {
                             var stt = +$(this).closest('tr').find('.stt').text(),
                                 val = $(this).val();
                             var quantity = +$(this).closest('tr').find('.quantity').val(),
                                 unit_price = +$(this).find('option:selected').data('price'),
                                 discount = +$(this).closest('tr').find('.discount').val();
-                            var price_discount = unit_price*quantity*discount/100,
-                                amount_price = unit_price*quantity;
-                            var total_price = amount_price-price_discount;
+                            var price_discount = unit_price * quantity * discount / 100,
+                                amount_price = unit_price * quantity;
+                            var total_price = amount_price - price_discount;
                             $(this).closest('tr').find('.unit_price').val(unit_price);
                             $(this).closest('tr').find('.total_price').val(total_price);
                             reload_sum_total_price();
                             reloadSelect(stt, val);
                         })
-                        .on('click', '.add-customer',addFormRegister)
-                        .on('click', '#register-customer',registerCustomer)
-                        .on('click', '.change-another-customer',changeAnotherCustomer)
+                        .on('click', '.add-customer', addFormRegister)
+                        .on('click', '#register-customer', registerCustomer)
+                        .on('click', '.change-another-customer', changeAnotherCustomer)
                         .on('keyup', '#tags', function () {
                             var value = $(this).val();
-                            if(value.length >= 0){
+                            if (value.length >= 0) {
                                 $(this).autocomplete({
                                     source: loadCustomer(),
-                                    select : function (k,v) {
+                                    select: function (k, v) {
                                         self.find('input[name=customer_id]').val(v.item.customer_id);
                                         self.find('.info-full-name').text(v.item.full_name);
                                         self.find('.info-phone').text(v.item.phone);
@@ -354,26 +355,26 @@ Controller.define('administrator/invoice', function () {
                                     minLength: 0
                                 });
                             }
-                            $(this).focus(function() {
-                                $(this).autocomplete( "search", "" );
+                            $(this).focus(function () {
+                                $(this).autocomplete("search", "");
                             });
                         })
                         .on('click', 'button[type=submit]', validateForm)
                         .on('show.bs.select', 'select.warehouse_id', function () {
                             var current_option = $(this).find('option:selected');
-                                previous.price = $(current_option).data('price');
-                                previous.warehouse_id = $(current_option).val();
-                                previous.properties_name = $(current_option).data('properties');
-                                previous.name_show = $(current_option).text();
+                            previous.price = $(current_option).data('price');
+                            previous.warehouse_id = $(current_option).val();
+                            previous.properties_name = $(current_option).data('properties');
+                            previous.name_show = $(current_option).text();
                         });
-                        if(self.find('tbody tr').length < 1){
-                            loadWarehouse();
-                        }else{
-                            reload_element();
-                        }
+                    if (self.find('tbody tr').length < 1) {
+                        loadWarehouse();
+                    } else {
+                        reload_element();
+                    }
                 }
             },
-            edit : {
+            edit: {
                 require: {
                     scripts: ['bootstrap-datepicker.js', 'bootstrap-select.js', 'bootstrap-inputmask.js'],
                     stylesheets: ['datepicker.css', 'bootstrap-select.css']
@@ -402,8 +403,8 @@ Controller.define('administrator/invoice', function () {
                         },
                         reload_sum_total_price = function () {
                             var sum_total_price = 0;
-                            if(self.find('.total_price').length > 0){
-                                $.each(self.find('.total_price'),function () {
+                            if (self.find('.total_price').length > 0) {
+                                $.each(self.find('.total_price'), function () {
                                     sum_total_price += +$(this).val();
                                 })
                             }
@@ -411,16 +412,16 @@ Controller.define('administrator/invoice', function () {
                             self.find('input[name=sum_total_price]').val(sum_total_price);
                         },
                         reloadSTT = function () {
-                            if(self.find('tbody tr').length > 0){
-                                $.each(self.find('tbody tr'),function (k,item) {
-                                    $(item).find('.stt').text(k+1);
+                            if (self.find('tbody tr').length > 0) {
+                                $.each(self.find('tbody tr'), function (k, item) {
+                                    $(item).find('.stt').text(k + 1);
                                 });
                             }
                         },
                         loadWarehouse = function () {
                             var warehouse_id_selected = [];
-                            if(self.find('select.warehouse_id').length > 0){
-                                self.find('select.warehouse_id').each(function (k,v) {
+                            if (self.find('select.warehouse_id').length > 0) {
+                                self.find('select.warehouse_id').each(function (k, v) {
                                     warehouse_id_selected.push(+$(this).val());
                                 });
                             }
@@ -429,16 +430,16 @@ Controller.define('administrator/invoice', function () {
                             var first_price = 0;
                             var flag = false;
                             var current_val = 0;
-                            $.each(warehouses.rows,function (k,item) {
-                                if($.inArray(item.warehouse_id,warehouse_id_selected) != -1){
+                            $.each(warehouses.rows, function (k, item) {
+                                if ($.inArray(item.warehouse_id, warehouse_id_selected) != -1) {
                                     return;
                                 }
-                                var name_show = item.product_name + ' - Số Lô :' + item.production_batch + ' - HSD : ' + item.hsd + ' - Tồn :' +item.stock;
-                                html_select += '<option value="'+item.warehouse_id+'" data-price="'+item.unit_price+'" data-properties="'+item.properties_name+'">';
+                                var name_show = item.product_name + ' - Số Lô :' + item.production_batch + ' - HSD : ' + item.hsd + ' - Tồn :' + item.stock;
+                                html_select += '<option value="' + item.warehouse_id + '" data-price="' + item.unit_price + '" data-properties="' + item.properties_name + '">';
                                 html_select += name_show;
                                 html_select += '</option>';
 
-                                if(flag == false){
+                                if (flag == false) {
                                     first_dvt = item.properties_name;
                                     first_price = +item.unit_price;
                                     current_val = item.warehouse_id;
@@ -448,15 +449,15 @@ Controller.define('administrator/invoice', function () {
                             var total_choose = self.find('table tbody tr').length + 1;
                             html_select += '</select>';
                             var html = '<tr>';
-                            html += '<td class="text-center stt">'+total_choose+'</td>';
-                            html += '<td class="text-center">'+html_select+'</td>';
-                            html += '<td class="text-center">'+first_dvt+'</td>';
-                            html += '<td><textarea width="100%" cols="30" name="note[]"></textarea></td>';
+                            html += '<td class="text-center stt">' + total_choose + '</td>';
+                            html += '<td class="text-center">' + html_select + '</td>';
+                            html += '<td class="text-center">' + first_dvt + '</td>';
+                            // html += '<td><textarea width="100%" cols="30" name="note[]"></textarea></td>';
                             html += '<td class="text-right">' +
                                 '<input class="form-control input price-mask quantity" name="quantity[]">' +
-                                '<span class="error error-no-choose-quantity red" style="display: none">Nhập SL</span>'+
+                                '<span class="error error-no-choose-quantity red" style="display: none">Nhập SL</span>' +
                                 '</td>';
-                            html += '<td class="text-right"><input class="form-control input price-mask unit_price" name="price[]" readonly value="'+first_price+'"></td>';
+                            html += '<td class="text-right"><input class="form-control input price-mask unit_price" name="price[]" readonly value="' + first_price + '"></td>';
                             html += '<td class="text-right"><input class="form-control input price-mask discount" name="discount[]"></td>';
                             html += '<td class="text-right"><input class="form-control input price-mask total_price" name="total_price[]" readonly value="0"></td>';
                             html += '<td class="text-center">';
@@ -473,7 +474,7 @@ Controller.define('administrator/invoice', function () {
                             html += '</td>';
                             self.find('tbody').append(html);
                             previous = {};
-                            reloadSelect(total_choose,current_val)
+                            reloadSelect(total_choose, current_val)
                             //reload_element();
                         },
                         addFormRegister = function () {
@@ -488,18 +489,18 @@ Controller.define('administrator/invoice', function () {
                                 customer_phone = self.find('input[name=customer_phone]').val(),
                                 customer_address = self.find('input[name=customer_address]').val(),
                                 customer_note = self.find('input[name=customer_note]').val();
-                            if (!full_name){
+                            if (!full_name) {
                                 self.find('.error-customer-name').text('Tên khách hàng không được bỏ trống!!!');
                                 return false;
                             }
                             var params = {
                                 full_name: full_name,
-                                customer_phone : customer_phone,
-                                customer_address : customer_address,
-                                customer_note : customer_note
+                                customer_phone: customer_phone,
+                                customer_address: customer_address,
+                                customer_note: customer_note
                             };
-                            self.model.addCustomer(params).then(function (rs){
-                                if(rs.st == 1){
+                            self.model.addCustomer(params).then(function (rs) {
+                                if (rs.st == 1) {
                                     self.find('input[name=customer_id]').val(rs.data.customer_id);
                                     self.find('.info-full-name').text(full_name);
                                     self.find('.info-phone').text(customer_phone);
@@ -508,7 +509,7 @@ Controller.define('administrator/invoice', function () {
                                     self.find('.info-customer-invoice').show();
                                     self.find('#modal-register-customer').modal('hide');
                                     bootbox.alert(rs.ms);
-                                }else{
+                                } else {
                                     bootbox.alert(rs.ms);
                                 }
                             });
@@ -521,27 +522,27 @@ Controller.define('administrator/invoice', function () {
                         loadCustomer = function () {
                             var dataCustomers = [];
                             var search = self.find('#tags').val();
-                            self.model.loadCustomer({search:search}).then(function (rs) {
-                                if(rs.st == -1){
+                            self.model.loadCustomer({search: search}).then(function (rs) {
+                                if (rs.st == -1) {
                                     return dataCustomers;
                                 }
-                                $.each(rs.data.rows, function (k,v) {
+                                $.each(rs.data.rows, function (k, v) {
                                     var value = v.full_name,
                                         label = v.full_name;
-                                    if(v.phone){
+                                    if (v.phone) {
                                         label += ' - '.v.phone;
                                     }
-                                    if(v.phone){
+                                    if (v.phone) {
                                         label += ' - '.v.address;
                                     }
                                     dataCustomers.push({
-                                        'value' : value,
-                                        'label' : label,
-                                        'customer_id' : v.customer_id,
-                                        'phone' : v.phone,
-                                        'address' : v.address,
-                                        'note' : v.note,
-                                        'full_name' : v.full_name
+                                        'value': value,
+                                        'label': label,
+                                        'customer_id': v.customer_id,
+                                        'phone': v.phone,
+                                        'address': v.address,
+                                        'note': v.note,
+                                        'full_name': v.full_name
                                     });
                                 });
                             });
@@ -550,16 +551,16 @@ Controller.define('administrator/invoice', function () {
                         validateForm = function () {
                             self.find('.error').hide();
                             var valid = true;
-                            if(!self.find('input[name=customer_id]').val()){
+                            if (!self.find('input[name=customer_id]').val()) {
                                 self.find('.error-no-choose-customer').show();
                                 valid = false;
                             }
-                            if(self.find('tbody tr').length < 1){
+                            if (self.find('tbody tr').length < 1) {
                                 self.find('.error-no-choose-warehouse').show();
                                 valid = false;
-                            }else{
+                            } else {
                                 $.each(self.find('.quantity'), function () {
-                                    if(!$(this).val()){
+                                    if (!$(this).val()) {
                                         valid = false;
                                         $(this).closest('td').find('.error-no-choose-quantity').show();
                                     }
@@ -568,13 +569,13 @@ Controller.define('administrator/invoice', function () {
                             return valid;
                         },
                         reloadSelect = function (stt, val) {
-                            $.each(self.find('select.warehouse_id'),function (k, item) {
-                                if(stt != 0 && k == stt-1){
+                            $.each(self.find('select.warehouse_id'), function (k, item) {
+                                if (stt != 0 && k == stt - 1) {
                                     return;
                                 }
-                                $(this).find('option[value='+val+']').remove();
-                                if(!$.isEmptyObject(previous)){
-                                    var option = '<option value='+previous.warehouse_id+' data-price='+previous.price+' data-properties='+previous.properties_name+'>';
+                                $(this).find('option[value=' + val + ']').remove();
+                                if (!$.isEmptyObject(previous)) {
+                                    var option = '<option value=' + previous.warehouse_id + ' data-price=' + previous.price + ' data-properties=' + previous.properties_name + '>';
                                     option += previous.name_show;
                                     option += '</option>';
                                     $(this).append(option);
@@ -584,33 +585,33 @@ Controller.define('administrator/invoice', function () {
                             reload_select_picker();
                             reload_element();
                         };
-                    self.on('keyup','.quantity, .discount',function () {
-                            var quantity = +$(this).closest('tr').find('.quantity').val(),
-                                unit_price = +$(this).closest('tr').find('.unit_price').val(),
-                                discount = +$(this).closest('tr').find('.discount').val();
-                            var price_discount = unit_price*quantity*discount/100,
-                                amount_price = unit_price*quantity;
-                            var total_price = amount_price-price_discount;
-                            $(this).closest('tr').find('.total_price').val(total_price);
-                            reload_sum_total_price();
-                        })
-                        .on('change','select.warehouse_id',function () {
+                    self.on('keyup', '.quantity, .discount', function () {
+                        var quantity = +$(this).closest('tr').find('.quantity').val(),
+                            unit_price = +$(this).closest('tr').find('.unit_price').val(),
+                            discount = +$(this).closest('tr').find('.discount').val();
+                        var price_discount = unit_price * quantity * discount / 100,
+                            amount_price = unit_price * quantity;
+                        var total_price = amount_price - price_discount;
+                        $(this).closest('tr').find('.total_price').val(total_price);
+                        reload_sum_total_price();
+                    })
+                        .on('change', 'select.warehouse_id', function () {
                             var stt = +$(this).closest('tr').find('.stt').text(),
                                 val = $(this).val();
                             var quantity = +$(this).closest('tr').find('.quantity').val(),
                                 unit_price = +$(this).find('option:selected').data('price'),
                                 discount = +$(this).closest('tr').find('.discount').val();
-                            var price_discount = unit_price*quantity*discount/100,
-                                amount_price = unit_price*quantity;
-                            var total_price = amount_price-price_discount;
+                            var price_discount = unit_price * quantity * discount / 100,
+                                amount_price = unit_price * quantity;
+                            var total_price = amount_price - price_discount;
                             $(this).closest('tr').find('.unit_price').val(unit_price);
                             $(this).closest('tr').find('.total_price').val(total_price);
                             reload_sum_total_price();
                             reloadSelect(stt, val);
                         });
-                    if(self.find('tbody tr').length < 1){
+                    if (self.find('tbody tr').length < 1) {
                         loadWarehouse();
-                    }else{
+                    } else {
                         reload_element();
                     }
                 }
@@ -623,43 +624,43 @@ Controller.define('administrator/invoice', function () {
                 execute: function () {
                     var self = this,
                         removeNotify = function () {
-                            if(self.find('input[name=data-id]:checked').length <= 0){
+                            if (self.find('input[name=data-id]:checked').length <= 0) {
                                 bootbox.alert('Vui lòng chọn sản phẩm muốn xóa!!!');
                                 return false;
                             }
                             bootbox.confirm('Bạn có chắc chắn muốn xóa các sản phẩm này không???', function (e) {
-                                if(e){
+                                if (e) {
                                     var arr_id = [];
                                     self.find('input[name=data-id]:checked').each(function () {
                                         arr_id.push($(this).val())
                                     });
-                                    self.model.deleteProduct({arr_product_id : arr_id}).then(function (rs){
-                                        if(rs.st == 1){
-                                            bootbox.alert(rs.ms,function () {
+                                    self.model.deleteProduct({arr_product_id: arr_id}).then(function (rs) {
+                                        if (rs.st == 1) {
+                                            bootbox.alert(rs.ms, function () {
                                                 window.location = window.location.href;
                                             })
-                                        }else{
+                                        } else {
                                             bootbox.alert(rs.ms)
                                         }
                                     });
                                 }
                             });
                         };
-                    self.on('click','.remove',function () {
+                    self.on('click', '.remove', function () {
                         var id = $(this).attr('rel');
-                        if(!id){
+                        if (!id) {
                             bootbox.alert('Xảy ra lỗi, vui lòng refresh trình duyệt và thử lại!!!');
                             return false;
                         }
 
                         bootbox.confirm('Bạn có muốn ngừng nhận thông báo sắp hết hạn sử dụng cho thuốc này???', function (e) {
-                            if(e){
-                                self.model.deleteExpire({id : id}).then(function (rs){
-                                    if(rs.st == 1){
-                                        bootbox.alert(rs.ms,function () {
+                            if (e) {
+                                self.model.deleteExpire({id: id}).then(function (rs) {
+                                    if (rs.st == 1) {
+                                        bootbox.alert(rs.ms, function () {
                                             window.location = window.location.href;
                                         })
-                                    }else{
+                                    } else {
                                         bootbox.alert(rs.ms)
                                     }
                                 });

@@ -161,14 +161,14 @@
                                     <table class="table table-striped table-bordered">
                                     <thead>
                                     <tr>
-                                        <th class="center">STT</th>
-                                        <th class="center" width="350">Thuốc</th>
+                                        <th class="center" width="20px">STT</th>
+                                        <th class="center" width="350"><span class="fa fa-calendar-plus-o"></span> Thuốc</th>
                                         <th class="center" width="50">ĐVT</th>
-                                        <th class="center">Mô tả</th>
-                                        <th class="center" width="75">Số lượng</th>
-                                        <th class="center" width="105">Giá bán (VNĐ)</th>
-                                        <th class="center" width="65">CK (%)</th>
-                                        <th class="center" width="120">Tổng tiền (VNĐ)</th>
+<!--                                        <th class="center">Mô tả</th>-->
+                                        <th class="center" width="40">Số lượng</th>
+                                        <th class="center" width="70"><span class="fa fa-dollar"> Giá bán (VNĐ)</th>
+                                        <th class="center" width="30">CK (%)</th>
+                                        <th class="center" width="80"><span class="fa fa-dollar"> Tổng tiền (VNĐ)</th>
                                         <th class="center" width="50px">Chức năng</th>
                                     </tr>
                                     </thead>
@@ -199,9 +199,9 @@
                                                     <td class="text-center">
                                                         <?php echo $dvt;?>
                                                     </td>
-                                                    <td>
-                                                        <textarea width="100%" cols="30" name="note[]"><?php echo $this->params['note'][$key]?></textarea>
-                                                    </td>
+<!--                                                    <td>-->
+<!--                                                        <textarea width="100%" cols="30" name="note[]">--><?php //echo $this->params['note'][$key]?><!--</textarea>-->
+<!--                                                    </td>-->
                                                     <td lass="text-right">
                                                         <input class="form-control input price-mask quantity" name="quantity[]" value="<?php echo $this->params['quantity'][$key]?>">
                                                         <span class="error error-no-choose-quantity red" style="display: none">Nhập SL</span>
