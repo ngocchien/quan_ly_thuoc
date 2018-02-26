@@ -15,7 +15,7 @@ return array(
                 'driver' => 'Mysqli',
                 'database' => 'quan_ly_thuoc',
                 'username' => 'root',
-                'password' => '123123',
+                'password' => 'Huelinh@1009',
                 'charset' => 'utf8',
                 'options' => array('buffer_results' => true)
             )
