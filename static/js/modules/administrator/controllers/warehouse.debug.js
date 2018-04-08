@@ -167,7 +167,9 @@ Controller.define('administrator/warehouse', function () {
                         startDate: "today",
                         minDate: today
                     });
-                    self.find('.select-picker').selectpicker();
+                    self.find('.select-picker').selectpicker({
+                        'style': 'btn-white'
+                    });
                     self.on('keyup', 'input[name=unit_price],input[name=discount],input[name=quantity]', calculatorTotalPrice);
                 }
             },
