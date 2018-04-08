@@ -59,7 +59,7 @@ Controller.define('administrator/warehouse', function () {
                                     self.find('input[name=data-id]:checked').each(function () {
                                         arr_id.push($(this).val())
                                     });
-                                    self.model.deleteWarehouse({arr_product_id: arr_id}).then(function (rs) {
+                                    self.model.deleteWarehouse({arr_warehouse_id: arr_id}).then(function (rs) {
                                         if (rs.st == 1) {
                                             bootbox.alert(rs.ms, function () {
                                                 window.location = window.location.href;

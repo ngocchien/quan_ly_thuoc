@@ -10,6 +10,7 @@ namespace APP\DAO;
 use Zend\Db\Sql\Sql;
 use Zend\Db\Sql\Expression;
 use APP\Model;
+use APP\Exception;
 
 class Warehouse extends AbstractDAO
 {
@@ -33,12 +34,6 @@ class Warehouse extends AbstractDAO
 
             return $result;
         } catch (\Exception $e) {
-            if(APPLICATION_ENV != 'production'){
-                echo '<pre>';
-                print_r($e->getMessage());
-                echo '</pre>';
-                die();
-            }
             throw new \Exception($e->getMessage(), $e->getCode());
         }
     }
@@ -82,12 +77,6 @@ class Warehouse extends AbstractDAO
             unset($result);
             return $arr_result;
         } catch (\Exception $e) {
-            if(APPLICATION_ENV != 'production'){
-                echo '<pre>';
-                print_r($e->getMessage(), $e->getCode());
-                echo '</pre>';
-                die();
-            }
             throw new \Exception($e->getMessage(), $e->getCode());
         }
     }
@@ -115,12 +104,6 @@ class Warehouse extends AbstractDAO
 
             return self::_transform($result);
         } catch (\Exception $e) {
-            if(APPLICATION_ENV != 'production'){
-                echo '<pre>';
-                print_r($e->getMessage(), $e->getCode());
-                echo '</pre>';
-                die();
-            }
             throw new \Exception($e->getMessage(), $e->getCode());
         }
     }
@@ -146,10 +129,33 @@ class Warehouse extends AbstractDAO
             }
             return true;
         } catch (\Exception $e) {
-            echo '<pre>';
-            print_r($e->getMessage(), $e->getCode());
-            echo '</pre>';
-            die();
+            throw new Exception($e->getMessage(), $e->getCode());
+        }
+    }
+
+    public static function updateByCondition($params, $condition){
+        try {
+            $adapter = self::getInstance();
+
+            $sql = new Sql($adapter, self::TABLE_NAME);
+
+            $update = $sql->update();
+
+            $update->set($params);
+
+            $strWhere = self::buildWhere($condition);
+
+            $update->where($strWhere);
+
+            $statement = $sql->prepareStatementForSqlObject($update);
+
+            $result = $statement->execute();
+
+            if(!$result->getAffectedRows()){
+                return false;
+            }
+            return true;
+        } catch (\Exception $e) {
             throw new \Exception($e->getMessage(), $e->getCode());
         }
     }

@@ -35,7 +35,12 @@ class Warehouse
 
     public static function update($params, $id)
     {
-        return DAO\Warehouse::update($params,$id);
+        return DAO\Warehouse::update($params, $id);
+    }
+
+    public static function updateByCondition($params, $condition)
+    {
+        return DAO\Warehouse::updateByCondition($params, $condition);
     }
 
     public static function getExpire($params)
@@ -43,13 +48,14 @@ class Warehouse
         return DAO\Warehouse::getExpire($params);
     }
 
-    public static function renderStatus(){
+    public static function renderStatus()
+    {
         $arr_status = [
             self::STATUS_ACTIVE => self::STATUS_ACTIVE_NAME,
             self::STATUS_INACTIVE => self::STATUS_INACTIVE_NAME
         ];
 
-        if(!empty($id) && !empty($arr_status[$id])){
+        if (!empty($id) && !empty($arr_status[$id])) {
             return $arr_status[$id];
         }
 
