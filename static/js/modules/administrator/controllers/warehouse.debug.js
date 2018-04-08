@@ -53,7 +53,7 @@ Controller.define('administrator/warehouse', function () {
                                 bootbox.alert('Vui lòng chọn sản phẩm muốn xóa!!!');
                                 return false;
                             }
-                            bootbox.confirm('Bạn có chắc chắn muốn xóa các sản phẩm này không???', function (e) {
+                            bootbox.confirm('Bạn có chắc chắn muốn xóa các thuốc đã nhập kho này không???', function (e) {
                                 if (e) {
                                     var arr_id = [];
                                     self.find('input[name=data-id]:checked').each(function () {
@@ -237,7 +237,7 @@ Controller.define('administrator/warehouse', function () {
                                 bootbox.alert('Vui lòng chọn sản phẩm muốn xóa!!!');
                                 return false;
                             }
-                            bootbox.confirm('Bạn có chắc chắn muốn xóa các sản phẩm này không???', function (e) {
+                            bootbox.confirm('Bạn có chắc chắn muốn xóa các thuốc đã hết hạn này không???', function (e) {
                                 if (e) {
                                     var arr_id = [];
                                     self.find('input[name=data-id]:checked').each(function () {
