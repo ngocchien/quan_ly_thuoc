@@ -177,30 +177,7 @@ Controller.define('administrator/warehouse', function () {
                     stylesheets: []
                 },
                 execute: function () {
-                    var self = this,
-                        removeNotify = function () {
-                            if (self.find('input[name=data-id]:checked').length <= 0) {
-                                bootbox.alert('Vui lòng chọn sản phẩm muốn xóa!!!');
-                                return false;
-                            }
-                            bootbox.confirm('Bạn có chắc chắn muốn xóa các sản phẩm này không???', function (e) {
-                                if (e) {
-                                    var arr_id = [];
-                                    self.find('input[name=data-id]:checked').each(function () {
-                                        arr_id.push($(this).val())
-                                    });
-                                    self.model.deleteProduct({arr_product_id: arr_id}).then(function (rs) {
-                                        if (rs.st == 1) {
-                                            bootbox.alert(rs.ms, function () {
-                                                window.location = window.location.href;
-                                            })
-                                        } else {
-                                            bootbox.alert(rs.ms)
-                                        }
-                                    });
-                                }
-                            });
-                        };
+                    var self = this;
                     self.on('click', '.remove', function () {
                         var id = $(this).attr('rel');
                         if (!id) {
@@ -221,48 +198,14 @@ Controller.define('administrator/warehouse', function () {
                                 });
                             }
                         });
-                    })
-
-                }
-            },
-            expired: {
-                require: {
-                    scripts: ['bootbox/bootbox.js'],
-                    stylesheets: []
-                },
-                execute: function () {
-                    var self = this,
-                        removeNotify = function () {
-                            if (self.find('input[name=data-id]:checked').length <= 0) {
-                                bootbox.alert('Vui lòng chọn sản phẩm muốn xóa!!!');
-                                return false;
-                            }
-                            bootbox.confirm('Bạn có chắc chắn muốn xóa các thuốc đã hết hạn này không???', function (e) {
-                                if (e) {
-                                    var arr_id = [];
-                                    self.find('input[name=data-id]:checked').each(function () {
-                                        arr_id.push($(this).val())
-                                    });
-                                    self.model.deleteProduct({arr_product_id: arr_id}).then(function (rs) {
-                                        if (rs.st == 1) {
-                                            bootbox.alert(rs.ms, function () {
-                                                window.location = window.location.href;
-                                            })
-                                        } else {
-                                            bootbox.alert(rs.ms)
-                                        }
-                                    });
-                                }
-                            });
-                        };
-                    self.on('click', '.remove', function () {
+                    }).on('click', '.delete_warehouse', function () {
                         var id = $(this).attr('rel');
                         if (!id) {
                             bootbox.alert('Xảy ra lỗi, vui lòng refresh trình duyệt và thử lại!!!');
                             return false;
                         }
 
-                        bootbox.confirm('Bạn có muốn ngừng nhận thông báo sắp hết hạn sử dụng cho thuốc này???', function (e) {
+                        bootbox.confirm('Bạn có muốn xóa thuốc sắp hết hạn này khỏi kho không???', function (e) {
                             if (e) {
                                 self.model.deleteExpired({id: id}).then(function (rs) {
                                     if (rs.st == 1) {
@@ -276,7 +219,36 @@ Controller.define('administrator/warehouse', function () {
                             }
                         });
                     })
+                }
+            },
+            expired: {
+                require: {
+                    scripts: ['bootbox/bootbox.js'],
+                    stylesheets: []
+                },
+                execute: function () {
+                    var self = this;
+                    self.on('click', '.remove', function () {
+                        var id = $(this).attr('rel');
+                        if (!id) {
+                            bootbox.alert('Xảy ra lỗi, vui lòng refresh trình duyệt và thử lại!!!');
+                            return false;
+                        }
 
+                        bootbox.confirm('Bạn có muốn xóa thuốc đã hết hạn này khỏi kho không???', function (e) {
+                            if (e) {
+                                self.model.deleteExpired({id: id}).then(function (rs) {
+                                    if (rs.st == 1) {
+                                        bootbox.alert(rs.ms, function () {
+                                            window.location = window.location.href;
+                                        })
+                                    } else {
+                                        bootbox.alert(rs.ms)
+                                    }
+                                });
+                            }
+                        });
+                    })
                 }
             }
         }
