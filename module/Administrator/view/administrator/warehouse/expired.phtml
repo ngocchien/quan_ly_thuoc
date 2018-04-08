@@ -1,4 +1,4 @@
-<div data-view="administrator/warehouse/expire">
+<div data-view="administrator/warehouse/expired">
     <div class="col-xs-12">
         <form method="get" class="form-search">
             <div class="col-xs-12" style="margin-bottom: 10px">
@@ -23,6 +23,7 @@
                 <th class="center"><span class="fa fa-calendar"></span> NSX</th>
                 <th class="center"><span class="fa fa-calendar"></span> HSD</th>
                 <th class="center"><span class="fa fa-barcode"></span> Số lô</th>
+                <th class="center"><span class="fa fa-gears"></span> Chức năng</th>
             </tr>
             </thead>
             <tbody>
@@ -36,6 +37,13 @@
                         <td class="center"><?php echo date('d-m-Y',$row['nsx']);?></td>
                         <td class="center"><b class="red"><?php echo date('d-m-Y',$row['hsd']);?></b></td>
                         <td class="center"><?php echo empty($row['production_batch']) ? '' : $row['production_batch'];?></td>
+                        <td class="center">
+                            <div class="hidden-sm hidden-xs btn-group">
+                                <a data-toggle="tooltip" title="Xóa thuốc khỏi kho" class="btn btn-xs btn-danger remove" rel="<?php echo $row['warehouse_id']?>">
+                                    <i class="ace-icon fa fa-remove bigger-120"></i>
+                                </a>
+                            </div>
+                        </td>
                     </tr>
                 <?php endforeach; endif;?>
             </tbody>

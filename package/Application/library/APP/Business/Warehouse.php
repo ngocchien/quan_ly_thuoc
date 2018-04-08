@@ -142,6 +142,7 @@ class Warehouse
         $params['lt_stock'] = 0;
         $params['is_expired'] = true;
         $params['lt_stock'] = 0;
+        $params['not_status'] = 0;
         $result = Model\Warehouse::get($params);
         return $result;
     }
@@ -353,6 +354,55 @@ class Warehouse
         return [
             'st' => 1,
             'ms' => 'Ngừng nhận thông báo cho thuôc này thành công!',
+            'success' => 'success'
+        ];
+    }
+
+    public static function deleteExpired($params){
+        if(empty($params['id'])){
+            return [
+                'st' => -1,
+                'ms' => 'Xảy ra lỗi ! Vui lòng thử lại!',
+                'error' => 'error'
+            ];
+        }
+
+        $id = $params['id'];
+
+        //get info warehouse
+        $result = Model\Warehouse::get([
+            'warehouse_id' => $id,
+            'not_status' => Model\Warehouse::STATUS_REMOVE
+        ]);
+
+        if(empty($result['rows'])){
+            return [
+                'st' => -1,
+                'ms' => 'Xảy ra lỗi ! Vui lòng thử lại!',
+                'error' => 'error'
+            ];
+        }
+
+        //delete
+        $status = Model\Warehouse::update([
+            'updated_date' => time(),
+            'user_updated' => USER_ID,
+            'status' => Model\Warehouse::STATUS_REMOVE
+        ],[
+            $id
+        ]);
+
+        if(!$status){
+            return [
+                'st' => -1,
+                'ms' => 'Xảy ra lỗi trong quá trình xử lý! Vui lòng thử lại!',
+                'error' => 'error'
+            ];
+        }
+
+        return [
+            'st' => 1,
+            'ms' => 'Xóa thuốc này thành công!',
             'success' => 'success'
         ];
     }

@@ -12,7 +12,7 @@ Controller.define('administrator/warehouse', function () {
                     type: 'post',
                     url: Registry.get('SITE_URL') + 'admin/warehouse/delete',
                     data: params,
-                    dataType : 'json'
+                    dataType: 'json'
                 });
             },
             deleteExpire: function (params) {
@@ -20,16 +20,24 @@ Controller.define('administrator/warehouse', function () {
                     type: 'post',
                     url: Registry.get('SITE_URL') + 'admin/warehouse/delete-expire',
                     data: params,
-                    dataType : 'json'
+                    dataType: 'json'
                 });
             },
-            calculatorTotalPrice : function (params) {
+            deleteExpired: function (params) {
+                return $.ajax({
+                    type: 'post',
+                    url: Registry.get('SITE_URL') + 'admin/warehouse/delete-expired',
+                    data: params,
+                    dataType: 'json'
+                });
+            },
+            calculatorTotalPrice: function (params) {
                 var unit_price = params.unit_price,
                     discount = params.discount,
                     quantity = params.quantity;
-                var price_discount = unit_price*quantity*discount/100,
-                    amount_price = unit_price*quantity;
-                return amount_price-price_discount;
+                var price_discount = unit_price * quantity * discount / 100,
+                    amount_price = unit_price * quantity;
+                return amount_price - price_discount;
             }
         },
         actions: {
@@ -41,39 +49,39 @@ Controller.define('administrator/warehouse', function () {
                 execute: function () {
                     var self = this,
                         removeAll = function () {
-                            if(self.find('input[name=data-id]:checked').length <= 0){
+                            if (self.find('input[name=data-id]:checked').length <= 0) {
                                 bootbox.alert('Vui lòng chọn sản phẩm muốn xóa!!!');
                                 return false;
                             }
                             bootbox.confirm('Bạn có chắc chắn muốn xóa các sản phẩm này không???', function (e) {
-                                if(e){
+                                if (e) {
                                     var arr_id = [];
                                     self.find('input[name=data-id]:checked').each(function () {
                                         arr_id.push($(this).val())
                                     });
-                                    self.model.deleteWarehouse({arr_product_id : arr_id}).then(function (rs){
-                                        if(rs.st == 1){
-                                            bootbox.alert(rs.ms,function () {
+                                    self.model.deleteWarehouse({arr_product_id: arr_id}).then(function (rs) {
+                                        if (rs.st == 1) {
+                                            bootbox.alert(rs.ms, function () {
                                                 window.location = window.location.href;
                                             })
-                                        }else{
+                                        } else {
                                             bootbox.alert(rs.ms)
                                         }
                                     });
                                 }
                             });
                         };
-                    self.on('click','.remove-all',function () {
+                    self.on('click', '.remove-all', function () {
                         removeAll();
-                    }).on('change','.limit-query',function () {
+                    }).on('change', '.limit-query', function () {
                         window.location = $(this).val();
                     })
 
                 }
             },
-            create : {
+            create: {
                 require: {
-                    scripts: ['bootstrap-inputmask.js','bootstrap-datepicker.js','bootstrap-datepicker.vi.js', 'bootstrap-select.js'],
+                    scripts: ['bootstrap-inputmask.js', 'bootstrap-datepicker.js', 'bootstrap-datepicker.vi.js', 'bootstrap-select.js'],
                     stylesheets: ['bootstrap-datepicker.css', 'bootstrap-select.css']
                 },
                 execute: function () {
@@ -84,42 +92,44 @@ Controller.define('administrator/warehouse', function () {
                             quantity = +self.find('input[name=quantity]').val(),
                             discount = +self.find('input[name=discount]').val();
                         var total_price = self.model.calculatorTotalPrice({
-                            unit_price : unit_price,
-                            quantity : quantity,
-                            discount : discount
+                            unit_price: unit_price,
+                            quantity: quantity,
+                            discount: discount
                         });
                         self.find('input[name=total_price]').val(total_price);
                     };
-                        CKEDITOR.config.height= '100px';
+                    CKEDITOR.config.height = '100px';
 
-                        self.find(".price-mask").inputmask({
-                            alias: 'decimal',
-                            radixPoint: '.',
-                            groupSeparator: ',',
-                            autoGroup: true,
-                            rightAlign: true,
-                            autoUnmask: true,
-                            removeMaskOnSubmit: true,
-                            digits: 0
-                        });
-                        self.find('.datetimepicker').inputmask({"mask": "99/99/9999"});
-                        self.find('input[name=nsx]').datepicker({
-                            format: 'dd/mm/yyyy',
-                            endDate: "today",
-                            maxDate: today
-                        });
-                        self.find('input[name=hsd]').datepicker({
-                            format: 'dd/mm/yyyy',
-                            startDate: "today",
-                            minDate: today
-                        });
-                        self.find('.select-picker').selectpicker();
-                        self.on('keyup' , 'input[name=unit_price],input[name=discount],input[name=quantity]',calculatorTotalPrice);
+                    self.find(".price-mask").inputmask({
+                        alias: 'decimal',
+                        radixPoint: '.',
+                        groupSeparator: ',',
+                        autoGroup: true,
+                        rightAlign: true,
+                        autoUnmask: true,
+                        removeMaskOnSubmit: true,
+                        digits: 0
+                    });
+                    self.find('.datetimepicker').inputmask({"mask": "99/99/9999"});
+                    self.find('input[name=nsx]').datepicker({
+                        format: 'dd/mm/yyyy',
+                        endDate: "today",
+                        maxDate: today
+                    });
+                    self.find('input[name=hsd]').datepicker({
+                        format: 'dd/mm/yyyy',
+                        startDate: "today",
+                        minDate: today
+                    });
+                    self.find('.select-picker').selectpicker({
+                        'style': 'btn-white'
+                    });
+                    self.on('keyup', 'input[name=unit_price],input[name=discount],input[name=quantity]', calculatorTotalPrice);
                 }
             },
-            edit : {
+            edit: {
                 require: {
-                    scripts: ['bootstrap-inputmask.js','bootstrap-datepicker.js','bootstrap-datepicker.vi.js', 'bootstrap-select.js'],
+                    scripts: ['bootstrap-inputmask.js', 'bootstrap-datepicker.js', 'bootstrap-datepicker.vi.js', 'bootstrap-select.js'],
                     stylesheets: ['bootstrap-datepicker.css', 'bootstrap-select.css']
                 },
                 execute: function () {
@@ -130,9 +140,9 @@ Controller.define('administrator/warehouse', function () {
                             quantity = +self.find('input[name=quantity]').val(),
                             discount = +self.find('input[name=discount]').val();
                         var total_price = self.model.calculatorTotalPrice({
-                            unit_price : unit_price,
-                            quantity : quantity,
-                            discount : discount
+                            unit_price: unit_price,
+                            quantity: quantity,
+                            discount: discount
                         });
                         self.find('input[name=total_price]').val(total_price);
                     };
@@ -158,7 +168,7 @@ Controller.define('administrator/warehouse', function () {
                         minDate: today
                     });
                     self.find('.select-picker').selectpicker();
-                    self.on('keyup' , 'input[name=unit_price],input[name=discount],input[name=quantity]',calculatorTotalPrice);
+                    self.on('keyup', 'input[name=unit_price],input[name=discount],input[name=quantity]', calculatorTotalPrice);
                 }
             },
             expire: {
@@ -169,43 +179,97 @@ Controller.define('administrator/warehouse', function () {
                 execute: function () {
                     var self = this,
                         removeNotify = function () {
-                            if(self.find('input[name=data-id]:checked').length <= 0){
+                            if (self.find('input[name=data-id]:checked').length <= 0) {
                                 bootbox.alert('Vui lòng chọn sản phẩm muốn xóa!!!');
                                 return false;
                             }
                             bootbox.confirm('Bạn có chắc chắn muốn xóa các sản phẩm này không???', function (e) {
-                                if(e){
+                                if (e) {
                                     var arr_id = [];
                                     self.find('input[name=data-id]:checked').each(function () {
                                         arr_id.push($(this).val())
                                     });
-                                    self.model.deleteProduct({arr_product_id : arr_id}).then(function (rs){
-                                        if(rs.st == 1){
-                                            bootbox.alert(rs.ms,function () {
+                                    self.model.deleteProduct({arr_product_id: arr_id}).then(function (rs) {
+                                        if (rs.st == 1) {
+                                            bootbox.alert(rs.ms, function () {
                                                 window.location = window.location.href;
                                             })
-                                        }else{
+                                        } else {
                                             bootbox.alert(rs.ms)
                                         }
                                     });
                                 }
                             });
                         };
-                    self.on('click','.remove',function () {
+                    self.on('click', '.remove', function () {
                         var id = $(this).attr('rel');
-                        if(!id){
+                        if (!id) {
                             bootbox.alert('Xảy ra lỗi, vui lòng refresh trình duyệt và thử lại!!!');
                             return false;
                         }
 
                         bootbox.confirm('Bạn có muốn ngừng nhận thông báo sắp hết hạn sử dụng cho thuốc này???', function (e) {
-                            if(e){
-                                self.model.deleteExpire({id : id}).then(function (rs){
-                                    if(rs.st == 1){
-                                        bootbox.alert(rs.ms,function () {
+                            if (e) {
+                                self.model.deleteExpire({id: id}).then(function (rs) {
+                                    if (rs.st == 1) {
+                                        bootbox.alert(rs.ms, function () {
                                             window.location = window.location.href;
                                         })
-                                    }else{
+                                    } else {
+                                        bootbox.alert(rs.ms)
+                                    }
+                                });
+                            }
+                        });
+                    })
+
+                }
+            },
+            expired: {
+                require: {
+                    scripts: ['bootbox/bootbox.js'],
+                    stylesheets: []
+                },
+                execute: function () {
+                    var self = this,
+                        removeNotify = function () {
+                            if (self.find('input[name=data-id]:checked').length <= 0) {
+                                bootbox.alert('Vui lòng chọn sản phẩm muốn xóa!!!');
+                                return false;
+                            }
+                            bootbox.confirm('Bạn có chắc chắn muốn xóa các sản phẩm này không???', function (e) {
+                                if (e) {
+                                    var arr_id = [];
+                                    self.find('input[name=data-id]:checked').each(function () {
+                                        arr_id.push($(this).val())
+                                    });
+                                    self.model.deleteProduct({arr_product_id: arr_id}).then(function (rs) {
+                                        if (rs.st == 1) {
+                                            bootbox.alert(rs.ms, function () {
+                                                window.location = window.location.href;
+                                            })
+                                        } else {
+                                            bootbox.alert(rs.ms)
+                                        }
+                                    });
+                                }
+                            });
+                        };
+                    self.on('click', '.remove', function () {
+                        var id = $(this).attr('rel');
+                        if (!id) {
+                            bootbox.alert('Xảy ra lỗi, vui lòng refresh trình duyệt và thử lại!!!');
+                            return false;
+                        }
+
+                        bootbox.confirm('Bạn có muốn ngừng nhận thông báo sắp hết hạn sử dụng cho thuốc này???', function (e) {
+                            if (e) {
+                                self.model.deleteExpired({id: id}).then(function (rs) {
+                                    if (rs.st == 1) {
+                                        bootbox.alert(rs.ms, function () {
+                                            window.location = window.location.href;
+                                        })
+                                    } else {
                                         bootbox.alert(rs.ms)
                                     }
                                 });

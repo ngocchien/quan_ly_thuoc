@@ -104,6 +104,10 @@ class InvoiceController extends MyController
         if($this->request->isPost()){
             $params = $this->params()->fromPost();
             echo '<pre>';
+            print_r($params);
+            echo '</pre>';
+            die();
+            echo '<pre>';
             print_r('Chưa validate! Chức năng đang xây dựng! chưa thực hiện được thao tác update!');
             echo '</pre>';
             die();

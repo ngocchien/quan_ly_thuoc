@@ -1,5 +1,0 @@
-{
-    "path_socket" : "/usr/lib/node_modules/socket.io",
-    "server" : "127.0.0.1",
-    "port" : 3000
-}

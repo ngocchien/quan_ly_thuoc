@@ -14,7 +14,8 @@ use APP\Model;
 
 class WarehouseController extends MyController
 {
-    public function indexAction(){
+    public function indexAction()
+    {
         $params = array_merge($this->params()->fromRoute(), $this->params()->fromQuery());
         $params['not_status'] = Model\Warehouse::STATUS_REMOVE;
 
@@ -30,45 +31,45 @@ class WarehouseController extends MyController
             }
         }
 
-        if(!empty($user_id)){
+        if (!empty($user_id)) {
             $result = Model\User::getUser([
                 'in_user_id' => array_values($user_id),
                 'limit' => count($user_id),
                 'offset' => 0
             ]);
 
-            if(!empty($result['rows'])){
-                foreach ($result['rows'] as $row){
+            if (!empty($result['rows'])) {
+                foreach ($result['rows'] as $row) {
                     $users[$row['user_id']] = $row;
                 }
             }
         }
 
-        if(!empty($properties_id)){
+        if (!empty($properties_id)) {
             $result = Model\Properties::get([
                 'in_id' => array_values($properties_id),
                 'limit' => count($properties_id),
                 'offset' => 0
             ]);
 
-            if(!empty($result['rows'])){
-                foreach ($result['rows'] as $row){
+            if (!empty($result['rows'])) {
+                foreach ($result['rows'] as $row) {
                     $properties[$row['id']] = $row;
                 }
             }
         }
 
-        if(!empty($product_id)){
+        if (!empty($product_id)) {
             $result = Model\Product::get([
                 'in_product_id' => array_values($product_id),
                 'limit' => count($product_id),
                 'offset' => 0
             ]);
 
-            if(!empty($result['rows'])){
-                foreach ($result['rows'] as $row){
+            if (!empty($result['rows'])) {
+                foreach ($result['rows'] as $row) {
                     $products[$row['product_id']] = $row;
-                    if(!empty($row['brand_id'])){
+                    if (!empty($row['brand_id'])) {
                         $brand_id[] = $row['brand_id'];
                     }
                 }
@@ -76,14 +77,14 @@ class WarehouseController extends MyController
         }
 
         $brands = [];
-        if(!empty($brand_id)){
+        if (!empty($brand_id)) {
             $result = Model\Brand::get([
                 'in_brand_id' => array_values(array_unique($brand_id)),
                 'limit' => 10000
             ]);
 
-            if($result['total']){
-                foreach ($result['rows'] as $row){
+            if ($result['total']) {
+                foreach ($result['rows'] as $row) {
                     $brands[$row['brand_id']] = $row;
                 }
             }
@@ -102,7 +103,8 @@ class WarehouseController extends MyController
         ];
     }
 
-    public function createAction(){
+    public function createAction()
+    {
         $params = $this->params()->fromRoute();
 
         if ($this->request->isPost()) {
@@ -131,8 +133,8 @@ class WarehouseController extends MyController
 //            'not_status' => Model\Brand::BRAND_STATUS_REMOVE
         ]);
 
-        if(!empty($result['rows'])){
-            foreach ($result['rows'] as $row){
+        if (!empty($result['rows'])) {
+            foreach ($result['rows'] as $row) {
                 $brands[$row['brand_id']] = $row;
             }
         }
@@ -145,12 +147,13 @@ class WarehouseController extends MyController
         ];
     }
 
-    public function editAction(){
-        try{
+    public function editAction()
+    {
+        try {
             $params = $this->params()->fromRoute();
             $id = $params['id'];
 
-            if(empty($id)){
+            if (empty($id)) {
                 return $this->redirect()->toRoute('administrator');
             }
 
@@ -162,17 +165,17 @@ class WarehouseController extends MyController
                 'page' => 1
             ]);
 
-            if(empty($result['rows'])){
+            if (empty($result['rows'])) {
                 return $this->redirect()->toRoute('administrator');
             }
 
             $warehouse = $result['rows'][0];
 
-            if($this->request->isPost()){
+            if ($this->request->isPost()) {
                 $params = $this->params()->fromPost();
                 $params['warehouse_id'] = $id;
                 $params = Business\Warehouse::update($params);
-                if(!empty($params['success'])){
+                if (!empty($params['success'])) {
                     $_SESSION['update-warehouse-success'] = true;
                     return $this->redirect()->toRoute('administratorWarehouse', ['action' => 'edit', 'id' => $id]);
                 }
@@ -195,7 +198,7 @@ class WarehouseController extends MyController
                 'products' => $products,
                 'properties' => $properties
             ];
-        }catch (\Exception $ex){
+        } catch (\Exception $ex) {
             echo '<pre>';
             print_r($ex->getMessage());
             echo '</pre>';
@@ -203,15 +206,17 @@ class WarehouseController extends MyController
         }
     }
 
-    public function deleteAction(){
-        if($this->request->isPost()){
+    public function deleteAction()
+    {
+        if ($this->request->isPost()) {
             $params = $this->params()->fromPost();
             $result = Business\Warehouse::delete($params);
             return $this->getResponse()->setContent(json_encode($result));
         }
     }
 
-    public function expireAction(){
+    public function expireAction()
+    {
         $params = array_merge($this->params()->fromRoute(), $this->params()->fromQuery());
         $params['not_status'] = Model\Warehouse::STATUS_REMOVE;
         $params['expire'] = 1;
@@ -229,43 +234,43 @@ class WarehouseController extends MyController
             }
         }
 
-        if(!empty($user_id)){
+        if (!empty($user_id)) {
             $result = Model\User::getUser([
                 'in_user_id' => array_values($user_id),
                 'limit' => 100,
                 'offset' => 0
             ]);
 
-            if(!empty($result['rows'])){
-                foreach ($result['rows'] as $row){
+            if (!empty($result['rows'])) {
+                foreach ($result['rows'] as $row) {
                     $users[$row['user_id']] = $row;
                 }
             }
         }
 
-        if(!empty($properties_id)){
+        if (!empty($properties_id)) {
             $result = Model\Properties::get([
                 'in_id' => array_values($properties_id),
                 'limit' => 100,
                 'offset' => 0
             ]);
 
-            if(!empty($result['rows'])){
-                foreach ($result['rows'] as $row){
+            if (!empty($result['rows'])) {
+                foreach ($result['rows'] as $row) {
                     $properties[$row['id']] = $row;
                 }
             }
         }
 
-        if(!empty($product_id)){
+        if (!empty($product_id)) {
             $result = Model\Product::get([
                 'in_id' => array_values($product_id),
                 'limit' => 100,
                 'offset' => 0
             ]);
 
-            if(!empty($result['rows'])){
-                foreach ($result['rows'] as $row){
+            if (!empty($result['rows'])) {
+                foreach ($result['rows'] as $row) {
                     $products[$row['product_id']] = $row;
                 }
             }
@@ -282,7 +287,8 @@ class WarehouseController extends MyController
         ];
     }
 
-    public function expiredAction(){
+    public function expiredAction()
+    {
         $params = array_merge($this->params()->fromRoute(), $this->params()->fromQuery());
         //get list
         $user_id = $users = $properties_id = $properties = $product_id = $products = [];
@@ -296,43 +302,43 @@ class WarehouseController extends MyController
             }
         }
 
-        if(!empty($user_id)){
+        if (!empty($user_id)) {
             $result = Model\User::getUser([
                 'in_user_id' => array_values($user_id),
                 'limit' => 100,
                 'offset' => 0
             ]);
 
-            if(!empty($result['rows'])){
-                foreach ($result['rows'] as $row){
+            if (!empty($result['rows'])) {
+                foreach ($result['rows'] as $row) {
                     $users[$row['user_id']] = $row;
                 }
             }
         }
 
-        if(!empty($properties_id)){
+        if (!empty($properties_id)) {
             $result = Model\Properties::get([
                 'in_id' => array_values($properties_id),
                 'limit' => 100,
                 'offset' => 0
             ]);
 
-            if(!empty($result['rows'])){
-                foreach ($result['rows'] as $row){
+            if (!empty($result['rows'])) {
+                foreach ($result['rows'] as $row) {
                     $properties[$row['id']] = $row;
                 }
             }
         }
 
-        if(!empty($product_id)){
+        if (!empty($product_id)) {
             $result = Model\Product::get([
                 'in_product_id' => array_values($product_id),
                 'limit' => 1000,
                 'offset' => 0
             ]);
 
-            if(!empty($result['rows'])){
-                foreach ($result['rows'] as $row){
+            if (!empty($result['rows'])) {
+                foreach ($result['rows'] as $row) {
                     $products[$row['product_id']] = $row;
                 }
             }
@@ -349,10 +355,20 @@ class WarehouseController extends MyController
         ];
     }
 
-    public function deleteExpireAction(){
-        if($this->request->isPost()){
+    public function deleteExpireAction()
+    {
+        if ($this->request->isPost()) {
             $params = $this->params()->fromPost();
             $result = Business\Warehouse::deleteExpire($params);
+            return $this->getResponse()->setContent(json_encode($result));
+        }
+    }
+
+    public function deleteExpiredAction()
+    {
+        if ($this->request->isPost()) {
+            $params = $this->params()->fromPost();
+            $result = Business\Warehouse::deleteExpired($params);
             return $this->getResponse()->setContent(json_encode($result));
         }
     }
