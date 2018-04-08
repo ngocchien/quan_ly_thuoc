@@ -250,7 +250,7 @@ class WarehouseController extends MyController
 
         if (!empty($properties_id)) {
             $result = Model\Properties::get([
-                'in_id' => array_values($properties_id),
+                'in_product_id' => array_values($properties_id),
                 'limit' => 100,
                 'offset' => 0
             ]);
