@@ -14,8 +14,8 @@ return array(
                 'host' => '127.0.0.1',
                 'driver' => 'Mysqli',
                 'database' => 'quan_ly_thuoc',
-                'username' => 'root',
-                'password' => 'Huelinh@1009',
+                'username' => 'quan_ly_thuoc',
+                'password' => '&*&$QHkKKH!)*{',
                 'charset' => 'utf8',
                 'options' => array('buffer_results' => true)
             )
